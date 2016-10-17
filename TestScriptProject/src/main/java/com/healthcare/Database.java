@@ -1,39 +1,91 @@
+package com.healthcare;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import java.sql.*;
-/**
- *
- * @author Isha
- */
-// Acknowledgments: This example is a modification of code provided
-// by Dimitri Rakitine.
+import java.util.HashMap;
+import java.util.Map;
 
-// Usage from command line on key.csc.ncsu.edu:
-// see instructions in FAQ
-// Website for Oracle setup at NCSU : http://www.csc.ncsu.edu/techsupport/technotes/oracle.php
 
-//Note: If you run the program more than once, it will not be able to create the COFFEES table anew after the first run;
-//	you can remove the COFFEES tables between the runs by typing "drop table COFFEES;" in SQL*Plus.
+public class Database {
 
-public class FirstExample {
-
-    static final String jdbcURL
-            = "jdbc:oracle:thin:@orca.csc.ncsu.edu:1521:orcl01";
-
+    String jdbcURL, user, password;
+    Connection conn;
+    static Database db = new Database();
+    static Database getInstance()
+    {
+        return db;
+    }    
+    private Database()
+    {
+        this.user = "hborah";
+        this.password = "200105222";
+        this.jdbcURL = "jdbc:oracle:thin:@orca.csc.ncsu.edu:1521:orcl01";
+        try
+        {   
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection(jdbcURL, user, password);
+            System.out.println("Connection Successful");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    boolean inDatabase(String username, String password)
+    {
+        try
+        {
+            Statement stmt = db.conn.createStatement();
+            String query = String.format("SELECT * FROM PERSON WHERE username=%s AND password=%s", username, password);
+            ResultSet rs = stmt.executeQuery(query);
+            //TODO: SEELCT QUERY CHECK
+            
+        }
+        catch(Exception e)
+        {
+            
+        }
+        return true;
+    }
+    void addPerson(HashMap<String, String> map)
+    {
+        //TODO: proc to insert person
+        //String s = "INSERT INTO PERSON VALUES (4, '%s',TO_DATE ('%s', 'yyyy/mm/dd hh24:mi:ss'),'%s',%s,'%s','%s')";
+        //String query = String.format(s, map.get("name"), map.get("dob"), map.get("gender"), map.get("isSick"), map.get("username"), map.get("password"));
+         /*      
+        try
+        {
+            Statement stmt = db.conn.createStatement();
+            stmt.executeUpdate(query);
+        }
+        catch(Exception e)
+        {
+            
+        }
+        System.out.println(query);
+        */
+        
+    }
+}
+    /*
     public static void main(String[] args) {
-        try {
+//        try {
+            
+            java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Main().setVisible(true);
+            }
+            });
+            
+            //System.exit(0);
 
             // Load the driver. This creates an instance of the driver
             // and calls the registerDriver method to make Oracle Thin
             // driver available to clients.
+           /*
 
             Class.forName("oracle.jdbc.driver.OracleDriver");
 
-            String user = "hborah";	// For example, "jsmith"
+            String user = "rshah5";	// For example, "jsmith"
             String passwd = "200105222";	// Your 9 digit student ID number
 
 
@@ -117,7 +169,7 @@ public class FirstExample {
             try { rs.close(); } catch(Throwable whatever) {}
         }
     }
-}
+    }*/
 
 
 

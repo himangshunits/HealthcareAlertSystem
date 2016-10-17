@@ -1,2 +1,4 @@
 *.iml
 *.idea
+/TestScriptProject/target/
+*.nbproject
