@@ -1,14 +1,18 @@
 package com.healthcare;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import oracle.jdbc.OracleTypes;
 
 
 public class Database {
 
-    String jdbcURL, user, password;
-    Connection conn;
+    private static final String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
+    private static final String DB_CONNECTION = "jdbc:oracle:thin:@orca.csc.ncsu.edu:1521:orcl01";
+    private static final String DB_USER = "hborah";
+    private static final String DB_PASSWORD = "200105222";
+    private static Connection CONN;
     static Database db = new Database();
     static Database getInstance()
     {
@@ -16,13 +20,11 @@ public class Database {
     }    
     private Database()
     {
-        this.user = "hborah";
-        this.password = "200105222";
-        this.jdbcURL = "jdbc:oracle:thin:@orca.csc.ncsu.edu:1521:orcl01";
+        
         try
         {   
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-            conn = DriverManager.getConnection(jdbcURL, user, password);
+            Class.forName(DB_DRIVER);
+            CONN = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
             System.out.println("Connection Successful");
         }
         catch(Exception e)
@@ -34,10 +36,10 @@ public class Database {
     {
         try
         {
-            Statement stmt = db.conn.createStatement();
+            Statement stmt = CONN.createStatement();
             String query = String.format("SELECT * FROM PERSON WHERE username=%s AND password=%s", username, password);
             ResultSet rs = stmt.executeQuery(query);
-            //TODO: SEELCT QUERY CHECK
+            //TODO: SELECT QUERY CHECK
             
         }
         catch(Exception e)
@@ -46,8 +48,104 @@ public class Database {
         }
         return true;
     }
-    void addPerson(HashMap<String, String> map)
+    String[] getSupporters() throws SQLException
     {
+        ArrayList<String> arr = new ArrayList<String>();
+        arr.add("");
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "";
+        String GetUsersCall = "{call GET_CURRENT_USERS(?, ?, ?)}";
+        try 
+        {
+            callableStatement = CONN.prepareCall(GetUsersCall);
+            callableStatement.registerOutParameter(1, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
+            callableStatement.execute();
+            ResultSet rset = (ResultSet)callableStatement.getObject(3);
+            while(rset.next())
+            {
+                arr.add(rset.getString(1)+ " - " + rset.getString(2));
+            }
+            message = callableStatement.getString(2);
+
+        } catch (SQLException e) 
+        {
+            System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                callableStatement.close();
+            }
+
+            if (dbConnection != null) {
+                CONN.close();
+            }
+        }
+        String[] ret = new String[arr.size()];
+        for(int i=0;i<arr.size();i++)
+        {
+            ret[i] = arr.get(i);
+        }
+        return ret;
+    }
+    String addPerson(HashMap<String, String> map) throws SQLException
+    {
+        
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "";
+        String insertPersonDataCall = "{call INSERT_PERSON_DATA(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+
+        try {
+            callableStatement = CONN.prepareCall(insertPersonDataCall);
+
+            callableStatement.setString(1, map.get("name"));
+            String[] date = map.get("dob").split("-");
+            callableStatement.setDate(2, new Date(Integer.parseInt(date[2])%100,Integer.parseInt(date[1]),Integer.parseInt(date[0])));
+            callableStatement.setString(3, map.get("gender"));
+            callableStatement.setInt(4, Integer.parseInt(map.get("isSick")));
+            callableStatement.setString(5, map.get("username"));
+            callableStatement.setString(6, map.get("password"));
+            callableStatement.setString(7, map.get("street"));
+            callableStatement.setString(8, map.get("apt"));
+            callableStatement.setString(9, map.get("city"));
+            callableStatement.setString(10, map.get("country"));
+            callableStatement.setInt(11, Integer.parseInt(map.get("zip")));
+            callableStatement.setString(12, map.get("state"));
+            callableStatement.setString(13, map.get("pmobile"));
+            callableStatement.setString(14, map.get("smobile"));
+            callableStatement.setString(15, map.get("email"));
+            callableStatement.setString(16, map.get("ssn"));
+
+            // out Parameters
+            callableStatement.registerOutParameter(17, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(18, java.sql.Types.VARCHAR);
+
+            // execute getDBUSERByUserId store procedure
+            callableStatement.executeUpdate();
+
+            String status = callableStatement.getString(17);
+            message = callableStatement.getString(18);
+            
+            //System.out.println("Status is  : " + status);
+            //System.out.println("Message is : " + message);
+
+        } catch (SQLException e) {
+
+            System.out.println(e.getMessage());
+
+        } finally {
+
+            if (callableStatement != null) {
+                callableStatement.close();
+            }
+
+            if (dbConnection != null) {
+                CONN.close();
+            }
+        }
         //TODO: proc to insert person
         //String s = "INSERT INTO PERSON VALUES (4, '%s',TO_DATE ('%s', 'yyyy/mm/dd hh24:mi:ss'),'%s',%s,'%s','%s')";
         //String query = String.format(s, map.get("name"), map.get("dob"), map.get("gender"), map.get("isSick"), map.get("username"), map.get("password"));
@@ -63,7 +161,7 @@ public class Database {
         }
         System.out.println(query);
         */
-        
+        return message;
     }
 }
     /*
