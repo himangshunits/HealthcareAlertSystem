@@ -1,6 +1,8 @@
 package com.healthcare;
 
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /*
@@ -143,18 +145,27 @@ public class Main extends javax.swing.JFrame
         }
         else
         {
-            boolean check = db.inDatabase(username, password);
-            if(check)
+            try
             {
-                System.out.println(username);
-                Dashboard dash = new Dashboard(username);
-                dash.setVisible(true);
-                this.dispose();
+                ArrayList<String> out = db.inDatabase(username, password);
+                if(out.get(0).equals("SUCCESS"))
+                {
+                    JOptionPane.showMessageDialog(null, out.get(1));
+                    Dashboard dash = new Dashboard(username);
+                    dash.setVisible(true);
+                    this.dispose();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, out.get(1));
+                }
             }
-            else
+            catch(SQLException sql)
             {
-                JOptionPane.showMessageDialog(null, "Invalid Credentials");
+                System.out.println(sql.getMessage());
             }
+            
+            
         }
     }//GEN-LAST:event_loginBtnActionPerformed
 

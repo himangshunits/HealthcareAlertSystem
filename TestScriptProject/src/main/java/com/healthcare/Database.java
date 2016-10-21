@@ -115,21 +115,48 @@ public class Database {
         out.add(message);
         return out;
     }
-    boolean inDatabase(String username, String password)
+    ArrayList<String> inDatabase(String username, String password) throws SQLException
     {
-        try
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String authenticate = "{call AUTHENTICATION(?, ?, ?, ?)}";
+        try 
         {
-            Statement stmt = CONN.createStatement();
-            String query = String.format("SELECT * FROM PERSON WHERE username=%s AND password=%s", username, password);
-            ResultSet rs = stmt.executeQuery(query);
-            //TODO: SELECT QUERY CHECK
-            
+            callableStatement = CONN.prepareCall(authenticate);
+
+            callableStatement.setString(1, username);
+            callableStatement.setString(2, password);
+            // out Parameters
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+
+            // execute getDBUSERByUserId store procedure
+            callableStatement.executeUpdate();
+
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+
+        } 
+        catch (SQLException e) {
+
+            System.out.println(e.getMessage());
+
+        } 
+        finally {
+
+            if (callableStatement != null) {
+                callableStatement.close();
+            }
+
+            if (dbConnection != null) {
+                CONN.close();
+            }
         }
-        catch(Exception e)
-        {
-            
-        }
-        return true;
+        ArrayList<String> out = new ArrayList<String>();
+        out.add(status);
+        out.add(message);
+        return out;
     }
     String[] getSupporters() throws SQLException
     {
