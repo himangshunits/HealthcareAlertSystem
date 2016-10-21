@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 package com.healthcare;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.validator.routines.EmailValidator;
 /**
  *
@@ -23,7 +26,7 @@ public class SignUp extends javax.swing.JFrame {
     public SignUp() {
         initComponents();
     }
-    
+
     private boolean isValidEmail(String email)
     {
         return EmailValidator.getInstance().isValid(email);
@@ -72,8 +75,8 @@ public class SignUp extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "zip code is not valid");
             return false;
         }
-        
-        
+
+
         return true;
     }
     /**
@@ -85,8 +88,10 @@ public class SignUp extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        gender = new javax.swing.ButtonGroup();
+        isSick = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        submit = new javax.swing.JToggleButton();
         nameLbl = new javax.swing.JLabel();
         dobLbl = new javax.swing.JLabel();
         name = new javax.swing.JTextField();
@@ -127,16 +132,26 @@ public class SignUp extends javax.swing.JFrame {
         email = new javax.swing.JTextField();
         zip = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        aday = new javax.swing.JComboBox<>();
+        amonth = new javax.swing.JComboBox<>();
+        ayear = new javax.swing.JComboBox<>();
+
+        gender.add(genderMale);
+        gender.add(genderFemale);
+
+        isSick.add(isSickYes);
+        isSick.add(isSickNo);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Please add these fields:");
 
-        jToggleButton1.setText("Submit");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+        submit.setText("Submit");
+        submit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                submitActionPerformed(evt);
             }
         });
 
@@ -225,6 +240,14 @@ public class SignUp extends javax.swing.JFrame {
 
         jLabel12.setText("Zipcode");
 
+        jLabel13.setText("Authorization Date");
+
+        aday.setModel(new javax.swing.DefaultComboBoxModel<>(getDays()));
+
+        amonth.setModel(new javax.swing.DefaultComboBoxModel<>(getMonths()));
+
+        ayear.setModel(new javax.swing.DefaultComboBoxModel<>(getYears()));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -235,21 +258,19 @@ public class SignUp extends javax.swing.JFrame {
                 .addGap(39, 39, 39))
             .addGroup(layout.createSequentialGroup()
                 .addGap(78, 78, 78)
-                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(86, 86, 86)
-                                .addComponent(jLabel9))
-                            .addComponent(usernameLbl)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel11))
+                            .addComponent(jLabel8))
+                        .addGap(69, 69, 69)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -259,14 +280,45 @@ public class SignUp extends javax.swing.JFrame {
                                 .addComponent(street))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ssn))
+                                .addComponent(ssn)))))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(67, 67, 67)
+                                .addComponent(jLabel4)
+                                .addGap(35, 35, 35)
+                                .addComponent(city, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(usernameLbl)
+                                .addComponent(jLabel10)
+                                .addComponent(jLabel11)
+                                .addComponent(jLabel9)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(state, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(country, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(zip))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(136, 136, 136)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cpassword)
                                     .addComponent(password)
                                     .addComponent(username)
                                     .addComponent(name)
+                                    .addComponent(smobile)
+                                    .addComponent(pmobile)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
@@ -283,39 +335,26 @@ public class SignUp extends javax.swing.JFrame {
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(genderMale)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(genderFemale)))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(smobile)
-                                    .addComponent(pmobile)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 6, Short.MAX_VALUE))))))
+                                                .addComponent(genderFemale))
+                                            .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(aday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(amonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(ayear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(0, 0, Short.MAX_VALUE))))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13)
                             .addComponent(nameLbl)
                             .addComponent(genderLbl)
                             .addComponent(isSickLbl)
                             .addComponent(passwordLbl)
                             .addComponent(jLabel2)
                             .addComponent(cpasswordLbl)
-                            .addComponent(jLabel3)
-                            .addComponent(dobLbl)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(31, 31, 31)
-                                .addComponent(city)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(state, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(country, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(zip)))
+                            .addComponent(dobLbl))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -352,11 +391,18 @@ public class SignUp extends javax.swing.JFrame {
                         .addComponent(jLabel2))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(supporters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ssn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))))
+                        .addComponent(supporters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(aday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(amonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ayear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ssn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -365,21 +411,20 @@ public class SignUp extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(apt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(city, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
                     .addComponent(state, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
                     .addComponent(jLabel6)
                     .addComponent(country, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(zip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(pmobile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                    .addComponent(jLabel12)
+                    .addComponent(zip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pmobile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(15, 15, 15)
@@ -393,7 +438,7 @@ public class SignUp extends javax.swing.JFrame {
                         .addComponent(smobile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -404,16 +449,16 @@ public class SignUp extends javax.swing.JFrame {
                     .addComponent(cpasswordLbl)
                     .addComponent(cpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jToggleButton1)
+                .addComponent(submit)
                 .addGap(12, 12, 12))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+
+    private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
-        
+
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("password", new String(this.password.getPassword()));
         map.put("cpassword", new String(this.cpassword.getPassword()));
@@ -429,6 +474,7 @@ public class SignUp extends javax.swing.JFrame {
         map.put("smobile", new String(this.smobile.getText().trim()));
         map.put("email", new String(this.email.getText().trim()));
         map.put("zip", new String(this.zip.getText().trim()));
+        map.put("supporter", (String)(this.supporters.getSelectedItem()));
         String day = (String)days.getSelectedItem();
         String month = (String)months.getSelectedItem();
         String year = (String)years.getSelectedItem();
@@ -441,33 +487,54 @@ public class SignUp extends javax.swing.JFrame {
         {
             map.put("gender", "FEMALE");
         }
-        
-        if(this.isSickYes.isSelected())
-        {
-            map.put("isSick", "1");
-        }
-        else
-        {
-            map.put("isSick", "0");
-        }
+
+
+        map.put("isSick", "0");
+
+        String auth_date = (String)aday.getSelectedItem() + "-" + (String)amonth.getSelectedItem() + "-" + (String)ayear.getSelectedItem();
         if(validateForm(map))
         {
             Database db = Database.getInstance();
             try
-            {   
-                String output = db.addPerson(map);
-                JOptionPane.showMessageDialog(null, output);
-                Main m = new Main();
-                m.setVisible(true);
-                this.dispose();
+            {
+                ArrayList<String> o1 = null, o2 = null, o3 = null;
+                o1 = db.addPerson(map);
+                if(this.isSickYes.isSelected())
+                {
+                    o2 = db.addHealthSupporter(map.get("username"), map.get("supporter"), getDate(auth_date));
+                    o3 = db.toggleIsSick(map.get("username"));
+                }
+
+                if(o1.get(0).equals("SUCCESS") && (o2 == null || o2.get(0).equals("SUCCESS")) && (o2 == null || o3.get(0).equals("SUCCESS")))
+                {
+
+                    JOptionPane.showMessageDialog(null, o1.get(1));
+                    Main m = new Main();
+                    m.setVisible(true);
+                    this.dispose();
+                }
+                else
+                {
+                    //TODO: how to effectively rollback
+                    db.removePerson(map.get("username"));
+
+                    //db.removeHealthSupporter(map.get("username"), map.get("supporter"));
+                    if(!o1.get(0).equals("SUCCESS"))
+                    {
+                        JOptionPane.showMessageDialog(null, o1.get(1));
+                    }
+                    else if(o2 != null && !o2.get(0).equals("SUCCESS"))
+                        JOptionPane.showMessageDialog(null, o2.get(1));
+                    else if(o3 != null && !o3.get(0).equals("SUCCESS"))
+                        JOptionPane.showMessageDialog(null, o3.get(1));
+                }
             }
             catch(SQLException e)
             {
                 JOptionPane.showMessageDialog(null, e.getMessage());
             }
-            
         }
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
+    }//GEN-LAST:event_submitActionPerformed
 
     private void genderFemaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderFemaleActionPerformed
         // TODO add your handling code here:
@@ -475,6 +542,7 @@ public class SignUp extends javax.swing.JFrame {
 
     private void genderMaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderMaleActionPerformed
         // TODO add your handling code here:
+
     }//GEN-LAST:event_genderMaleActionPerformed
 
     private void isSickYesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isSickYesActionPerformed
@@ -488,13 +556,18 @@ public class SignUp extends javax.swing.JFrame {
     private void aptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aptActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_aptActionPerformed
-    
+    private Date getDate(String s)
+    {
+        String b[] = s.split("-");
+
+        return new Date(Integer.parseInt(b[0]), Integer.parseInt(b[1]), Integer.parseInt(b[2]));
+    }
     private String[] getMonths()
     {
         String months[] = new String[12];
         for(int i=0;i<12;i++)
         {
-            
+
             months[i] = "" + (i + 1);
             if(months[i].length() == 1)
             {
@@ -525,10 +598,13 @@ public class SignUp extends javax.swing.JFrame {
         }
         return years;
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> aday;
+    private javax.swing.JComboBox<String> amonth;
     private javax.swing.JTextField apt;
+    private javax.swing.JComboBox<String> ayear;
     private javax.swing.JTextField city;
     private javax.swing.JTextField country;
     private javax.swing.JPasswordField cpassword;
@@ -536,9 +612,11 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> days;
     private javax.swing.JLabel dobLbl;
     private javax.swing.JTextField email;
+    private javax.swing.ButtonGroup gender;
     private javax.swing.JRadioButton genderFemale;
     private javax.swing.JLabel genderLbl;
     private javax.swing.JRadioButton genderMale;
+    private javax.swing.ButtonGroup isSick;
     private javax.swing.JLabel isSickLbl;
     private javax.swing.JRadioButton isSickNo;
     private javax.swing.JRadioButton isSickYes;
@@ -546,6 +624,7 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -554,7 +633,6 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JComboBox<String> months;
     private javax.swing.JTextField name;
     private javax.swing.JLabel nameLbl;
@@ -565,6 +643,7 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JTextField ssn;
     private javax.swing.JTextField state;
     private javax.swing.JTextField street;
+    private javax.swing.JToggleButton submit;
     private javax.swing.JComboBox<String> supporters;
     private javax.swing.JTextField username;
     private javax.swing.JLabel usernameLbl;
