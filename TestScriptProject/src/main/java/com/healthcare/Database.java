@@ -3,6 +3,8 @@ package com.healthcare;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import oracle.jdbc.OracleTypes;
 
 
@@ -32,6 +34,19 @@ public class Database {
         {
             e.printStackTrace();
         }
+    }
+    public ResultSet getPerson(String username) 
+    {
+        try{
+            Statement stmt = CONN.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Person p WHERE p.\"username\" = '"+username+"'");
+            return rs;
+        }
+        catch(SQLException se)
+        {
+            System.out.println(se.getMessage());
+        }
+        return null;
     }
     ArrayList<String> toggleIsSick(String username) throws SQLException
     {
@@ -73,6 +88,9 @@ public class Database {
         out.add(status);
         out.add(message);
         return out;
+    }
+    String[] getDiseases(){
+        return new String[]{"HIV", "Aids", "Corruption"};
     }
     ArrayList<String> addHealthSupporter(String username, String supporter, Date auth_date) throws SQLException
     {
@@ -119,8 +137,8 @@ public class Database {
     {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
-        String message = "", status = "";
-        String authenticate = "{call AUTHENTICATION(?, ?, ?, ?)}";
+        String message = "", status = "", category = "";
+        String authenticate = "{call AUTHENTICATION(?, ?, ?, ?, ?)}";
         try 
         {
             callableStatement = CONN.prepareCall(authenticate);
@@ -130,12 +148,14 @@ public class Database {
             // out Parameters
             callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(5, java.sql.Types.VARCHAR);
 
             // execute getDBUSERByUserId store procedure
             callableStatement.executeUpdate();
 
             status = callableStatement.getString(3);
             message = callableStatement.getString(4);
+            category = callableStatement.getString(5);
 
         } 
         catch (SQLException e) {
@@ -156,6 +176,7 @@ public class Database {
         ArrayList<String> out = new ArrayList<String>();
         out.add(status);
         out.add(message);
+        out.add(category);
         return out;
     }
     String[] getSupporters() throws SQLException
@@ -224,13 +245,14 @@ public class Database {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
-        String insertPersonDataCall = "{call INSERT_PERSON_DATA(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String insertPersonDataCall = "{call INSERT_PERSON_DATA(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             callableStatement = CONN.prepareCall(insertPersonDataCall);
 
             callableStatement.setString(1, map.get("name"));
             String[] date = map.get("dob").split("-");
+            String[] today  = map.get("date").split("-");
             callableStatement.setDate(2, new Date(Integer.parseInt(date[2])%100,Integer.parseInt(date[1]),Integer.parseInt(date[0])));
             callableStatement.setString(3, map.get("gender"));
             callableStatement.setInt(4, Integer.parseInt(map.get("isSick")));
@@ -246,16 +268,32 @@ public class Database {
             callableStatement.setString(14, map.get("smobile"));
             callableStatement.setString(15, map.get("email"));
             callableStatement.setString(16, map.get("ssn"));
+            callableStatement.setDate(17, new Date(Integer.parseInt(today[0])%100,Integer.parseInt(today[1]),Integer.parseInt(today[2])));
+            if(map.get("supporter").equals(""))
+            {
+                callableStatement.setString(18, null);
+            }
+            else{
+                callableStatement.setString(18, map.get("supporter1"));
+            }
+            if(map.get("supporter2").equals(""))
+            {
+                callableStatement.setString(19, null);
+            }
+            else
+            {
+                callableStatement.setString(19, map.get("supporter2"));
+            }
 
             // out Parameters
-            callableStatement.registerOutParameter(17, java.sql.Types.VARCHAR);
-            callableStatement.registerOutParameter(18, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(20, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(21, java.sql.Types.VARCHAR);
 
             // execute getDBUSERByUserId store procedure
             callableStatement.executeUpdate();
 
-            status = callableStatement.getString(17);
-            message = callableStatement.getString(18);            
+            status = callableStatement.getString(20);
+            message = callableStatement.getString(21);            
 
         } catch (SQLException e) {
 
@@ -290,6 +328,70 @@ public class Database {
         out.add(status);
         out.add(message);
         return out;
+    }
+
+    ArrayList<ArrayList<Object>> getDiseases(String username) {
+        //return null;
+        ArrayList<ArrayList<Object>> x = new ArrayList<ArrayList<Object>>();
+        ArrayList<Object> y = new ArrayList<Object>();
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String userDiseasesCall = "{call SHOW_USER_DISEASES(?, ?, ?, ?, ?)}";
+
+        try {
+            callableStatement = CONN.prepareCall(userDiseasesCall);
+
+            
+            callableStatement.setString(1, username);
+            
+            // out Parameters
+            callableStatement.registerOutParameter(2, java.sql.Types.DATE);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(5, java.sql.Types.VARCHAR);
+
+            // execute getDBUSERByUserId store procedure
+            callableStatement.executeUpdate();
+               
+            Date detected_on = callableStatement.getDate(2);
+            String disease_name = callableStatement.getString(3);
+            status = callableStatement.getString(4);
+            message = callableStatement.getString(5);            
+            y.add(disease_name);
+            y.add(detected_on);
+            x.add(y);
+
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        
+        return x;
+        //throw new; UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void addDisease(String username, String disease) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
     /*

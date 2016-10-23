@@ -151,9 +151,25 @@ public class Main extends javax.swing.JFrame
                 if(out.get(0).equals("SUCCESS"))
                 {
                     JOptionPane.showMessageDialog(null, out.get(1));
-                    Dashboard dash = new Dashboard(username);
-                    dash.setVisible(true);
-                    this.dispose();
+                    if(out.get(2).equals("USER"))
+                    {
+                        Dashboard dash = new Dashboard(username);
+                        dash.setVisible(true);
+                        this.dispose();
+                    }
+                    if(out.get(2).equals("BOTH"))
+                    {
+                        System.out.println("It's not my fucking job!");
+                        Dashboard dash = new Dashboard(username);
+                        dash.setVisible(true);
+                        this.dispose();
+                        /*
+                        Dashboard dash = new Dashboard(username);
+                        dash.setVisible(true);
+                        this.dispose();
+                        */
+                    }
+                    
                 }
                 else
                 {
