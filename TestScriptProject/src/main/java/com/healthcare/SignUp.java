@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.validator.routines.EmailValidator;
 /**
  *
  * @author Rahul
@@ -29,7 +28,7 @@ public class SignUp extends javax.swing.JFrame {
 
     private boolean isValidEmail(String email)
     {
-        return EmailValidator.getInstance().isValid(email);
+        return true;
     }
     public static boolean isValidDate(String inDate) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
