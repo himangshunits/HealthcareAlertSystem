@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import oracle.jdbc.OracleTypes;
+import oracle.jdbc.oracore.OracleType;
 
 
 public class Database {
@@ -225,7 +226,77 @@ public class Database {
         out.add(category);
         return out;
     }
-    String[] getSupporters() throws SQLException
+    HashMap<String, Object> getProfile(String username)
+    {
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String showProfileCall = "{call SHOW_PROFILE(?, ?, ?, ?)}";
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        try 
+        {
+            callableStatement = CONN.prepareCall(showProfileCall);
+            callableStatement.setString(1, username);
+            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, OracleTypes.CURSOR);
+            callableStatement.execute();
+            ResultSet rset = (ResultSet)callableStatement.getObject(4);
+            rset.next();
+            ResultSetMetaData rsmd = rset.getMetaData();
+            int numberOfColumns = rsmd.getColumnCount();
+            for(int i=1;i<=numberOfColumns;i++)
+            {
+                System.out.println(rsmd.getColumnName(i));
+                System.out.println("--------------");
+                System.out.println(rset.getObject(rsmd.getColumnName(i)));
+                map.put(rsmd.getColumnName(i),rset.getObject(rsmd.getColumnName(i)));
+            }
+            status = callableStatement.getString(2);
+            message = callableStatement.getString(3);            
+
+        } catch (SQLException e) {
+
+            System.out.println(e.getMessage());
+
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        //TODO: proc to insert person
+        //String s = "INSERT INTO PERSON VALUES (4, '%s',TO_DATE ('%s', 'yyyy/mm/dd hh24:mi:ss'),'%s',%s,'%s','%s')";
+        //String query = String.format(s, map.get("name"), map.get("dob"), map.get("gender"), map.get("isSick"), map.get("username"), map.get("password"));
+         /*      
+        try
+        {
+            Statement stmt = db.conn.createStatement();
+            stmt.executeUpdate(query);
+        }
+        catch(Exception e)
+        {
+            
+        }
+        System.out.println(query);
+        */
+        
+        map.put(status, message);
+        return map;
+    }
+    String[] getSupporters()
     {
         ArrayList<String> arr = new ArrayList<String>();
         arr.add("");
@@ -241,6 +312,7 @@ public class Database {
             callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
             callableStatement.execute();
             ResultSet rset = (ResultSet)callableStatement.getObject(3);
+            
             while(rset.next())
             {
                 arr.add(rset.getString(1));
@@ -253,11 +325,19 @@ public class Database {
         } finally {
 
             if (callableStatement != null) {
-                callableStatement.close();
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
             if (dbConnection != null) {
-                CONN.close();
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         String[] ret = new String[arr.size()];
