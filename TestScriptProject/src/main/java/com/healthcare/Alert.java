@@ -14,6 +14,13 @@ public class Alert extends javax.swing.JFrame {
     /**
      * Creates new form Alert
      */
+    Database db;
+    String username;
+    public Alert(String username){
+        this.username = username;
+        initComponents();
+        
+    }
     public Alert() {
         initComponents();
     }

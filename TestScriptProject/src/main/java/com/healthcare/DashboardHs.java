@@ -6,6 +6,7 @@
 package com.healthcare;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
@@ -163,6 +164,11 @@ public class DashboardHs extends javax.swing.JFrame {
         healthIndicatorsBtn.setText("Health Indicators");
 
         alertsBtn.setText("See Alerts");
+        alertsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alertsBtnActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Your primary health supporter");
 
@@ -287,10 +293,14 @@ public class DashboardHs extends javax.swing.JFrame {
 
     private void getProfileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getProfileBtnActionPerformed
         // TODO add your handling code here:
+        new Profile(username).setVisible(true);
+        
+        
     }//GEN-LAST:event_getProfileBtnActionPerformed
 
     private void seeDiseasesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seeDiseasesBtnActionPerformed
         // TODO add your handling code here:
+        new Diagnosis(username).setVisible(true);
     }//GEN-LAST:event_seeDiseasesBtnActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -305,6 +315,11 @@ public class DashboardHs extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void alertsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alertsBtnActionPerformed
+        // TODO add your handling code here:
+        new Alert(username).setVisible(true);
+    }//GEN-LAST:event_alertsBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -396,7 +411,6 @@ public class DashboardHs extends javax.swing.JFrame {
         } catch(Exception e){
             e.printStackTrace();
             System.out.println(" The error in name retireval = " + e.getMessage());
-        }        
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
     }
 }
