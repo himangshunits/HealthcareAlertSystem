@@ -120,7 +120,7 @@ public class Database {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
-        String authenticate = "{call AUTHENTICATION(?, ?, ?, ?)}";
+        String authenticate = "{call AUTHENTICATION(?, ?, ?, ?, ?)}";
         try 
         {
             callableStatement = CONN.prepareCall(authenticate);
@@ -130,6 +130,7 @@ public class Database {
             // out Parameters
             callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(5, java.sql.Types.VARCHAR);
 
             // execute getDBUSERByUserId store procedure
             callableStatement.executeUpdate();
@@ -161,7 +162,6 @@ public class Database {
     String[] getSupporters() throws SQLException
     {
         ArrayList<String> arr = new ArrayList<String>();
-        arr.add("");
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "";
@@ -173,6 +173,7 @@ public class Database {
             callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
             callableStatement.execute();
+            
             ResultSet rset = (ResultSet)callableStatement.getObject(3);
             while(rset.next())
             {
@@ -291,111 +292,96 @@ public class Database {
         out.add(message);
         return out;
     }
+    
+    Person showLimitedProfile(String username) throws SQLException {
+        ArrayList<String> result = new ArrayList<>();
+        
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String showProfile = "{call SHOW_PROFILE(?, ?, ?, ?)}";
+        String name = "", dob = "", gender = "", email_id = "", phone = "";
+        try {
+            callableStatement = CONN.prepareCall(showProfile);
+            callableStatement.setString(1, username);
+            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, OracleTypes.CURSOR);
+            callableStatement.execute();
+            status = callableStatement.getString(2);
+            message = callableStatement.getString(3);
+            System.out.println("Status : " + status + "\nMessage : " + message);
+            ResultSet rset = (ResultSet)callableStatement.getObject(4);
+            if(rset.next()) {
+                name = rset.getString(1);
+                dob = rset.getString(2);
+                gender = rset.getString(3);
+                email_id = rset.getString(8);
+                phone = rset.getString(9);
+            }
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                callableStatement.close();
+            }
+
+            if (dbConnection != null) {
+                CONN.close();
+            }
+        }
+        
+        Person patient = new Person(username, name, dob, gender, email_id, phone);
+        return patient;
+    }
+
+    ArrayList<String> addObservation(String patientName, Observation observation) throws SQLException {
+        ArrayList<String> result = new ArrayList<>();
+        
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String callAddObservation = "{call ADD_OBSERVATION(?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(callAddObservation);
+            callableStatement.setString(1, patientName);
+            callableStatement.setInt(2, observation.bpDiastolic);
+            callableStatement.setInt(3, observation.bpSystolic);
+            callableStatement.setFloat(4, observation.oxygenSat);
+            callableStatement.setString(5, observation.painLevel);
+            callableStatement.setString(6, observation.mood);
+            callableStatement.setFloat(7, observation.temperature);
+            callableStatement.setFloat(8, observation.weight);
+            String[] date = observation.observedOn.split("-");
+            callableStatement.setDate(9, new Date(Integer.parseInt(date[2])%100,Integer.parseInt(date[1]),Integer.parseInt(date[0])));
+            callableStatement.registerOutParameter(10, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(11, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getString(10);
+            message = callableStatement.getString(11);
+            System.out.println("Status : " + status + "\nMessage : " + message);
+            
+            result.add(status);
+            result.add(message);
+
+            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                callableStatement.close();
+            }
+
+            if (dbConnection != null) {
+                CONN.close();
+            }
+        }
+        return result;
+    }
+    
+    
 }
-    /*
-    public static void main(String[] args) {
-//        try {
-            
-            java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Main().setVisible(true);
-            }
-            });
-            
-            //System.exit(0);
-
-            // Load the driver. This creates an instance of the driver
-            // and calls the registerDriver method to make Oracle Thin
-            // driver available to clients.
-           /*
-
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-
-            String user = "rshah5";	// For example, "jsmith"
-            String passwd = "200105222";	// Your 9 digit student ID number
-
-
-            Connection conn = null;
-            Statement stmt = null;
-            ResultSet rs = null;
-
-            try {
-
-                // Get a connection from the first driver in the
-                // DriverManager list that recognizes the URL jdbcURL
-
-                conn = DriverManager.getConnection(jdbcURL, user, passwd);
-
-                // Create a statement object that will be sending your
-                // SQL statements to the DBMS
-
-                stmt = conn.createStatement();
-
-                // Create the COFFEES table
-
-                stmt.executeUpdate("CREATE TABLE COFFEES1 " +
-                        "(COF_NAME VARCHAR(32), SUP_ID INTEGER, " +
-                        "PRICE FLOAT, SALES INTEGER, TOTAL INTEGER)");
-
-                // Populate the COFFEES table
-
-                stmt.executeUpdate("INSERT INTO COFFEES1 " +
-                        "VALUES ('Colombian', 101, 7.99, 0, 0)");
-
-                stmt.executeUpdate("INSERT INTO COFFEES1 " +
-                        "VALUES ('French_Roast', 49, 8.99, 0, 0)");
-
-                stmt.executeUpdate("INSERT INTO COFFEES1 " +
-                        "VALUES ('Espresso', 150, 9.99, 0, 0)");
-
-                stmt.executeUpdate("INSERT INTO COFFEES1 " +
-                        "VALUES ('Colombian_Decaf', 101, 8.99, 0, 0)");
-
-                stmt.executeUpdate("INSERT INTO COFFEES1 " +
-                        "VALUES ('French_Roast_Decaf', 49, 9.99, 0, 0)");
-
-                // Get data from the COFFEES table
-
-                rs = stmt.executeQuery("SELECT COF_NAME, PRICE FROM COFFEES1");
-
-                // Now rs contains the rows of coffees and prices from
-                // the COFFEES table. To access the data, use the method
-                // NEXT to access all rows in rs, one row at a time
-
-                while (rs.next()) {
-                    String s = rs.getString("COF_NAME");
-                    float n = rs.getFloat("PRICE");
-                    System.out.println(s + "   " + n);
-                }
-
-            } finally {
-                close(rs);
-                close(stmt);
-                close(conn);
-            }
-        } catch(Throwable oops) {
-            oops.printStackTrace();
-        }
-    }
-
-    static void close(Connection conn) {
-        if(conn != null) {
-            try { conn.close(); } catch(Throwable whatever) {}
-        }
-    }
-
-    static void close(Statement st) {
-        if(st != null) {
-            try { st.close(); } catch(Throwable whatever) {}
-        }
-    }
-
-    static void close(ResultSet rs) {
-        if(rs != null) {
-            try { rs.close(); } catch(Throwable whatever) {}
-        }
-    }
-    }*/
-
-
-
+   
