@@ -202,14 +202,7 @@ public class SignUp extends javax.swing.JFrame {
 
         jLabel2.setText("Add Health Supporter 1");
 
-        try
-        {
-            supporters.setModel(new javax.swing.DefaultComboBoxModel<>(Database.getInstance().getSupporters()));
-        }
-        catch(SQLException se)
-        {
-            System.out.println(se.getMessage());
-        }
+        supporters.setModel(new javax.swing.DefaultComboBoxModel<>(Database.getInstance().getSupporters()));
 
         months.setModel(new javax.swing.DefaultComboBoxModel<>(getMonths()));
         months.addActionListener(new java.awt.event.ActionListener() {
@@ -285,14 +278,7 @@ public class SignUp extends javax.swing.JFrame {
 
         ayear.setModel(new javax.swing.DefaultComboBoxModel<>(getYears()));
 
-        try
-        {
-            supporters2.setModel(new javax.swing.DefaultComboBoxModel<>(Database.getInstance().getSupporters()));
-        }
-        catch(SQLException se)
-        {
-            System.out.println(se.getMessage());
-        }
+        supporters2.setModel(new javax.swing.DefaultComboBoxModel<>(Database.getInstance().getSupporters()));
 
         jLabel14.setText("Add Health Supporter 2");
 

@@ -4,8 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import oracle.jdbc.OracleTypes;
 
 
@@ -36,19 +34,10 @@ public class Database {
             e.printStackTrace();
         }
     }
-    public ResultSet getPerson(String username) 
-    {
-        try{
-            Statement stmt = CONN.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Person p WHERE p.\"username\" = '"+username+"'");
-            return rs;
-        }
-        catch(SQLException se)
-        {
-            System.out.println(se.getMessage());
-        }
-        return null;
-    }
+    
+    
+    
+    
     ArrayList<String> toggleIsSick(String username) throws SQLException
     {
         Connection dbConnection = null;
@@ -89,55 +78,6 @@ public class Database {
         out.add(status);
         out.add(message);
         return out;
-    }
-    String[] getDiseases(){
-        ArrayList<String> arr = new ArrayList<String>();
-        Connection dbConnection = null;
-        CallableStatement callableStatement = null;
-        String message = "";
-        String GetDiseasesCall = "{call GET_ALL_DISEASES(?, ?, ?)}";
-        try 
-        {
-            callableStatement = CONN.prepareCall(GetDiseasesCall);
-            callableStatement.registerOutParameter(1, java.sql.Types.VARCHAR);
-            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
-            callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
-            callableStatement.execute();
-            ResultSet rset = (ResultSet)callableStatement.getObject(3);
-            while(rset.next())
-            {
-                arr.add(rset.getString(1));
-            }
-            message = callableStatement.getString(2);
-
-        } catch (SQLException e) 
-        {
-            System.out.println(e.getMessage());
-        } finally {
-
-            if (callableStatement != null) {
-                try {
-                    callableStatement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-            if (dbConnection != null) {
-                try {
-                    CONN.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        String[] ret = new String[arr.size()];
-        for(int i=0;i<arr.size();i++)
-        {
-            ret[i] = arr.get(i);
-        }
-        return ret;
-        
     }
     ArrayList<String> addHealthSupporter(String username, String supporter, Date auth_date) throws SQLException
     {
@@ -184,7 +124,7 @@ public class Database {
     {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
-        String message = "", status = "", category = "";
+        String message = "", status = "";
         String authenticate = "{call AUTHENTICATION(?, ?, ?, ?, ?)}";
         try 
         {
@@ -202,7 +142,6 @@ public class Database {
 
             status = callableStatement.getString(3);
             message = callableStatement.getString(4);
-            category = callableStatement.getString(5);
 
         } 
         catch (SQLException e) {
@@ -223,80 +162,9 @@ public class Database {
         ArrayList<String> out = new ArrayList<String>();
         out.add(status);
         out.add(message);
-        out.add(category);
         return out;
     }
-    HashMap<String, Object> getProfile(String username)
-    {
-        Connection dbConnection = null;
-        CallableStatement callableStatement = null;
-        String message = "", status = "";
-        String showProfileCall = "{call SHOW_PROFILE(?, ?, ?, ?)}";
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        try 
-        {
-            callableStatement = CONN.prepareCall(showProfileCall);
-            callableStatement.setString(1, username);
-            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
-            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
-            callableStatement.registerOutParameter(4, OracleTypes.CURSOR);
-            callableStatement.execute();
-            ResultSet rset = (ResultSet)callableStatement.getObject(4);
-            rset.next();
-            ResultSetMetaData rsmd = rset.getMetaData();
-            int numberOfColumns = rsmd.getColumnCount();
-            for(int i=1;i<=numberOfColumns;i++)
-            {
-                System.out.println(rsmd.getColumnName(i));
-                System.out.println("--------------");
-                System.out.println(rset.getObject(rsmd.getColumnName(i)));
-                map.put(rsmd.getColumnName(i),rset.getObject(rsmd.getColumnName(i)));
-            }
-            status = callableStatement.getString(2);
-            message = callableStatement.getString(3);            
-
-        } catch (SQLException e) {
-
-            System.out.println(e.getMessage());
-
-        } finally {
-
-            if (callableStatement != null) {
-                try {
-                    callableStatement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-            if (dbConnection != null) {
-                try {
-                    CONN.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        //TODO: proc to insert person
-        //String s = "INSERT INTO PERSON VALUES (4, '%s',TO_DATE ('%s', 'yyyy/mm/dd hh24:mi:ss'),'%s',%s,'%s','%s')";
-        //String query = String.format(s, map.get("name"), map.get("dob"), map.get("gender"), map.get("isSick"), map.get("username"), map.get("password"));
-         /*      
-        try
-        {
-            Statement stmt = db.conn.createStatement();
-            stmt.executeUpdate(query);
-        }
-        catch(Exception e)
-        {
-            
-        }
-        System.out.println(query);
-        */
-        
-        map.put(status, message);
-        return map;
-    }
-    String[] getSupporters()
+    String[] getSupporters() throws SQLException
     {
         ArrayList<String> arr = new ArrayList<String>();
         arr.add("");
@@ -312,7 +180,6 @@ public class Database {
             callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
             callableStatement.execute();
             ResultSet rset = (ResultSet)callableStatement.getObject(3);
-            
             while(rset.next())
             {
                 arr.add(rset.getString(1));
@@ -325,19 +192,11 @@ public class Database {
         } finally {
 
             if (callableStatement != null) {
-                try {
-                    callableStatement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                callableStatement.close();
             }
 
             if (dbConnection != null) {
-                try {
-                    CONN.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                CONN.close();
             }
         }
         String[] ret = new String[arr.size()];
@@ -371,14 +230,13 @@ public class Database {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
-        String insertPersonDataCall = "{call INSERT_PERSON_DATA(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String insertPersonDataCall = "{call INSERT_PERSON_DATA(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             callableStatement = CONN.prepareCall(insertPersonDataCall);
 
             callableStatement.setString(1, map.get("name"));
             String[] date = map.get("dob").split("-");
-            String[] today  = map.get("date").split("-");
             callableStatement.setDate(2, new Date(Integer.parseInt(date[2])%100,Integer.parseInt(date[1]),Integer.parseInt(date[0])));
             callableStatement.setString(3, map.get("gender"));
             callableStatement.setInt(4, Integer.parseInt(map.get("isSick")));
@@ -394,32 +252,16 @@ public class Database {
             callableStatement.setString(14, map.get("smobile"));
             callableStatement.setString(15, map.get("email"));
             callableStatement.setString(16, map.get("ssn"));
-            callableStatement.setDate(17, new Date(Integer.parseInt(today[0])%100,Integer.parseInt(today[1]),Integer.parseInt(today[2])));
-            if(map.get("supporter").equals(""))
-            {
-                callableStatement.setString(18, null);
-            }
-            else{
-                callableStatement.setString(18, map.get("supporter1"));
-            }
-            if(map.get("supporter2").equals(""))
-            {
-                callableStatement.setString(19, null);
-            }
-            else
-            {
-                callableStatement.setString(19, map.get("supporter2"));
-            }
 
             // out Parameters
-            callableStatement.registerOutParameter(20, java.sql.Types.VARCHAR);
-            callableStatement.registerOutParameter(21, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(17, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(18, java.sql.Types.VARCHAR);
 
             // execute getDBUSERByUserId store procedure
             callableStatement.executeUpdate();
 
-            status = callableStatement.getString(20);
-            message = callableStatement.getString(21);            
+            status = callableStatement.getString(17);
+            message = callableStatement.getString(18);            
 
         } catch (SQLException e) {
 
@@ -456,123 +298,90 @@ public class Database {
         return out;
     }
 
-    ArrayList<ArrayList<Object>> getDiseases(String username) {
-        //return null;
-        ArrayList<ArrayList<Object>> x = new ArrayList<ArrayList<Object>>();
-        
+    LinkedList<HsInfo> getPatientsUnderYou(Integer person_id) throws SQLException{
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        LinkedList<HsInfo> result = new LinkedList<>();
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
-        String message = "", status = "";
-        String userDiseasesCall = "{call SHOW_USER_DISEASES(?, ?, ?, ?)}";
-
-        try {
-            callableStatement = CONN.prepareCall(userDiseasesCall);
-
-            
-            callableStatement.setString(1, username);
-            
-            // out Parameters
-            
+        String message = "";
+        String status = "";
+        String GetUsersCall = "{call GET_PATIENTS_UNDER_HS(?, ?, ?,?)}";
+        try 
+        {
+            callableStatement = CONN.prepareCall(GetUsersCall);
+            callableStatement.setInt(1, person_id);
             callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(4, OracleTypes.CURSOR);
-
-            // execute getDBUSERByUserId store procedure
             callableStatement.execute();
             ResultSet rset = (ResultSet)callableStatement.getObject(4);
             while(rset.next())
             {
-                ArrayList<Object> y = new ArrayList<Object>();
-                y.add(rset.getString(1));
-                y.add(rset.getTimestamp(2));
-                x.add(y);
+                result.add(new HsInfo(rset.getString(2), rset.getString(1)));
             }
-            
-            return x;
-
-        } catch (SQLException e) {
-            
-            System.out.println(e.getMessage());
-
-        } finally {
-
-            if (callableStatement != null) {
-                try {
-                    callableStatement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-            if (dbConnection != null) {
-                try {
-                    CONN.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        
-        
-        return x;
-        
-    }
-
-    ArrayList<String> addDisease(String username, String disease) 
-    {
-        
-        ArrayList<String> out = new ArrayList<String>();
-        Connection dbConnection = null;
-        CallableStatement callableStatement = null;
-        String message = "", status = "";
-        String AddDiagnosisCall = "{call ADD_DIAGNOSIS(?, ?, ?, ?, ?)}";
-        try 
-        {
-            
-            java.util.Date d = new java.util.Date();
-            Timestamp t = new java.sql.Timestamp(d.getTime());
-            
-            callableStatement = CONN.prepareCall(AddDiagnosisCall);
-            callableStatement.setString(1, username);
-            callableStatement.setString(2, disease);
-            callableStatement.setTimestamp(3, t);
-            
-            
-            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
-            callableStatement.registerOutParameter(5, java.sql.Types.VARCHAR);
-            callableStatement.executeUpdate();
-            
+            message = callableStatement.getString(3);
             status = callableStatement.getString(4);
-            message = callableStatement.getString(5);
-            
-            
-            out.add(status);
-            out.add(message);
+
         } catch (SQLException e) 
         {
             System.out.println(e.getMessage());
         } finally {
 
             if (callableStatement != null) {
-                try {
-                    callableStatement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                callableStatement.close();
             }
 
             if (dbConnection != null) {
-                try {
-                    CONN.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                CONN.close();
             }
         }
-        return out;
+        return result;
     }
     
-     public ArrayList<String> getNameAndIdForUsername(String username) throws SQLException
+    public class HsInfo{
+        String name;
+        String username;
+
+        public HsInfo(String name, String username) {
+            this.name = name;
+            this.username = username;
+        }
+    }
+    public ArrayList<HsInfo> getHsInfo(Integer person_id) throws SQLException{
+        ArrayList<HsInfo> arr = new ArrayList<>();
+        
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String GetUsersCall = "{call GET_HS_FOR_USERNAME(?, ?)}";
+        try 
+        {
+            callableStatement = CONN.prepareCall(GetUsersCall);
+            callableStatement.setInt(1, person_id);
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.execute();
+            ResultSet rset = (ResultSet)callableStatement.getObject(2);
+            while(rset.next())
+            {
+                arr.add(new HsInfo(rset.getString(1), rset.getString(2)));
+            }
+        } catch (SQLException e) 
+        {
+            System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                callableStatement.close();
+            }
+
+            if (dbConnection != null) {
+                CONN.close();
+            }
+        }
+        return arr;
+    }
+    
+    
+    public ArrayList<String> getNameAndIdForUsername(String username) throws SQLException
     {
         ArrayList<String> out = new ArrayList<String>();        
         Connection dbConnection = null;
@@ -630,84 +439,115 @@ public class Database {
     }
     
     
-    
-    LinkedList<HsInfo> getPatientsUnderYou(Integer person_id) throws SQLException{
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        LinkedList<HsInfo> result = new LinkedList<>();
-        Connection dbConnection = null;
-        CallableStatement callableStatement = null;
-        String message = "";
-        String status = "";
-        String GetUsersCall = "{call GET_PATIENTS_UNDER_HS(?, ?, ?,?)}";
-        try 
-        {
-            callableStatement = CONN.prepareCall(GetUsersCall);
-            callableStatement.setInt(1, person_id);
-            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
-            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
-            callableStatement.registerOutParameter(4, OracleTypes.CURSOR);
-            callableStatement.execute();
-            ResultSet rset = (ResultSet)callableStatement.getObject(4);
-            while(rset.next())
-            {
-                HsInfo temp = new HsInfo(rset.getString(2), rset.getString(1));
-                result.add(temp);
-            }
-            message = callableStatement.getString(3);
-            status = callableStatement.getString(4);
-
-        } catch (SQLException e) 
-        {
-            System.out.println(e.getMessage());
-        } finally {
-
-            if (callableStatement != null) {
-                callableStatement.close();
-            }
-
-            if (dbConnection != null) {
-                CONN.close();
-            }
-        }
-        return result;
-    }
-    
-    
-    
-    
-    public ArrayList<HsInfo> getHsInfo(Integer person_id) throws SQLException{
-        ArrayList<HsInfo> arr = new ArrayList<>();
-        
-        Connection dbConnection = null;
-        CallableStatement callableStatement = null;
-        String GetUsersCall = "{call GET_HS_FOR_USERNAME(?, ?)}";
-        try 
-        {
-            callableStatement = CONN.prepareCall(GetUsersCall);
-            callableStatement.setInt(1, person_id);
-            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
-            callableStatement.execute();
-            ResultSet rset = (ResultSet)callableStatement.getObject(2);
-            while(rset.next())
-            {
-                arr.add(new HsInfo(rset.getString(1), rset.getString(2)));
-            }
-        } catch (SQLException e) 
-        {
-            System.out.println(e.getMessage());
-        } finally {
-
-            if (callableStatement != null) {
-                callableStatement.close();
-            }
-
-            if (dbConnection != null) {
-                CONN.close();
-            }
-        }
-        return arr;
-    }
-    
-    
-    
 }
+
+
+
+
+    /*
+    public static void main(String[] args) {
+//        try {
+            
+            java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Main().setVisible(true);
+            }
+            });
+            
+            //System.exit(0);
+
+            // Load the driver. This creates an instance of the driver
+            // and calls the registerDriver method to make Oracle Thin
+            // driver available to clients.
+           /*
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+
+            String user = "rshah5";	// For example, "jsmith"
+            String passwd = "200105222";	// Your 9 digit student ID number
+
+
+            Connection conn = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+
+            try {
+
+                // Get a connection from the first driver in the
+                // DriverManager list that recognizes the URL jdbcURL
+
+                conn = DriverManager.getConnection(jdbcURL, user, passwd);
+
+                // Create a statement object that will be sending your
+                // SQL statements to the DBMS
+
+                stmt = conn.createStatement();
+
+                // Create the COFFEES table
+
+                stmt.executeUpdate("CREATE TABLE COFFEES1 " +
+                        "(COF_NAME VARCHAR(32), SUP_ID INTEGER, " +
+                        "PRICE FLOAT, SALES INTEGER, TOTAL INTEGER)");
+
+                // Populate the COFFEES table
+
+                stmt.executeUpdate("INSERT INTO COFFEES1 " +
+                        "VALUES ('Colombian', 101, 7.99, 0, 0)");
+
+                stmt.executeUpdate("INSERT INTO COFFEES1 " +
+                        "VALUES ('French_Roast', 49, 8.99, 0, 0)");
+
+                stmt.executeUpdate("INSERT INTO COFFEES1 " +
+                        "VALUES ('Espresso', 150, 9.99, 0, 0)");
+
+                stmt.executeUpdate("INSERT INTO COFFEES1 " +
+                        "VALUES ('Colombian_Decaf', 101, 8.99, 0, 0)");
+
+                stmt.executeUpdate("INSERT INTO COFFEES1 " +
+                        "VALUES ('French_Roast_Decaf', 49, 9.99, 0, 0)");
+
+                // Get data from the COFFEES table
+
+                rs = stmt.executeQuery("SELECT COF_NAME, PRICE FROM COFFEES1");
+
+                // Now rs contains the rows of coffees and prices from
+                // the COFFEES table. To access the data, use the method
+                // NEXT to access all rows in rs, one row at a time
+
+                while (rs.next()) {
+                    String s = rs.getString("COF_NAME");
+                    float n = rs.getFloat("PRICE");
+                    System.out.println(s + "   " + n);
+                }
+
+            } finally {
+                close(rs);
+                close(stmt);
+                close(conn);
+            }
+        } catch(Throwable oops) {
+            oops.printStackTrace();
+        }
+    }
+
+    static void close(Connection conn) {
+        if(conn != null) {
+            try { conn.close(); } catch(Throwable whatever) {}
+        }
+    }
+
+    static void close(Statement st) {
+        if(st != null) {
+            try { st.close(); } catch(Throwable whatever) {}
+        }
+    }
+
+    static void close(ResultSet rs) {
+        if(rs != null) {
+            try { rs.close(); } catch(Throwable whatever) {}
+        }
+    }
+    }*/
+
+
+
