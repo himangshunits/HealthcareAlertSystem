@@ -44,10 +44,10 @@ public class Main extends javax.swing.JFrame
         jLabel1 = new javax.swing.JLabel();
         loginBtn = new javax.swing.JButton();
         username = new javax.swing.JTextField();
-        password = new javax.swing.JTextField();
         signupBtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        password = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,12 +64,6 @@ public class Main extends javax.swing.JFrame
         username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameActionPerformed(evt);
-            }
-        });
-
-        password.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordActionPerformed(evt);
             }
         });
 
@@ -93,7 +87,7 @@ public class Main extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(35, Short.MAX_VALUE))
+                        .addContainerGap(86, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -102,8 +96,8 @@ public class Main extends javax.swing.JFrame
                                     .addComponent(jLabel2))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(password)
-                                    .addComponent(username)))
+                                    .addComponent(username)
+                                    .addComponent(password)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(49, 49, 49)
                                 .addComponent(signupBtn)
@@ -151,9 +145,20 @@ public class Main extends javax.swing.JFrame
                 if(out.get(0).equals("SUCCESS"))
                 {
                     JOptionPane.showMessageDialog(null, out.get(1));
-                    Dashboard dash = new Dashboard(username);
-                    dash.setVisible(true);
-                    this.dispose();
+                    if(out.get(2).equals("USER"))
+                    {
+                        Dashboard dash = new Dashboard(username);
+                        dash.setVisible(true);
+                        this.dispose();
+                    }
+                    if(out.get(2).equals("BOTH"))
+                    {
+                        System.out.println("It's not ms job!");
+                        DashboardHs dash = new DashboardHs(username);
+                        dash.setVisible(true);
+                        this.dispose();
+                    }
+                    
                 }
                 else
                 {
@@ -180,10 +185,6 @@ public class Main extends javax.swing.JFrame
     private void usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameActionPerformed
-
-    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,7 +231,7 @@ public class Main extends javax.swing.JFrame
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JButton loginBtn;
-    private javax.swing.JTextField password;
+    private javax.swing.JPasswordField password;
     private javax.swing.JButton signupBtn;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
