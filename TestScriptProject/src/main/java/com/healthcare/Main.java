@@ -144,7 +144,7 @@ public class Main extends javax.swing.JFrame
         {
             try
             {
-                ArrayList<String> out = db.inDatabase(username, password);
+                ArrayList<String> out = Database.getInstance().inDatabase(username, password);
                 if(out.get(0).equals("SUCCESS"))
                 {
                     JOptionPane.showMessageDialog(null, out.get(1));                

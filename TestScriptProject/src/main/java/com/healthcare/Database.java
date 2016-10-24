@@ -658,10 +658,7 @@ public class Database {
         }
         return result;
     }
-    
-    
-    
-    
+
     public ArrayList<HsInfo> getHsInfo(Integer person_id) throws SQLException{
         ArrayList<HsInfo> arr = new ArrayList<>();
         
@@ -738,7 +735,7 @@ public class Database {
         return patient;
     }
 
-    ArrayList<String> addObservation(String patientName, Observation observation) throws SQLException {
+ArrayList<String> addObservation(String patientName, Observation observation) throws SQLException {
         ArrayList<String> result = new ArrayList<>();
         
         Connection dbConnection = null;
@@ -915,8 +912,177 @@ public class Database {
         }       
         return result;        
     }
+
+    ArrayList<ArrayList<Object>> getBestRecommendations(String username) {
+        ArrayList<ArrayList<Object>> result = new ArrayList<ArrayList<Object>>();
+        
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String userDiseasesCall = "{call GET_BEST_RECOMMENDATION(?, ?, ?, ?)}";
+
+        try {
+            callableStatement = CONN.prepareCall(userDiseasesCall);            
+            callableStatement.setString(1, username);            
+            // out Parameters            
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+
+            // execute getDBUSERByUserId store procedure
+            callableStatement.execute();
+            status = callableStatement.getNString(3);
+            message = callableStatement.getNString(4);
+            // Handle Falied status here!
+            if(status.equals("DEFAULT")){
+                //Give him the normal person's reco
+                ArrayList<Object> y = new ArrayList<Object>();
+                y.add("NO PAIN");
+                y.add(7);
+                y.add("HAPPY");
+                y.add(7);
+                y.add(95.0);
+                y.add(100.0);
+                y.add(7);
+                y.add(100.0);
+                y.add(200.0);
+                y.add(7);
+                y.add(60);
+                y.add(80);
+                y.add(100);
+                y.add(130);
+                y.add(7);
+                y.add(75.0);
+                y.add(100.0);
+                y.add(7);
+                result.add(y);
+                ArrayList<Object> statusMessage = new ArrayList<>();
+                statusMessage.add(status);
+                statusMessage.add(message);
+                result.add(statusMessage);
+                return result;
+            }
+            ResultSet rset = (ResultSet)callableStatement.getObject(2);
+            while(rset.next())
+            {
+                ArrayList<Object> y = new ArrayList<Object>();
+                y.add(rset.getString(1));
+                y.add(rset.getInt(2));
+                y.add(rset.getString(3));
+                y.add(rset.getString(4));
+                y.add(rset.getFloat(5));
+                y.add(rset.getFloat(6));
+                y.add(rset.getInt(7));
+                y.add(rset.getFloat(8));
+                y.add(rset.getFloat(9));
+                y.add(rset.getInt(10));
+                y.add(rset.getFloat(11));
+                y.add(rset.getFloat(12));
+                y.add(rset.getFloat(13));
+                y.add(rset.getFloat(14));
+                y.add(rset.getInt(15));
+                y.add(rset.getFloat(16));
+                y.add(rset.getFloat(17));
+                y.add(rset.getInt(18));
+                result.add(y);
+            } 
+            ArrayList<Object> statusMessage = new ArrayList<>();
+            statusMessage.add(status);
+            statusMessage.add(message);
+            result.add(statusMessage);
+            return result;
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } 
+        ArrayList<Object> statusMessage = new ArrayList<>();
+        statusMessage.add(status);
+        statusMessage.add(message);
+        result.add(statusMessage);
+        return result;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
-    
+    ArrayList<ArrayList<Object>> getAllObservations(String username) {
+        ArrayList<ArrayList<Object>> result = new ArrayList<ArrayList<Object>>();
+        
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String userDiseasesCall = "{call GET_OBSERVATIONS_FOR_USERNAME(?, ?, ?, ?)}";
+
+        try {
+            callableStatement = CONN.prepareCall(userDiseasesCall);            
+            callableStatement.setString(1, username);            
+            // out Parameters            
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+
+            // execute getDBUSERByUserId store procedure
+            callableStatement.execute();
+            status = callableStatement.getNString(3);
+            message = callableStatement.getNString(4);
+            ResultSet rset = (ResultSet)callableStatement.getObject(2);
+            while(rset.next())
+            {
+                ArrayList<Object> y = new ArrayList<Object>();
+                y.add(rset.getInt(1));
+                y.add(rset.getInt(2));
+                y.add(rset.getString(3));
+                y.add(rset.getFloat(4));
+                y.add(rset.getString(5));
+                y.add(rset.getFloat(6));
+                y.add(rset.getFloat(7));
+                y.add(rset.getDate(8));
+                y.add(rset.getDate(9));
+                result.add(y);
+            }            
+            return result;
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }       
+        return result;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
     
 }

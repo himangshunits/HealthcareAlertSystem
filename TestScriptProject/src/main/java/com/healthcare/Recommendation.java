@@ -48,5 +48,7 @@ public class Recommendation {
         this.weightLow = weightLow;
         this.weightHigh = weightHigh;
         this.weightFrequency = weightFrequency;
-    }   
+    }
+
+     
 }

@@ -7,6 +7,7 @@ package com.healthcare;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -128,7 +129,7 @@ public class Observations extends javax.swing.JFrame {
             }
         });
 
-        jLabel10.setText("Recording Date");
+        jLabel10.setText("Recording Date :: Today's Date");
 
         days1.setModel(new javax.swing.DefaultComboBoxModel<>(getDays()));
 
@@ -242,7 +243,7 @@ public class Observations extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 564, Short.MAX_VALUE)
+            .addGap(0, 641, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -264,6 +265,7 @@ public class Observations extends javax.swing.JFrame {
 
     private void submitObservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitObservationActionPerformed
         // TODO add your handling code here:
+    try {
         if (this.weightInput.getText() != null) {
             weight = Float.parseFloat(this.weightInput.getText());
         }
@@ -295,14 +297,15 @@ public class Observations extends javax.swing.JFrame {
         String year1 = (String)years1.getSelectedItem();
 
         recordedOn = year1 + "/" + month1 + "/" + day1;
-        
-        
-
+       
         Observation observation = new Observation(weight, bpDiastolic, bpSystolic, oxygenSat, painLevel, mood, temperature, observedOn, recordedOn);
-
-        try {
-            ArrayList<String> result = mDb.addObservation(patientName, observation);
+      
+        ArrayList<String> result = mDb.addObservation(patientName, observation);
+        JOptionPane.showMessageDialog(null, "Message from the Database Service :: " + result.get(1));
+        this.dispose();
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Message from the Service Daemon:: " + e.getMessage());
+            e.printStackTrace();
         }
 
     }//GEN-LAST:event_submitObservationActionPerformed

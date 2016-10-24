@@ -168,6 +168,11 @@ public class DashboardHs extends javax.swing.JFrame {
         });
 
         healthIndicatorsBtn.setText("Health Indicators");
+        healthIndicatorsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                healthIndicatorsBtnActionPerformed(evt);
+            }
+        });
 
         alertsBtn.setText("See Alerts");
         alertsBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -320,14 +325,20 @@ public class DashboardHs extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-        new Main().setVisible(true);
+        //this.dispose();
+        //new Main().setVisible(true);
+        System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void alertsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alertsBtnActionPerformed
         // TODO add your handling code here:
         new Alert(username, false).setVisible(true);
     }//GEN-LAST:event_alertsBtnActionPerformed
+
+    private void healthIndicatorsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_healthIndicatorsBtnActionPerformed
+        new HealthIndicators(username).setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_healthIndicatorsBtnActionPerformed
 
     /**
      * @param args the command line arguments
