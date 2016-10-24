@@ -526,7 +526,7 @@ public class SignUp extends javax.swing.JFrame {
         String day = (String)days.getSelectedItem();
         String month = (String)months.getSelectedItem();
         String year = (String)years.getSelectedItem();
-        map.put("dob", day + "-" + month + "-" + year);
+        map.put("dob", year + "-" + month + "-" + year);
         if(this.genderMale.isSelected())
         {
             map.put("gender", "MALE");

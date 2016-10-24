@@ -16,11 +16,12 @@ public class Observation {
     String painLevel, mood;
     Float temperature;
     String observedOn;
+    String recordedOn;
 
     public Observation() {
     }
-    
-    public Observation(Float weight, Integer bpDiastolic, Integer bpSystolic, Float oxygenSat, String painLevel, String mood, Float temperature, String observedOn) {
+
+    public Observation(Float weight, Integer bpDiastolic, Integer bpSystolic, Float oxygenSat, String painLevel, String mood, Float temperature, String observedOn, String recordedOn) {
         this.weight = weight;
         this.bpDiastolic = bpDiastolic;
         this.bpSystolic = bpSystolic;
@@ -29,7 +30,10 @@ public class Observation {
         this.mood = mood;
         this.temperature = temperature;
         this.observedOn = observedOn;
+        this.recordedOn = recordedOn;
     }
+
+    
     
     @Override
     public String toString() {

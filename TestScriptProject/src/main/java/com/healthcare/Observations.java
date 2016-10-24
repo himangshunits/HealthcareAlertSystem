@@ -14,12 +14,13 @@ import java.util.ArrayList;
  */
 public class Observations extends javax.swing.JFrame {
 
-     Float weight;
+    Float weight;
     Integer bpDiastolic, bpSystolic;
     Float oxygenSat;
     String painLevel, mood;
     Float temperature;
     String observedOn;
+    String recordedOn;
     
     String patientName;
     Database mDb;
@@ -68,6 +69,10 @@ public class Observations extends javax.swing.JFrame {
         months = new javax.swing.JComboBox<>();
         years = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        days1 = new javax.swing.JComboBox<>();
+        months1 = new javax.swing.JComboBox<>();
+        years1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -123,6 +128,14 @@ public class Observations extends javax.swing.JFrame {
             }
         });
 
+        jLabel10.setText("Recording Date");
+
+        days1.setModel(new javax.swing.DefaultComboBoxModel<>(getDays()));
+
+        months1.setModel(new javax.swing.DefaultComboBoxModel<>(getMonths()));
+
+        years1.setModel(new javax.swing.DefaultComboBoxModel<>(getYears()));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -143,9 +156,16 @@ public class Observations extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8)
-                            .addComponent(jLabel9))
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10))
                         .addGap(75, 75, 75)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(days1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(months1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(years1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(moodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(oxygenSaturationInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(systolicInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -162,7 +182,7 @@ public class Observations extends javax.swing.JFrame {
                                         .addComponent(months, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(years, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                .addContainerGap(167, Short.MAX_VALUE))
+                .addContainerGap(161, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,7 +225,13 @@ public class Observations extends javax.swing.JFrame {
                         .addComponent(days, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(years, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(months, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(days1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(months1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(years1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(submitObservation)
                     .addComponent(jButton1))
@@ -225,7 +251,7 @@ public class Observations extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 461, Short.MAX_VALUE)
+            .addGap(0, 483, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -261,9 +287,18 @@ public class Observations extends javax.swing.JFrame {
         String month = (String)months.getSelectedItem();
         String year = (String)years.getSelectedItem();
 
-        observedOn = day + "-" + month + "-" + year;
+        observedOn = year + "/" + month + "/" + day;
+        
+        
+        String day1 = (String)days1.getSelectedItem();
+        String month1 = (String)months1.getSelectedItem();
+        String year1 = (String)years1.getSelectedItem();
 
-        Observation observation = new Observation(weight, bpDiastolic, bpSystolic, oxygenSat, painLevel, mood, temperature, observedOn);
+        recordedOn = year1 + "/" + month1 + "/" + day1;
+        
+        
+
+        Observation observation = new Observation(weight, bpDiastolic, bpSystolic, oxygenSat, painLevel, mood, temperature, observedOn, recordedOn);
 
         try {
             ArrayList<String> result = mDb.addObservation(patientName, observation);
@@ -352,9 +387,11 @@ public class Observations extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> days;
+    private javax.swing.JComboBox<String> days1;
     private javax.swing.JTextField diastolicInput;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -365,6 +402,7 @@ public class Observations extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JComboBox<String> months;
+    private javax.swing.JComboBox<String> months1;
     private javax.swing.JComboBox<String> moodComboBox;
     private javax.swing.JTextField oxygenSaturationInput;
     private javax.swing.JSpinner painLevelInput;
@@ -373,5 +411,6 @@ public class Observations extends javax.swing.JFrame {
     private javax.swing.JTextField temperatureInput;
     private javax.swing.JTextField weightInput;
     private javax.swing.JComboBox<String> years;
+    private javax.swing.JComboBox<String> years1;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,6 +1,8 @@
 package com.healthcare;
 
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -742,7 +744,7 @@ public class Database {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
-        String callAddObservation = "{call ADD_OBSERVATION(?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)}";
+        String callAddObservation = "{call ADD_OBSERVATION(?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?)}";
         
         try {
             callableStatement = CONN.prepareCall(callAddObservation);
@@ -754,13 +756,35 @@ public class Database {
             callableStatement.setString(6, observation.mood);
             callableStatement.setFloat(7, observation.temperature);
             callableStatement.setFloat(8, observation.weight);
-            String[] date = observation.observedOn.split("-");
-            callableStatement.setDate(9, new Date(Integer.parseInt(date[2])%100,Integer.parseInt(date[1]),Integer.parseInt(date[0])));
-            callableStatement.registerOutParameter(10, java.sql.Types.VARCHAR);
+            
+            try{
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+                java.util.Date utilDate = formatter.parse(observation.observedOn);
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                callableStatement.setDate(9, sqlDate);
+            } catch(Exception e){
+                callableStatement.setDate(9, null);
+                System.out.println("Error in Observed On parse =" + e.getMessage());
+                e.printStackTrace();
+            }
+
+
+            try{
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+                java.util.Date utilDate = formatter.parse(observation.recordedOn);
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                callableStatement.setDate(10, sqlDate);
+            } catch(Exception e){
+                callableStatement.setDate(10, null);
+                System.out.println("Error in Observed On parse =" + e.getMessage());
+                e.printStackTrace();
+            }
+            
             callableStatement.registerOutParameter(11, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(12, java.sql.Types.VARCHAR);
             callableStatement.execute();
-            status = callableStatement.getString(10);
-            message = callableStatement.getString(11);
+            status = callableStatement.getString(11);
+            message = callableStatement.getString(12);
             System.out.println("Status : " + status + "\nMessage : " + message);
             
             result.add(status);
