@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author akshat
  */
-public class Observations1 extends javax.swing.JFrame {
+public class Observations extends javax.swing.JFrame {
 
      Float weight;
     Integer bpDiastolic, bpSystolic;
@@ -24,7 +24,7 @@ public class Observations1 extends javax.swing.JFrame {
     String patientName;
     Database mDb;
 
-    public Observations1(String patientName) {
+    public Observations(String patientName) {
         this.patientName = patientName;
         this.mDb = Database.getInstance(); 
         initComponents();
@@ -33,7 +33,7 @@ public class Observations1 extends javax.swing.JFrame {
     /**
      * Creates new form Observations1
      */
-    public Observations1() {
+    public Observations() {
         initComponents();
     }
 
@@ -294,20 +294,21 @@ public class Observations1 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Observations1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Observations.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Observations1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Observations.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Observations1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Observations.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Observations1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Observations.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Observations1().setVisible(true);
+                new Observations().setVisible(true);
             }
         });
     }
