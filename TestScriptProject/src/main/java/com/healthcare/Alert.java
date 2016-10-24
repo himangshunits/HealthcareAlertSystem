@@ -5,6 +5,7 @@
  */
 package com.healthcare;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 
@@ -19,10 +20,12 @@ public class Alert extends javax.swing.JFrame {
      */
     Database db;
     String username;
-    public Alert(String username){
+    boolean isHs;
+    public Alert(String username, boolean isHs){
         this.username = username;
-        initComponents();
-        
+        this.db = Database.getInstance();
+        this.isHs = isHs;        
+        initComponents();        
     }
     public Alert() {
         initComponents();
@@ -46,9 +49,15 @@ public class Alert extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        String[] header = new String [] {"Alert", "Severity", "Generated On"};
+        String[] header = new String [] {"Alert", "Generated On", "Severity"};
+        //String[] header = new String [] {"Alert", "Severity"};
 
         NonEditableModel model = new NonEditableModel(header, 0);
+        ArrayList<ArrayList<Object>> data = db.getAlertsForUsername(username);
+        for(ArrayList<Object> d: data)
+        {
+            model.addRow(d.toArray());
+        }
         alertTable.setModel(model);
         jScrollPane1.setViewportView(alertTable);
 
@@ -64,6 +73,9 @@ public class Alert extends javax.swing.JFrame {
         });
 
         jButton3.setText("Delete");
+        if(!isHs){
+            jButton3.setEnabled(false);
+        }
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -77,15 +89,18 @@ public class Alert extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 571, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton3)))
+                        .addGap(0, 382, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,7 +114,7 @@ public class Alert extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();

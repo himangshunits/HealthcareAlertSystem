@@ -66,6 +66,11 @@ public class HealthSupporterTasks extends javax.swing.JFrame {
         });
 
         jButton2.setText("View Alerts");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Enter Observation");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -205,6 +210,11 @@ public class HealthSupporterTasks extends javax.swing.JFrame {
          this.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        new Alert(patientName, true).setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

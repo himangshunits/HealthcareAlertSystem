@@ -171,8 +171,7 @@ public class Main extends javax.swing.JFrame
         // TODO add your handling code here:
         SignUp signup = new SignUp();
         signup.setVisible(true);
-        this.dispose();
-        
+        //this.dispose();        
     }//GEN-LAST:event_signupBtnActionPerformed
 
     private void usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameActionPerformed

@@ -320,12 +320,13 @@ public class DashboardHs extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        System.exit(0);
+        this.dispose();
+        new Main().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void alertsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alertsBtnActionPerformed
         // TODO add your handling code here:
-        new Alert(username).setVisible(true);
+        new Alert(username, false).setVisible(true);
     }//GEN-LAST:event_alertsBtnActionPerformed
 
     /**

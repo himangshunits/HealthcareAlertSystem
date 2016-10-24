@@ -833,4 +833,66 @@ public class Database {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    
+    
+    
+    ArrayList<ArrayList<Object>> getAlertsForUsername(String username) {
+        //return null;
+        ArrayList<ArrayList<Object>> result = new ArrayList<ArrayList<Object>>();
+        
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String userDiseasesCall = "{call SHOW_ALERTS_FOR_USERNAME(?, ?, ?, ?)}";
+
+        try {
+            callableStatement = CONN.prepareCall(userDiseasesCall);            
+            callableStatement.setString(1, username);            
+            // out Parameters            
+            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, OracleTypes.CURSOR);
+
+            // execute getDBUSERByUserId store procedure
+            callableStatement.execute();
+            status = callableStatement.getNString(2);
+            message = callableStatement.getNString(3);
+            ResultSet rset = (ResultSet)callableStatement.getObject(4);
+            while(rset.next())
+            {
+                ArrayList<Object> y = new ArrayList<Object>();
+                y.add(rset.getString(1));
+                y.add(rset.getTimestamp(2));
+                y.add(rset.getString(3));
+                result.add(y);
+            }            
+            return result;
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }       
+        return result;        
+    }
+    
+    
+    
+    
 }
