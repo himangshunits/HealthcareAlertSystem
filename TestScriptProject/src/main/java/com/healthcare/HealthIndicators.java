@@ -7,6 +7,8 @@ package com.healthcare;
 
 import static com.healthcare.Database.db;
 import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,8 +21,10 @@ public class HealthIndicators extends javax.swing.JFrame {
      */
     String username;
     String statusMessage;
-    public HealthIndicators(String username) {
+    boolean isHs;
+    public HealthIndicators(String username, boolean isHs) {
         this.username = username;
+        this.isHs = isHs;
         initComponents();
         this.recoStatus.setText(statusMessage);
     }
@@ -41,14 +45,18 @@ public class HealthIndicators extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        observationsTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        recommendationsTable = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         recoStatus = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        removeObservationBtn = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        removeRecoButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
@@ -59,7 +67,7 @@ public class HealthIndicators extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("The Best Recommendation for you");
+        jLabel1.setText("The Best Recommendation for " + username);
 
         String[] header1 = new String [] {
             "BP Diastolic","BP Systolic","Mood","Oxygen Saturation","Pain Level","Temperature","Weight","Observed On","Recorded On"};
@@ -70,8 +78,8 @@ public class HealthIndicators extends javax.swing.JFrame {
         {
             model1.addRow(d.toArray());
         }
-        jTable1.setModel(model1);
-        jScrollPane1.setViewportView(jTable1);
+        observationsTable.setModel(model1);
+        jScrollPane1.setViewportView(observationsTable);
 
         jButton1.setText("Add New Observation");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -106,12 +114,35 @@ public class HealthIndicators extends javax.swing.JFrame {
         Object[] statusMessage = data.get(data.size() - 1).toArray();
         //add it to the display
         this.statusMessage = statusMessage[1].toString();
-        jTable2.setModel(model);
-        jScrollPane2.setViewportView(jTable2);
+        recommendationsTable.setModel(model);
+        jScrollPane2.setViewportView(recommendationsTable);
 
         jLabel3.setText("Your Recommendation Status is :: ");
 
         recoStatus.setText("Recommendation Status Goes Here!");
+
+        jLabel4.setText("If enabled, please select a row above and click Remove Obervation (For Health Supporters only!)");
+
+        removeObservationBtn.setText("Remove Observation");
+        if(!isHs){
+            removeObservationBtn.setEnabled(false);
+        }
+        removeObservationBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeObservationBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("If enabled, please select a row above and click Remove Recommendations(For Health Supporters Only!)");
+
+        removeRecoButton.setText("Remove Recommendation");
+        if(!isHs)
+        removeRecoButton.setEnabled(false);
+        removeRecoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeRecoButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -123,9 +154,6 @@ public class HealthIndicators extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -133,12 +161,22 @@ public class HealthIndicators extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(recoStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 8, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 615, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(removeObservationBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 8, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 672, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(31, 31, 31)
+                                        .addComponent(removeRecoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(21, 21, 21))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -155,14 +193,20 @@ public class HealthIndicators extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(recoStatus))
-                .addGap(75, 75, 75)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(removeRecoButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(removeObservationBtn))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -195,9 +239,33 @@ public class HealthIndicators extends javax.swing.JFrame {
         {
             model1.addRow(d.toArray());
         }
-        jTable1.setModel(model1);
+        observationsTable.setModel(model1);
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowGainedFocus
+
+    private void removeRecoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeRecoButtonActionPerformed
+                // Send DB the signal ro remove the dessease!
+        //db.removeDiseaseForName();
+        JOptionPane.showMessageDialog(null, "Recommendation Not Getting removed from DB yet!");
+        int [] toDelete = this.recommendationsTable.getSelectedRows();
+        Arrays.sort(toDelete); // be shure to have them in ascending order.
+        NonEditableModel myTableModel = (NonEditableModel)recommendationsTable.getModel();
+        for(int ii = toDelete.length -1; ii >=0; ii--) {
+            myTableModel.removeRow(toDelete[ii]); // beginning at the largest.
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_removeRecoButtonActionPerformed
+
+    private void removeObservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeObservationBtnActionPerformed
+        JOptionPane.showMessageDialog(null, "Observation Not Getting removed from DB yet!");
+        int [] toDelete = this.observationsTable.getSelectedRows();
+        Arrays.sort(toDelete); // be shure to have them in ascending order.
+        NonEditableModel myTableModel = (NonEditableModel)observationsTable.getModel();
+        for(int ii = toDelete.length -1; ii >=0; ii--) {
+            myTableModel.removeRow(toDelete[ii]); // beginning at the largest.
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_removeObservationBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,10 +308,14 @@ public class HealthIndicators extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable observationsTable;
     private javax.swing.JLabel recoStatus;
+    private javax.swing.JTable recommendationsTable;
+    private javax.swing.JButton removeObservationBtn;
+    private javax.swing.JButton removeRecoButton;
     // End of variables declaration//GEN-END:variables
 }

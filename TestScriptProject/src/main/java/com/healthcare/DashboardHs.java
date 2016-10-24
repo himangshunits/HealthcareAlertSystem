@@ -336,7 +336,7 @@ public class DashboardHs extends javax.swing.JFrame {
     }//GEN-LAST:event_alertsBtnActionPerformed
 
     private void healthIndicatorsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_healthIndicatorsBtnActionPerformed
-        new HealthIndicators(username).setVisible(true);
+        new HealthIndicators(username, false).setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_healthIndicatorsBtnActionPerformed
 

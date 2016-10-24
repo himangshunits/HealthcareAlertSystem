@@ -94,6 +94,7 @@ public class Database {
     }
     String[] getDiseases(){
         ArrayList<String> arr = new ArrayList<String>();
+        arr.add("");
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "";
@@ -373,7 +374,7 @@ public class Database {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
-        String insertPersonDataCall = "{call INSERT_PERSON_DATA(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String insertPersonDataCall = "{call INSERT_PERSON_DATA(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             callableStatement = CONN.prepareCall(insertPersonDataCall);
@@ -413,15 +414,16 @@ public class Database {
                 callableStatement.setString(19, map.get("supporter2"));
             }
 
+            callableStatement.setString(20, map.get("disease"));
             // out Parameters
-            callableStatement.registerOutParameter(20, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(21, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(22, java.sql.Types.VARCHAR);
 
             // execute getDBUSERByUserId store procedure
             callableStatement.executeUpdate();
 
-            status = callableStatement.getString(20);
-            message = callableStatement.getString(21);            
+            status = callableStatement.getString(21);
+            message = callableStatement.getString(22);            
 
         } catch (SQLException e) {
 

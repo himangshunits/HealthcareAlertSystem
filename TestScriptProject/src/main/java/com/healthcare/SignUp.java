@@ -22,7 +22,9 @@ public class SignUp extends javax.swing.JFrame {
     /**
      * Creates new form SignUp
      */
+    Database db;
     public SignUp() {
+        db = Database.getInstance();
         initComponents();
     }
 
@@ -142,6 +144,8 @@ public class SignUp extends javax.swing.JFrame {
         supporters2 = new javax.swing.JComboBox();
         jLabel14 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        diseaseName = new javax.swing.JComboBox<>();
 
         gender.add(genderMale);
         gender.add(genderFemale);
@@ -199,6 +203,11 @@ public class SignUp extends javax.swing.JFrame {
         });
 
         isSickNo.setText("No");
+        isSickNo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                isSickNoActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Add Health Supporter 1");
 
@@ -288,6 +297,11 @@ public class SignUp extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        jLabel16.setText("Disease");
+
+        diseaseName.setModel(new javax.swing.DefaultComboBoxModel<>(db.getDiseases()));
+        diseaseName.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -382,10 +396,14 @@ public class SignUp extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(isSickYes)
                                         .addGap(18, 18, 18)
-                                        .addComponent(isSickNo))
+                                        .addComponent(isSickNo)
+                                        .addGap(65, 65, 65)
+                                        .addComponent(jLabel16)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(diseaseName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(supporters, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(supporters2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 101, Short.MAX_VALUE)))))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(78, 78, 78)
@@ -421,7 +439,9 @@ public class SignUp extends javax.swing.JFrame {
                     .addComponent(isSickLbl)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(isSickYes)
-                        .addComponent(isSickNo)))
+                        .addComponent(isSickNo)
+                        .addComponent(jLabel16)
+                        .addComponent(diseaseName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
@@ -519,6 +539,7 @@ public class SignUp extends javax.swing.JFrame {
         map.put("zip", new String(this.zip.getText().trim()));
         map.put("supporter", (String)(this.supporters.getSelectedItem()));
         map.put("supporter2", (String)(this.supporters2.getSelectedItem()));
+        map.put("disease", (String)(this.diseaseName.getSelectedItem()));
         
         java.util.Date date = new java.util.Date();
         String modifiedDate = new SimpleDateFormat("dd-MM-yyyy").format(date);
@@ -526,7 +547,7 @@ public class SignUp extends javax.swing.JFrame {
         String day = (String)days.getSelectedItem();
         String month = (String)months.getSelectedItem();
         String year = (String)years.getSelectedItem();
-        map.put("dob", year + "-" + month + "-" + year);
+        map.put("dob", day + "-" + month + "-" + year);
         if(this.genderMale.isSelected())
         {
             map.put("gender", "MALE");
@@ -594,6 +615,7 @@ public class SignUp extends javax.swing.JFrame {
     }//GEN-LAST:event_genderMaleActionPerformed
 
     private void isSickYesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isSickYesActionPerformed
+        diseaseName.setEnabled(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_isSickYesActionPerformed
 
@@ -617,6 +639,11 @@ public class SignUp extends javax.swing.JFrame {
         this.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void isSickNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isSickNoActionPerformed
+        diseaseName.setEnabled(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_isSickNoActionPerformed
     private Date getDate(String s)
     {
         String b[] = s.split("-");
@@ -671,6 +698,7 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JPasswordField cpassword;
     private javax.swing.JLabel cpasswordLbl;
     private javax.swing.JComboBox<String> days;
+    private javax.swing.JComboBox<String> diseaseName;
     private javax.swing.JLabel dobLbl;
     private javax.swing.JTextField email;
     private javax.swing.ButtonGroup gender;
@@ -688,6 +716,7 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
