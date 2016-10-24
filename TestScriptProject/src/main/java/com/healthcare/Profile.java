@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import org.apache.commons.validator.routines.EmailValidator;
+//import org.apache.commons.validator.routines.EmailValidator;
 
 /**
  *
@@ -40,7 +40,8 @@ public class Profile extends javax.swing.JFrame {
     }
 
     private boolean isValidEmail(String email) {
-        return EmailValidator.getInstance().isValid(email);
+        //return EmailValidator.getInstance().isValid(email);
+        return true;
     }
 
     private Date getDate(String s) {
@@ -531,7 +532,7 @@ public class Profile extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new Main().setVisible(true);
+        //new Main().setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed

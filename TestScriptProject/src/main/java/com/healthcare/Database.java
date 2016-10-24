@@ -557,7 +557,7 @@ public class Database {
         return out;
     }
     
-     public ArrayList<String> getNameAndIdForUsername(String username) throws SQLException
+    public ArrayList<String> getNameAndIdForUsername(String username) throws SQLException
     {
         ArrayList<String> out = new ArrayList<String>();        
         Connection dbConnection = null;
@@ -780,6 +780,53 @@ public class Database {
             }
         }
         return result;
+    }
+    
+    
+    public void addRecommendation(Recommendation newReco, String username) throws SQLException{
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String callAddObservation = "{call ADD_RECOMMENDATION(?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(callAddObservation);
+            callableStatement.setString(1, username);
+            callableStatement.setFloat(2, (float)newReco.bpDiastolicLow);
+            callableStatement.setFloat(3, (float)newReco.bpDiastolicHigh);
+            callableStatement.setFloat(4, (float)newReco.bpSystolicLow);
+            callableStatement.setFloat(5, (float)newReco.bpSystolicHigh);
+            callableStatement.setInt(6, newReco.bpFrequency);            
+            callableStatement.setFloat(7, (float)newReco.oxySatLow);
+            callableStatement.setFloat(8, (float)newReco.oxySatHigh);
+            callableStatement.setInt(9, newReco.oxySatFrequency);
+            callableStatement.setInt(10, newReco.painLevel);
+            callableStatement.setInt(11, newReco.painLevelFrequency);
+            callableStatement.setString(12, newReco.mood);
+            callableStatement.setInt(13, newReco.moodFrequency);
+            callableStatement.setFloat(14, (float)newReco.temperatureLow);
+            callableStatement.setFloat(15, (float)newReco.temperatureHigh);
+            callableStatement.setInt(16, newReco.tempertureFrequency);
+            callableStatement.setFloat(17, (float)newReco.weightLow);
+            callableStatement.setFloat(18, (float)newReco.weightHigh);
+            callableStatement.setInt(19, newReco.weightFrequency);
+            callableStatement.registerOutParameter(20, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(21, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getString(10);
+            message = callableStatement.getString(11);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStatement != null) {
+                callableStatement.close();
+            }
+
+            if (dbConnection != null) {
+                CONN.close();
+            }
+        }
     }
     
 }

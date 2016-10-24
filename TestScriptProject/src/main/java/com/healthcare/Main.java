@@ -61,6 +61,7 @@ public class Main extends javax.swing.JFrame
             }
         });
 
+        username.setText("hborah1");
         username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameActionPerformed(evt);
@@ -77,6 +78,8 @@ public class Main extends javax.swing.JFrame
         jLabel2.setText("Password");
 
         jLabel3.setText("Username");
+
+        password.setText("test_qwerty");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,7 +156,7 @@ public class Main extends javax.swing.JFrame
                     }
                     if(out.get(2).equals("BOTH"))
                     {
-                        System.out.println("It's not ms job!");
+                        System.out.println("It's not my job!");
                         DashboardHs dash = new DashboardHs(username);
                         dash.setVisible(true);
                         this.dispose();

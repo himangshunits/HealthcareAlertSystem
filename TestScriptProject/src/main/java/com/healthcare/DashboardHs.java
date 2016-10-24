@@ -307,8 +307,10 @@ public class DashboardHs extends javax.swing.JFrame {
         // TODO add your handling code here:
         int index = patientsList.getSelectedIndex();
         String curr_patient_username = patientsUnderYou.get(index).username;
+        HealthSupporterTasks hsTask = new HealthSupporterTasks(username, curr_patient_username);
+        hsTask.setVisible(true);
         // Call Akshat's Form for curr_patient_username and username
-        JOptionPane.showMessageDialog(null, "Will Show Options here for patient " + curr_patient_username);
+        //JOptionPane.showMessageDialog(null, "Will Show Options here for patient " + curr_patient_username);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
