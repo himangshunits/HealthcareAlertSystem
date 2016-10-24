@@ -38,15 +38,17 @@ public class Diagnosis extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        diseaseTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("You have the following diseases:");
+        jLabel1.setText("The Following are the diseases detected!");
 
         String[] header =  {"Disease Name", "Detected on"};
         DefaultTableModel model = new NonEditableModel(header, 0);
@@ -55,23 +57,23 @@ public class Diagnosis extends javax.swing.JFrame {
         {
             model.addRow(d.toArray());
         }
-        jTable1.setModel(model);
-        jTable1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+        diseaseTable.setModel(model);
+        diseaseTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jTable1PropertyChange(evt);
+                diseaseTablePropertyChange(evt);
             }
         });
-        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
+        diseaseTable.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTable1KeyTyped(evt);
+                diseaseTableKeyTyped(evt);
             }
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTable1KeyPressed(evt);
+                diseaseTableKeyPressed(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(diseaseTable);
 
-        jButton1.setText("Submit");
+        jButton1.setText("Add Disease");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -82,7 +84,21 @@ public class Diagnosis extends javax.swing.JFrame {
 
         jLabel2.setText("Add Diagnosis");
 
-        jLabel3.setText("Please select a row to delete a specific disease and press D");
+        jLabel3.setText("Please select a row to delete a specific disease and press D or Press Delete");
+
+        jButton2.setText("Close");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Delete");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -92,35 +108,41 @@ public class Diagnosis extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel2)
+                        .addGap(35, 35, 35)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)
+                        .addGap(27, 27, 27)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
                             .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(35, 35, 35)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)))
-                        .addContainerGap(21, Short.MAX_VALUE))))
+                                .addGap(6, 6, 6)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 18, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
                     .addComponent(jLabel2)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1)))
+                    .addComponent(jButton3))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -130,7 +152,7 @@ public class Diagnosis extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String disease = (String)this.jComboBox1.getSelectedItem();
-        DefaultTableModel model = (DefaultTableModel)this.jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel)this.diseaseTable.getModel();
         ArrayList<String> out = db.addDisease(username, disease);
         JOptionPane.showMessageDialog(null, out.get(1));
         ArrayList<ArrayList<Object>> data = db.getDiseases(username);
@@ -142,30 +164,51 @@ public class Diagnosis extends javax.swing.JFrame {
         
         
         model.fireTableDataChanged();
-        this.jTable1.repaint();
+        this.diseaseTable.repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTable1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTable1PropertyChange
+    private void diseaseTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_diseaseTablePropertyChange
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1PropertyChange
+    }//GEN-LAST:event_diseaseTablePropertyChange
 
-    private void jTable1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyTyped
+    private void diseaseTableKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_diseaseTableKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1KeyTyped
+    }//GEN-LAST:event_diseaseTableKeyTyped
 
-    private void jTable1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyPressed
+    private void diseaseTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_diseaseTableKeyPressed
         // TODO add your handling code here:
             if(evt.getKeyChar() == 'D')
             {
-                int [] toDelete = this.jTable1.getSelectedRows();
+                // Send DB the signal ro remove the dessease!
+                Database.getInstance().removeDiseaseForName();
+                JOptionPane.showMessageDialog(null, "Not Getting removed from DB yet!");
+                int [] toDelete = this.diseaseTable.getSelectedRows();
                 Arrays.sort(toDelete); // be shure to have them in ascending order.
-                NonEditableModel myTableModel = (NonEditableModel)jTable1.getModel();
+                NonEditableModel myTableModel = (NonEditableModel)diseaseTable.getModel();
                 for(int ii = toDelete.length -1; ii >=0; ii--) {
                     myTableModel.removeRow(toDelete[ii]); // beginning at the largest.
             }
             
         }
-    }//GEN-LAST:event_jTable1KeyPressed
+    }//GEN-LAST:event_diseaseTableKeyPressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // Send DB the signal ro remove the dessease!
+        //db.removeDiseaseForName();
+        JOptionPane.showMessageDialog(null, "Not Getting removed from DB yet!");
+        int [] toDelete = this.diseaseTable.getSelectedRows();
+        Arrays.sort(toDelete); // be shure to have them in ascending order.
+        NonEditableModel myTableModel = (NonEditableModel)diseaseTable.getModel();
+        for(int ii = toDelete.length -1; ii >=0; ii--) {
+            myTableModel.removeRow(toDelete[ii]); // beginning at the largest.
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,13 +246,15 @@ public class Diagnosis extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable diseaseTable;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
 

@@ -147,21 +147,11 @@ public class Main extends javax.swing.JFrame
                 ArrayList<String> out = db.inDatabase(username, password);
                 if(out.get(0).equals("SUCCESS"))
                 {
-                    JOptionPane.showMessageDialog(null, out.get(1));
-                    if(out.get(2).equals("USER"))
-                    {
-                        Dashboard dash = new Dashboard(username);
-                        dash.setVisible(true);
-                        this.dispose();
-                    }
-                    if(out.get(2).equals("BOTH"))
-                    {
-                        System.out.println("It's not my job!");
-                        DashboardHs dash = new DashboardHs(username);
-                        dash.setVisible(true);
-                        this.dispose();
-                    }
-                    
+                    JOptionPane.showMessageDialog(null, out.get(1));                
+                    System.out.println("It's not my job!");
+                    DashboardHs dash = new DashboardHs(username, out.get(2));
+                    dash.setVisible(true);
+                    this.dispose();
                 }
                 else
                 {

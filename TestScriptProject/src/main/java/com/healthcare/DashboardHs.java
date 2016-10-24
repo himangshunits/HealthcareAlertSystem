@@ -30,16 +30,22 @@ public class DashboardHs extends javax.swing.JFrame {
     String healthSupp2;
     String healthId2;
     Database mDb;
+    boolean isOnlyUser;
     LinkedList<HsInfo> patientsUnderYou;
+    
     public DashboardHs() {
-        initComponents();
-        
+        initComponents();        
     }
-    public DashboardHs(String username) {
+    
+    public DashboardHs(String username, String userType) {
         this.username = username;
         this.mDb = Database.getInstance();
         initLocalData();
         initComponents();
+        if(userType.equals("USER")){
+            isOnlyUser = true;
+            careTakerFrame.setVisible(false);
+        }            
     }
     
     
@@ -293,8 +299,7 @@ public class DashboardHs extends javax.swing.JFrame {
 
     private void getProfileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getProfileBtnActionPerformed
         // TODO add your handling code here:
-        new Profile(username).setVisible(true);
-        
+        new Profile(username).setVisible(true);  
         
     }//GEN-LAST:event_getProfileBtnActionPerformed
 
