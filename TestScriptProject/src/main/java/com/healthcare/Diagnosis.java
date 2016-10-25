@@ -7,6 +7,7 @@ package com.healthcare;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,6 +22,7 @@ public class Diagnosis extends javax.swing.JFrame {
      */
     Database db;
     String username;
+    private HashMap<String, Integer> diseaseMap;
     public Diagnosis(String username)  {
         this.username = username;
         db = Database.getInstance();
@@ -80,7 +82,15 @@ public class Diagnosis extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(db.getDiseases()));
+        HashMap<String, Integer> tempMap = db.getDiseases();
+        this.diseaseMap = tempMap;
+        String[] populateDiseaseNames = new String[tempMap.size()];
+        int i = 0;
+        for(String item:tempMap.keySet()){
+            populateDiseaseNames[i] = item;
+            i++;
+        }
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(populateDiseaseNames));
 
         jLabel2.setText("Add Diagnosis");
 
@@ -153,7 +163,7 @@ public class Diagnosis extends javax.swing.JFrame {
         // TODO add your handling code here:
         String disease = (String)this.jComboBox1.getSelectedItem();
         DefaultTableModel model = (DefaultTableModel)this.diseaseTable.getModel();
-        ArrayList<String> out = db.addDisease(username, disease);
+        ArrayList<String> out = db.addDisease(username, diseaseMap.get(disease).toString());
         JOptionPane.showMessageDialog(null, out.get(1));
         ArrayList<ArrayList<Object>> data = db.getDiseases(username);
         model.setRowCount(0);

@@ -23,6 +23,7 @@ public class SignUp extends javax.swing.JFrame {
      * Creates new form SignUp
      */
     Database db;
+    private HashMap<String, Integer> diseaseMap;
     public SignUp() {
         db = Database.getInstance();
         initComponents();
@@ -300,7 +301,15 @@ public class SignUp extends javax.swing.JFrame {
 
         jLabel16.setText("Disease");
 
-        diseaseName.setModel(new javax.swing.DefaultComboBoxModel<>(db.getDiseases()));
+        HashMap<String, Integer> tempMap = db.getDiseases();
+        this.diseaseMap = tempMap;
+        String[] populateDiseaseNames = new String[tempMap.size()];
+        int i = 0;
+        for(String item:tempMap.keySet()){
+            populateDiseaseNames[i] = item;
+            i++;
+        }
+        diseaseName.setModel(new javax.swing.DefaultComboBoxModel<>(populateDiseaseNames));
         diseaseName.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -521,7 +530,6 @@ public class SignUp extends javax.swing.JFrame {
 
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
-
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("password", new String(this.password.getPassword()));
         map.put("cpassword", new String(this.cpassword.getPassword()));
@@ -539,7 +547,9 @@ public class SignUp extends javax.swing.JFrame {
         map.put("zip", new String(this.zip.getText().trim()));
         map.put("supporter", (String)(this.supporters.getSelectedItem()));
         map.put("supporter2", (String)(this.supporters2.getSelectedItem()));
-        map.put("disease", (String)(this.diseaseName.getSelectedItem()));
+        String dName = (String)(this.diseaseName.getSelectedItem());
+        
+        map.put("disease_id", diseaseMap.get(dName).toString());
         
         java.util.Date date = new java.util.Date();
         String modifiedDate = new SimpleDateFormat("dd-MM-yyyy").format(date);
@@ -558,50 +568,24 @@ public class SignUp extends javax.swing.JFrame {
         }
 
 
-        map.put("isSick", "0");
+        if(this.isSickYes.isSelected()){
+            map.put("isSick", "1");
+        } else {
+            map.put("isSick", "0");
+        }
+        //map.put("isSick", "0");
+        
 
-        String auth_date = (String)aday.getSelectedItem() + "-" + (String)amonth.getSelectedItem() + "-" + (String)ayear.getSelectedItem();
-        if(validateForm(map))
-        {
-            Database db = Database.getInstance();
-            try
-            {
-                ArrayList<String> o1 = null, o2 = null, o3 = null;
-                o1 = db.addPerson(map);
-                if(this.isSickYes.isSelected())
-                {
-                    o2 = db.addHealthSupporter(map.get("username"), map.get("supporter"), getDate(auth_date));
-                    o3 = db.toggleIsSick(map.get("username"));
-                }
-
-                if(o1.get(0).equals("SUCCESS") && (o2 == null || o2.get(0).equals("SUCCESS")) && (o2 == null || o3.get(0).equals("SUCCESS")))
-                {
-
-                    JOptionPane.showMessageDialog(null, o1.get(1));
-                    Main m = new Main(db);
-                    m.setVisible(true);
-                    this.dispose();
-                }
-                else
-                {
-                    //TODO: how to effectively rollback
-                    db.removePerson(map.get("username"));
-
-                    //db.removeHealthSupporter(map.get("username"), map.get("supporter"));
-                    if(!o1.get(0).equals("SUCCESS"))
-                    {
-                        JOptionPane.showMessageDialog(null, o1.get(1));
-                    }
-                    else if(o2 != null && !o2.get(0).equals("SUCCESS"))
-                        JOptionPane.showMessageDialog(null, o2.get(1));
-                    else if(o3 != null && !o3.get(0).equals("SUCCESS"))
-                        JOptionPane.showMessageDialog(null, o3.get(1));
-                }
-            }
-            catch(SQLException e)
-            {
-                JOptionPane.showMessageDialog(null, e.getMessage());
-            }
+        String auth_date_1 = (String)aday.getSelectedItem() + "-" + (String)amonth.getSelectedItem() + "-" + (String)ayear.getSelectedItem();
+        map.put("auth_date_1", auth_date_1);
+        // TODO Capture the auth date 2
+        map.put("auth_date_2", auth_date_1);
+        try {
+            ArrayList<String> o1 = db.addPerson(map);
+            JOptionPane.showMessageDialog(null, o1.get(1));
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            e.printStackTrace();
         }
     }//GEN-LAST:event_submitActionPerformed
 

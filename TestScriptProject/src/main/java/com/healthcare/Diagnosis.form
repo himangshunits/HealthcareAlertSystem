@@ -116,10 +116,11 @@
     <Component class="javax.swing.JComboBox" name="jComboBox1">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(db.getDiseases())" type="code"/>
+          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(populateDiseaseNames)" type="code"/>
         </Property>
       </Properties>
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="HashMap&lt;String, Integer&gt; tempMap = db.getDiseases();&#xa;        this.diseaseMap = tempMap;&#xa;        String[] populateDiseaseNames = new String[tempMap.size()];&#xa;        int i = 0;&#xa;        for(String item:tempMap.keySet()){&#xa;            populateDiseaseNames[i] = item;&#xa;            i++;&#xa;        }"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>

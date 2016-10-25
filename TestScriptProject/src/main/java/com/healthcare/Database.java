@@ -92,9 +92,9 @@ public class Database {
         out.add(message);
         return out;
     }
-    String[] getDiseases(){
-        ArrayList<String> arr = new ArrayList<String>();
-        arr.add("");
+    HashMap<String, Integer> getDiseases(){
+        HashMap<String, Integer> arr = new HashMap<>();
+        arr.put("", 0);
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "";
@@ -109,7 +109,7 @@ public class Database {
             ResultSet rset = (ResultSet)callableStatement.getObject(3);
             while(rset.next())
             {
-                arr.add(rset.getString(1));
+                arr.put(rset.getString(2),rset.getInt(1));
             }
             message = callableStatement.getString(2);
 
@@ -134,12 +134,8 @@ public class Database {
                 }
             }
         }
-        String[] ret = new String[arr.size()];
-        for(int i=0;i<arr.size();i++)
-        {
-            ret[i] = arr.get(i);
-        }
-        return ret;
+        
+        return arr;
         
     }
     ArrayList<String> addHealthSupporter(String username, String supporter, Date auth_date) throws SQLException
@@ -374,7 +370,7 @@ public class Database {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
-        String insertPersonDataCall = "{call INSERT_PERSON_DATA(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String insertPersonDataCall = "{call INSERT_PERSON_DATA(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try {
             callableStatement = CONN.prepareCall(insertPersonDataCall);
@@ -382,6 +378,8 @@ public class Database {
             callableStatement.setString(1, map.get("name"));
             String[] date = map.get("dob").split("-");
             String[] today  = map.get("date").split("-");
+            String[] auth_date_1 = map.get("auth_date_1").split("-");
+            String[] auth_date_2 = map.get("auth_date_1").split("-");
             callableStatement.setDate(2, new Date(Integer.parseInt(date[2])%100,Integer.parseInt(date[1]),Integer.parseInt(date[0])));
             callableStatement.setString(3, map.get("gender"));
             callableStatement.setInt(4, Integer.parseInt(map.get("isSick")));
@@ -398,32 +396,20 @@ public class Database {
             callableStatement.setString(15, map.get("email"));
             callableStatement.setString(16, map.get("ssn"));
             callableStatement.setDate(17, new Date(Integer.parseInt(today[0])%100,Integer.parseInt(today[1]),Integer.parseInt(today[2])));
-            if(map.get("supporter").equals(""))
-            {
-                callableStatement.setString(18, null);
-            }
-            else{
-                callableStatement.setString(18, map.get("supporter1"));
-            }
-            if(map.get("supporter2").equals(""))
-            {
-                callableStatement.setString(19, null);
-            }
-            else
-            {
-                callableStatement.setString(19, map.get("supporter2"));
-            }
-
-            callableStatement.setString(20, map.get("disease"));
+            callableStatement.setString(18, map.get("supporter"));
+            callableStatement.setString(19, map.get("supporter1"));
+            callableStatement.setInt(20, Integer.parseInt(map.get("disease_id")));
+            callableStatement.setDate(21, new Date(Integer.parseInt(auth_date_1[0])%100,Integer.parseInt(auth_date_1[1]),Integer.parseInt(auth_date_1[2])));
+            callableStatement.setDate(22, new Date(Integer.parseInt(auth_date_2[0])%100,Integer.parseInt(auth_date_2[1]),Integer.parseInt(auth_date_2[2])));
             // out Parameters
-            callableStatement.registerOutParameter(21, java.sql.Types.VARCHAR);
-            callableStatement.registerOutParameter(22, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(23, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(24, java.sql.Types.VARCHAR);
 
             // execute getDBUSERByUserId store procedure
             callableStatement.executeUpdate();
 
-            status = callableStatement.getString(21);
-            message = callableStatement.getString(22);            
+            status = callableStatement.getString(23);
+            message = callableStatement.getString(24);            
 
         } catch (SQLException e) {
 
@@ -507,7 +493,7 @@ public class Database {
         
     }
 
-    ArrayList<String> addDisease(String username, String disease) 
+    ArrayList<String> addDisease(String username, String disease_id) 
     {
         
         ArrayList<String> out = new ArrayList<String>();
@@ -523,7 +509,7 @@ public class Database {
             
             callableStatement = CONN.prepareCall(AddDiagnosisCall);
             callableStatement.setString(1, username);
-            callableStatement.setString(2, disease);
+            callableStatement.setInt(2, Integer.parseInt(disease_id));
             callableStatement.setTimestamp(3, t);
             
             
