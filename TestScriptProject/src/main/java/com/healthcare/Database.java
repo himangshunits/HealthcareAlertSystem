@@ -851,6 +851,7 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
                 y.add(rset.getString(1));
                 y.add(rset.getTimestamp(2));
                 y.add(rset.getString(3));
+                y.add(rset.getString(4));
                 result.add(y);
             }            
             return result;

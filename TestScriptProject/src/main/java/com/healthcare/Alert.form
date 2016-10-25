@@ -84,7 +84,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="String[] header = new String [] {&quot;Alert&quot;, &quot;Generated On&quot;, &quot;Severity&quot;};&#xa;//String[] header = new String [] {&quot;Alert&quot;, &quot;Severity&quot;};&#xa;&#xa;NonEditableModel model = new NonEditableModel(header, 0);&#xa;ArrayList&lt;ArrayList&lt;Object&gt;&gt; data = db.getAlertsForUsername(username);&#xa;for(ArrayList&lt;Object&gt; d: data)&#xa;{   &#xa;    model.addRow(d.toArray());&#xa;}"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="String[] header = new String [] {&quot;Alert&quot;, &quot;Generated On&quot;, &quot;Severity&quot;, &quot;Reason&quot;};&#xa;//String[] header = new String [] {&quot;Alert&quot;, &quot;Severity&quot;};&#xa;&#xa;NonEditableModel model = new NonEditableModel(header, 0);&#xa;ArrayList&lt;ArrayList&lt;Object&gt;&gt; data = db.getAlertsForUsername(username);&#xa;for(ArrayList&lt;Object&gt; d: data)&#xa;{   &#xa;    model.addRow(d.toArray());&#xa;}"/>
           </AuxValues>
         </Component>
       </SubComponents>

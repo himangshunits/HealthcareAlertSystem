@@ -25,9 +25,11 @@ public class Observations extends javax.swing.JFrame {
     
     String patientName;
     Database mDb;
+    //String[] todayDate;
 
     public Observations(String patientName) {
         this.patientName = patientName;
+        //this.todayDate = DateFormatManager.getYearMonthDayFromDate(new java.util.Date());
         this.mDb = Database.getInstance(); 
         initComponents();
     }

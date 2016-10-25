@@ -39,5 +39,17 @@ public class DateFormatManager {
     }
     
     
+    public static String[] getYearMonthDayFromDate(java.util.Date today){
+        String[] result = new String[3];
+        int year = today.getYear();
+        int month = today.getMonth();
+        int day = today.getDay();
+        result[0] = String.valueOf(year);
+        result[1] = String.valueOf(month);
+        result[2] = String.valueOf(day);
+        return result;
+    }
+    
+    
     
 }
