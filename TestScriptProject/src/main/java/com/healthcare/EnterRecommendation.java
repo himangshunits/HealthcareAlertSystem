@@ -455,23 +455,23 @@ public class EnterRecommendation extends javax.swing.JFrame {
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         try{  
             Database.getInstance().addRecommendation(
-                    new Recommendation(Double.parseDouble(bpSystolicLow.getText().trim()), 
-                            Double.parseDouble(bpSystolicHigh.getText().trim()), 
-                            Double.parseDouble(bpDiastolicLow.getText().trim()),
-                            Double.parseDouble(bpDiastolicHigh.getText().trim()), 
+                    new Recommendation(Integer.parseInt(bpSystolicLow.getText().trim()), 
+                            Integer.parseInt(bpSystolicHigh.getText().trim()), 
+                            Integer.parseInt(bpDiastolicLow.getText().trim()),
+                            Integer.parseInt(bpDiastolicHigh.getText().trim()), 
                             Integer.parseInt(bpFrequency.getText().trim()), 
-                            Double.parseDouble(oxySatLow.getText().trim()), 
-                            Double.parseDouble(oxySatHigh.getText().trim()), 
+                            Float.parseFloat(oxySatLow.getText().trim()), 
+                            Float.parseFloat(oxySatHigh.getText().trim()), 
                             Integer.parseInt(oxySatFrequency.getText().trim()),
-                            Integer.parseInt(painLevel.getValue().toString().trim()), 
+                            painLevel.getValue().toString().trim(), 
                             Integer.parseInt(painLevelFrequency.getText().trim()), 
                             (String)mood.getSelectedItem(),
                             Integer.parseInt(moodFrequency.getText().trim()), 
-                            Double.parseDouble(temperatureLow.getText().trim()), 
-                            Double.parseDouble(temperatureHigh.getText().trim()), 
+                            Float.parseFloat(temperatureLow.getText().trim()), 
+                            Float.parseFloat(temperatureHigh.getText().trim()), 
                             Integer.parseInt(temperatureFrequency.getText().trim()), 
-                            Double.parseDouble(weightLow.getText().trim()), 
-                            Double.parseDouble(weightHigh.getText().trim()), 
+                            Float.parseFloat(weightLow.getText().trim()), 
+                            Float.parseFloat(weightHigh.getText().trim()), 
                             Integer.parseInt(weightFrequency.getText().trim())), mPatienUsername);
             JOptionPane.showMessageDialog(null, "Recommendation Entered Sucessfully!");
             this.dispose();

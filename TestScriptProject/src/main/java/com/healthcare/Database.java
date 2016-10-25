@@ -801,23 +801,23 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
         try {
             callableStatement = CONN.prepareCall(callAddObservation);
             callableStatement.setString(1, username);
-            callableStatement.setFloat(2, (float)newReco.bpDiastolicLow);
-            callableStatement.setFloat(3, (float)newReco.bpDiastolicHigh);
-            callableStatement.setFloat(4, (float)newReco.bpSystolicLow);
-            callableStatement.setFloat(5, (float)newReco.bpSystolicHigh);
+            callableStatement.setFloat(2, newReco.bpDiastolicLow);
+            callableStatement.setFloat(3, newReco.bpDiastolicHigh);
+            callableStatement.setFloat(4, newReco.bpSystolicLow);
+            callableStatement.setFloat(5, newReco.bpSystolicHigh);
             callableStatement.setInt(6, newReco.bpFrequency);            
-            callableStatement.setFloat(7, (float)newReco.oxySatLow);
-            callableStatement.setFloat(8, (float)newReco.oxySatHigh);
+            callableStatement.setFloat(7, newReco.oxySatLow);
+            callableStatement.setFloat(8, newReco.oxySatHigh);
             callableStatement.setInt(9, newReco.oxySatFrequency);
-            callableStatement.setInt(10, newReco.painLevel);
+            callableStatement.setString(10, newReco.painLevel);
             callableStatement.setInt(11, newReco.painLevelFrequency);
             callableStatement.setString(12, newReco.mood);
             callableStatement.setInt(13, newReco.moodFrequency);
-            callableStatement.setFloat(14, (float)newReco.temperatureLow);
-            callableStatement.setFloat(15, (float)newReco.temperatureHigh);
+            callableStatement.setFloat(14, newReco.temperatureLow);
+            callableStatement.setFloat(15, newReco.temperatureHigh);
             callableStatement.setInt(16, newReco.tempertureFrequency);
-            callableStatement.setFloat(17, (float)newReco.weightLow);
-            callableStatement.setFloat(18, (float)newReco.weightHigh);
+            callableStatement.setFloat(17, newReco.weightLow);
+            callableStatement.setFloat(18, newReco.weightHigh);
             callableStatement.setInt(19, newReco.weightFrequency);
             callableStatement.registerOutParameter(20, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(21, java.sql.Types.VARCHAR);
@@ -954,24 +954,24 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
             while(rset.next())
             {
                 ArrayList<Object> y = new ArrayList<Object>();
-                y.add(rset.getString(1));
-                y.add(rset.getInt(2));
-                y.add(rset.getString(3));
-                y.add(rset.getString(4));
-                y.add(rset.getFloat(5));
-                y.add(rset.getFloat(6));
-                y.add(rset.getInt(7));
-                y.add(rset.getFloat(8));
-                y.add(rset.getFloat(9));
-                y.add(rset.getInt(10));
-                y.add(rset.getFloat(11));
-                y.add(rset.getFloat(12));
-                y.add(rset.getFloat(13));
-                y.add(rset.getFloat(14));
-                y.add(rset.getInt(15));
-                y.add(rset.getFloat(16));
-                y.add(rset.getFloat(17));
-                y.add(rset.getInt(18));
+                y.add(rset.getString(1)); // pain_level
+                y.add(rset.getInt(2)); // pain_level_freq
+                y.add(rset.getString(3)); // mood
+                y.add(rset.getInt(4)); // mood_freq
+                y.add(rset.getFloat(5)); // temperature_low
+                y.add(rset.getFloat(6)); // temperature_high
+                y.add(rset.getInt(7)); // temperature_freq
+                y.add(rset.getFloat(8)); //weight_low
+                y.add(rset.getFloat(9)); // weight_high
+                y.add(rset.getInt(10)); // weight_freq
+                y.add(rset.getInt(11)); // bp_diastolic_low
+                y.add(rset.getInt(12)); // bp_d.._high
+                y.add(rset.getInt(13)); // bp_s.._low
+                y.add(rset.getInt(14)); // bp_s.._high
+                y.add(rset.getInt(15)); // bp_freq
+                y.add(rset.getFloat(16)); // oxy_low
+                y.add(rset.getFloat(17)); // oxy_high
+                y.add(rset.getInt(18)); // oxy_freq
                 result.add(y);
             } 
             ArrayList<Object> statusMessage = new ArrayList<>();
@@ -1016,7 +1016,7 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
         CallableStatement callableStatement = null;
         String message = "", status = "";
         String userDiseasesCall = "{call GET_OBSERVATIONS_FOR_USERNAME(?, ?, ?, ?)}";
-
+        Observation ob = null;
         try {
             callableStatement = CONN.prepareCall(userDiseasesCall);            
             callableStatement.setString(1, username);            
@@ -1030,7 +1030,7 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
             status = callableStatement.getNString(3);
             message = callableStatement.getNString(4);
             ResultSet rset = (ResultSet)callableStatement.getObject(2);
-            while(rset.next())
+            while(rset.next()) 
             {
                 ArrayList<Object> y = new ArrayList<Object>();
                 y.add(rset.getInt(1));
@@ -1070,7 +1070,64 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
         return result;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    Observation getLatestObservation(String username) {
+        Observation ob = null;
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String userDiseasesCall = "{call RETRIEVE_LAST_OBSERVATION(?, ?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(userDiseasesCall);            
+            callableStatement.setString(1, username);            
+            // out Parameters            
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
 
+            // execute getDBUSERByUserId store procedure
+            callableStatement.execute();
+            status = callableStatement.getNString(3);
+            message = callableStatement.getNString(4);
+            ResultSet rset = (ResultSet)callableStatement.getObject(2);
+            if(rset.next()) {
+                ob = new Observation(rset.getFloat("weight"),
+                rset.getInt("bp_diastolic"),
+                rset.getInt("bp_systolic"),
+                rset.getFloat("oxygen_saturation"),
+                rset.getString("pain_level"),
+                rset.getString("mood"),
+                rset.getFloat("temperature"),
+                rset.getDate("observed_on").toString(),
+                rset.getDate("recorded_on").toString()); 
+            }            
+            return ob;
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }       
+        return ob;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }
