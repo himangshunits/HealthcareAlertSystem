@@ -215,8 +215,10 @@ public class Diagnosis extends javax.swing.JFrame {
         Arrays.sort(toDelete); // be shure to have them in ascending order.
         NonEditableModel myTableModel = (NonEditableModel)diseaseTable.getModel();
         for(int ii = toDelete.length -1; ii >=0; ii--) {
-            myTableModel.removeRow(toDelete[ii]); // beginning at the largest.
+            db.deleteDisease(username, diseaseMap.get((String)(myTableModel.getValueAt(ii, 0))));
+            myTableModel.removeRow(toDelete[ii]);
         }
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 

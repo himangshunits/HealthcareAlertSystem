@@ -1049,6 +1049,55 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    ArrayList<String> deleteDisease(String username, Integer diseaseId) {
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String userDiseasesCall = "{call REMOVE_DISEASE_FOR_PATIENT(?, ?, ?, ?)}";
+
+        try {
+            callableStatement = CONN.prepareCall(userDiseasesCall);            
+            callableStatement.setString(1, username);            
+            callableStatement.setInt(2, diseaseId);
+            // out Parameters            
+            
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+
+            // execute getDBUSERByUserId store procedure
+            callableStatement.execute();
+
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+            
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }       
+        ArrayList<String> out = new ArrayList<String>();
+        out.add(status);
+        out.add(message);
+        return out;
+    }
+
     
     
 }
