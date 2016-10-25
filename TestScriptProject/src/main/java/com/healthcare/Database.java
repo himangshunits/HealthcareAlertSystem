@@ -376,11 +376,11 @@ public class Database {
             callableStatement = CONN.prepareCall(insertPersonDataCall);
 
             callableStatement.setString(1, map.get("name"));
-            String[] date = map.get("dob").split("-");
-            String[] today  = map.get("date").split("-");
-            String[] auth_date_1 = map.get("auth_date_1").split("-");
-            String[] auth_date_2 = map.get("auth_date_1").split("-");
-            callableStatement.setDate(2, new Date(Integer.parseInt(date[2])%100,Integer.parseInt(date[1]),Integer.parseInt(date[0])));
+            //String[] date = map.get("dob").split("-");
+            //String[] today  = map.get("date").split("-");
+            //String[] auth_date_1 = map.get("auth_date_1").split("-");
+            //String[] auth_date_2 = map.get("auth_date_1").split("-");
+            callableStatement.setDate(2, DateFormatManager.getSqlDateFromString(map.get("dob")));
             callableStatement.setString(3, map.get("gender"));
             callableStatement.setInt(4, Integer.parseInt(map.get("isSick")));
             callableStatement.setString(5, map.get("username"));
@@ -395,12 +395,12 @@ public class Database {
             callableStatement.setString(14, map.get("smobile"));
             callableStatement.setString(15, map.get("email"));
             callableStatement.setString(16, map.get("ssn"));
-            callableStatement.setDate(17, new Date(Integer.parseInt(today[0])%100,Integer.parseInt(today[1]),Integer.parseInt(today[2])));
+            callableStatement.setDate(17, DateFormatManager.getSqlDateFromString(map.get("date")));
             callableStatement.setString(18, map.get("supporter"));
-            callableStatement.setString(19, map.get("supporter1"));
+            callableStatement.setString(19, map.get("supporter2"));
             callableStatement.setInt(20, Integer.parseInt(map.get("disease_id")));
-            callableStatement.setDate(21, new Date(Integer.parseInt(auth_date_1[0])%100,Integer.parseInt(auth_date_1[1]),Integer.parseInt(auth_date_1[2])));
-            callableStatement.setDate(22, new Date(Integer.parseInt(auth_date_2[0])%100,Integer.parseInt(auth_date_2[1]),Integer.parseInt(auth_date_2[2])));
+            callableStatement.setDate(21, DateFormatManager.getSqlDateFromString(map.get("auth_date_1")));
+            callableStatement.setDate(22, DateFormatManager.getSqlDateFromString(map.get("auth_date_2")));
             // out Parameters
             callableStatement.registerOutParameter(23, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(24, java.sql.Types.VARCHAR);
@@ -741,30 +741,8 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
             callableStatement.setString(6, observation.mood);
             callableStatement.setFloat(7, observation.temperature);
             callableStatement.setFloat(8, observation.weight);
-            
-            try{
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-                java.util.Date utilDate = formatter.parse(observation.observedOn);
-                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-                callableStatement.setDate(9, sqlDate);
-            } catch(Exception e){
-                callableStatement.setDate(9, null);
-                System.out.println("Error in Observed On parse =" + e.getMessage());
-                e.printStackTrace();
-            }
-
-
-            try{
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-                java.util.Date utilDate = formatter.parse(observation.recordedOn);
-                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-                callableStatement.setDate(10, sqlDate);
-            } catch(Exception e){
-                callableStatement.setDate(10, null);
-                System.out.println("Error in Observed On parse =" + e.getMessage());
-                e.printStackTrace();
-            }
-            
+            callableStatement.setDate(9, DateFormatManager.getSqlDateFromString(observation.observedOn));
+            callableStatement.setDate(10, DateFormatManager.getSqlDateFromString(observation.recordedOn));
             callableStatement.registerOutParameter(11, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(12, java.sql.Types.VARCHAR);
             callableStatement.execute();
