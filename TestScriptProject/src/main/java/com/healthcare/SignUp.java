@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 package com.healthcare;
+import java.awt.HeadlessException;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -554,21 +555,22 @@ public class SignUp extends javax.swing.JFrame {
 
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
-        HashMap<String, String> map = new HashMap<String, String>();
+        HashMap<String, String> map;
+        map = new HashMap<>();
         map.put("password", new String(this.password.getPassword()));
         map.put("cpassword", new String(this.cpassword.getPassword()));
-        map.put("street", new String(this.street.getText().trim()));
-        map.put("apt", new String(this.apt.getText().trim()));
-        map.put("ssn", new String(this.ssn.getText().trim()));
-        map.put("city", new String(this.city.getText().trim()));
-        map.put("state", new String(this.state.getText().trim()));
-        map.put("country", new String(this.country.getText().trim()));
-        map.put("username", new String(this.username.getText().trim()));
-        map.put("name", new String(this.name.getText().trim()));
-        map.put("pmobile", new String(this.pmobile.getText().trim()));
-        map.put("smobile", new String(this.smobile.getText().trim()));
-        map.put("email", new String(this.email.getText().trim()));
-        map.put("zip", new String(this.zip.getText().trim()));
+        map.put("street", this.street.getText().trim());
+        map.put("apt", this.apt.getText().trim());
+        map.put("ssn", this.ssn.getText().trim());
+        map.put("city", this.city.getText().trim());
+        map.put("state", this.state.getText().trim());
+        map.put("country", this.country.getText().trim());
+        map.put("username", this.username.getText().trim());
+        map.put("name", this.name.getText().trim());
+        map.put("pmobile", this.pmobile.getText().trim());
+        map.put("smobile", this.smobile.getText().trim());
+        map.put("email", this.email.getText().trim());
+        map.put("zip", this.zip.getText().trim());
         map.put("supporter", (String)(this.supporters.getSelectedItem()));
         map.put("supporter2", (String)(this.supporters2.getSelectedItem()));
         String dName = (String)(this.diseaseName.getSelectedItem());
@@ -597,9 +599,6 @@ public class SignUp extends javax.swing.JFrame {
         } else {
             map.put("isSick", "0");
         }
-        //map.put("isSick", "0");
-        
-
         String auth_date_1 = (String)ayear.getSelectedItem() + 
                 "/" + (String)amonth.getSelectedItem() + "/" + (String)aday.getSelectedItem();
         String auth_date_2 = (String)ayear1.getSelectedItem() + 
@@ -612,9 +611,8 @@ public class SignUp extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, o1.get(1));
             if(o1.get(0).equals("SUCCESS"))
                 this.dispose();
-        } catch(Exception e){
+        } catch(HeadlessException | SQLException e){
             JOptionPane.showMessageDialog(null, e.getMessage());
-            e.printStackTrace();
         }
     }//GEN-LAST:event_submitActionPerformed
 
@@ -624,7 +622,6 @@ public class SignUp extends javax.swing.JFrame {
 
     private void genderMaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderMaleActionPerformed
         // TODO add your handling code here:
-
     }//GEN-LAST:event_genderMaleActionPerformed
 
     private void isSickYesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isSickYesActionPerformed
