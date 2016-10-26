@@ -5,6 +5,7 @@
  */
 package com.healthcare;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -75,40 +76,130 @@ public class AlertManager {
             e.printStackTrace();
         }
         
-        
         // Outside_the_limit threshold alert
-        if (recommendation.temperatureLow != null && isOutside(recommendation.bpDiastolicLow, recommendation.bpDiastolicHigh, observation.bpDiastolic)) {
-            //create alert id 7
-        } 
         if (recommendation.weightLow != null && isOutside(recommendation.weightLow, recommendation.weightHigh, observation.weight)) {
             // create alert id 1
+            String alertReason;
+            if (recommendation.weightLow > observation.weight) {
+                alertReason = "Patient's weight is "+ (recommendation.weightLow - observation.weight) + " lesser than the lower limit.";
+            } else {
+                alertReason = "Patient's weight is "+ (observation.weight - recommendation.weightHigh) + " higher than the upper limit.";
+            }
+            try {
+                this.mDb.createAlert(patientName, 1, alertReason);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         } 
         if (recommendation.bpDiastolicLow != null && isOutside(recommendation.bpDiastolicLow, recommendation.bpDiastolicHigh, observation.bpDiastolic)) {
             // create alert id 2
+            String alertReason;
+            if (recommendation.bpDiastolicLow > observation.bpDiastolic) {
+                alertReason = "Patient's diastolic pressure is "+ (recommendation.bpDiastolicLow - observation.bpDiastolic) + " lesser than the lower limit.";
+            } else {
+                alertReason = "Patient's diastolic pressure is "+ (observation.bpDiastolic - recommendation.bpDiastolicHigh) + " higher than the upper limit.";
+            }
+            try {
+                this.mDb.createAlert(patientName, 2, alertReason);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         if (recommendation.bpSystolicLow != null && isOutside(recommendation.bpSystolicLow, recommendation.bpSystolicHigh, observation.bpSystolic)) {
             // create alert id 3
+            String alertReason;
+            if (recommendation.bpSystolicLow > observation.bpSystolic) {
+                alertReason = "Patient's systolic pressure is "+ (recommendation.bpSystolicLow - observation.bpSystolic) + " lesser than the lower limit.";
+            } else {
+                alertReason = "Patient's systolic pressure is "+ (observation.bpSystolic - recommendation.bpSystolicHigh) + " higher than the upper limit.";
+            }
+            try {
+                this.mDb.createAlert(patientName, 3, alertReason);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         } 
         if (recommendation.oxySatFrequency != null && isOutside(recommendation.oxySatLow, recommendation.oxySatHigh, observation.oxygenSat)) {
             // create alert id 4
+            String alertReason;
+            if (recommendation.oxySatLow > observation.oxygenSat) {
+                alertReason = "Patient's oxygen saturation is "+ (recommendation.oxySatLow - observation.oxygenSat) + " lesser than the lower limit.";
+            } else {
+                alertReason = "Patient's oxygen saturation is "+ (observation.oxygenSat - recommendation.oxySatHigh) + " higher than the upper limit.";
+            }
+            try {
+                this.mDb.createAlert(patientName, 1, alertReason);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (recommendation.temperatureLow != null && isOutside(recommendation.bpDiastolicLow, recommendation.bpDiastolicHigh, observation.bpDiastolic)) {
+            //create alert id 7
+            String alertReason;
+            if (recommendation.temperatureLow > observation.temperature) {
+                alertReason = "Patient's temperature is "+ (recommendation.temperatureLow - observation.temperature) + " lesser than the lower limit.";
+            } else {
+                alertReason = "Patient's temperature is "+ (observation.weight - recommendation.temperatureHigh) + " higher than the upper limit.";
+            }
+            try {
+                this.mDb.createAlert(patientName, 7, alertReason);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }// Low_activity_alert
         if (recommendation.weightFrequency != null && isLowFrequency(daysDiff, recommendation.weightFrequency)) {
             // create alert id 8
+            String alertReason = "Patient's weight has not been entered from " + daysDiff + " days.";
+            try {
+                this.mDb.createAlert(patientName, 8, alertReason);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         if (recommendation.bpFrequency != null && isLowFrequency(daysDiff, recommendation.bpFrequency)) {
             // create alert id 9
+            String alertReason = "Patient's blood pressure has not been entered from " + daysDiff + " days.";
+            try {
+                this.mDb.createAlert(patientName, 9, alertReason);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         if (recommendation.oxySatFrequency != null && isLowFrequency(daysDiff, recommendation.oxySatFrequency)) {
             // create alert id 10
+            String alertReason = "Patient's oxygen saturation has not been entered from " + daysDiff + " days.";
+            try {
+                this.mDb.createAlert(patientName, 10, alertReason);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         if (recommendation.painLevelFrequency != null && isLowFrequency(daysDiff, recommendation.painLevelFrequency)) {
             // create alert id 11
+            String alertReason = "Patient's pain level has not been entered from " + daysDiff + " days.";
+            try {
+                this.mDb.createAlert(patientName, 11, alertReason);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         if (recommendation.moodFrequency != null && isLowFrequency(daysDiff, recommendation.moodFrequency)) {
             // create alert id 12
+            String alertReason = "Patient's mood has not been entered from " + daysDiff + " days.";
+            try {
+                this.mDb.createAlert(patientName, 12, alertReason);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         if (recommendation.tempertureFrequency != null && isLowFrequency(daysDiff, recommendation.tempertureFrequency)) {
             // create alert id 13
+            String alertReason = "Patient's temperature has not been entered from " + daysDiff + " days.";
+            try {
+                this.mDb.createAlert(patientName, 13, alertReason);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -124,7 +215,4 @@ public class AlertManager {
     private boolean isLowFrequency(long daysDiff, Integer painLevelFrequency) {
         return daysDiff > painLevelFrequency;
     }
-    
-    
-    
 }

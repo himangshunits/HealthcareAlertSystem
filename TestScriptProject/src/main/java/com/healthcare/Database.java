@@ -1152,6 +1152,7 @@ public class Database {
         out.add(status);
         out.add(message);
         return out;
+
     }
     
     
@@ -1234,7 +1235,40 @@ public class Database {
         out.add(status);
         out.add(message);
         return out;
+    } 
+    
+    
+    public void createAlert(String username, Integer alertId, String alertReason) throws SQLException{
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String callAddObservation = "{call CREATE_ALERT(?, ?, ?, ?, ?, ?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(callAddObservation);
+            callableStatement.setString(1, username);
+            callableStatement.setInt(2, alertId);
+            callableStatement.setDate(3, DateFormatManager.getSqlDateFromJavaDate(new java.util.Date()));
+            callableStatement.setInt(4, 1);
+            callableStatement.setInt(5, 0);
+            callableStatement.setString(6, alertReason);
+            callableStatement.registerOutParameter(7, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(8, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getString(7);
+            message = callableStatement.getString(8);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStatement != null) {
+                callableStatement.close();
+            }
+
+            if (dbConnection != null) {
+                CONN.close();
+            }
+        }
     }
-    
-    
+
 }
