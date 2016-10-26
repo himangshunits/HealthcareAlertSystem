@@ -5,9 +5,12 @@
  */
 package com.healthcare;
 
+import java.awt.HeadlessException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JFrame;
@@ -23,19 +26,14 @@ public class Profile extends javax.swing.JFrame {
     /**
      * Creates new form Profile
      */
-    HashMap<String, Object> map;
+    Person person;
     Database db;
+    private HashMap<String, Integer> diseaseMap;
 
-    public void populateFields(String username) {
+    public Profile(String username) 
+    {
         db = Database.getInstance();
-        map = db.getProfile(username);
-    }
-
-    public Profile(String username) {
-        populateFields(username);
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            System.out.println(entry.getKey() + " " + entry.getValue().toString());
-        }
+        person = db.getProfile(username);    
         initComponents();
     }
 
@@ -99,59 +97,112 @@ public class Profile extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel7 = new javax.swing.JLabel();
-        genderFemale = new javax.swing.JRadioButton();
-        genderMale = new javax.swing.JRadioButton();
-        jLabel8 = new javax.swing.JLabel();
-        zip = new javax.swing.JTextField(map.get("zipcode").toString());
-        months = new javax.swing.JComboBox();
-        jLabel12 = new javax.swing.JLabel();
-        years = new javax.swing.JComboBox();
-        days = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        street = new javax.swing.JTextField(map.get("address_line_1").toString());
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        auth_year = new javax.swing.JComboBox<>();
         nameLbl = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         dobLbl = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        name = new javax.swing.JTextField((String)map.get("name"));
-        jLabel6 = new javax.swing.JLabel();
+        name = new javax.swing.JTextField(person.name);
         genderLbl = new javax.swing.JLabel();
-        apt = new javax.swing.JTextField(map.get("address_line_2").toString());
-        city = new javax.swing.JTextField(map.get("city").toString());
-        state = new javax.swing.JTextField(map.get("state").toString());
-        country = new javax.swing.JTextField(map.get("country").toString());
-        passwordLbl = new javax.swing.JLabel();
-        pmobile = new javax.swing.JTextField(map.get("phone_1").toString());
+        isSickLbl = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        diseaseName = new javax.swing.JComboBox<>();
+        jLabel15 = new javax.swing.JLabel();
+        usernameLbl = new javax.swing.JLabel();
+        auth_day1 = new javax.swing.JComboBox<>();
+        auth_month1 = new javax.swing.JComboBox<>();
+        genderFemale = new javax.swing.JRadioButton();
+        auth_year1 = new javax.swing.JComboBox<>();
+        genderMale = new javax.swing.JRadioButton();
+        isSickYes = new javax.swing.JRadioButton();
+        isSickNo = new javax.swing.JRadioButton();
+        jLabel2 = new javax.swing.JLabel();
+        months = new javax.swing.JComboBox();
+        years = new javax.swing.JComboBox();
+        String[] dateString = DateFormatManager.getYearMonthDayFromDate(person.dob);
+        days = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
+        address1 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        address2 = new javax.swing.JTextField();
+        city = new javax.swing.JTextField();
+        state = new javax.swing.JTextField();
+        country = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        ssn = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        phone1 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        smobile = new javax.swing.JTextField(map.get("phone_2").toString());
+        phone2 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
+        email_id = new javax.swing.JTextField();
+        zipcode = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        auth_day = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        auth_month = new javax.swing.JComboBox<>();
         submit = new javax.swing.JToggleButton();
-        cpasswordLbl = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        ssn = new javax.swing.JTextField(map.get("ssn").toString());
-        password = new javax.swing.JTextField();
-        cpassword = new javax.swing.JTextField();
-        email = new javax.swing.JTextField(map.get("email_id").toString());
-        name1 = new javax.swing.JTextField((String)map.get("name"));
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+
+        buttonGroup2.add(isSickYes);
+        buttonGroup2.add(isSickNo);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel7.setText("Apt No");
+        auth_year.setModel(new javax.swing.DefaultComboBoxModel<>(getYears()));
+
+        nameLbl.setText("Name:");
+
+        dobLbl.setText("Date of Birth:");
+
+        genderLbl.setText("Gender:");
+
+        isSickLbl.setText("Are you Sick?");
+
+        jLabel14.setText("Health Supporter 2");
+
+        jLabel16.setText("Disease");
+
+        HashMap<String, Integer> tempMap = db.getDiseases();
+
+        this.diseaseMap = tempMap;
+        String[] populateDiseaseNames = new String[tempMap.size()];
+        int i = 0;
+        for(String item:tempMap.keySet()){
+            populateDiseaseNames[i] = item;
+            i++;
+        }
+        diseaseName.setModel(new javax.swing.DefaultComboBoxModel<>(populateDiseaseNames));
+        diseaseName.setEnabled(false);
+
+        jLabel15.setText("Authorization Date of 2");
+
+        usernameLbl.setText("Username:");
+
+        auth_day1.setModel(new javax.swing.DefaultComboBoxModel<>(getDays()));
+
+        auth_month1.setModel(new javax.swing.DefaultComboBoxModel<>(getMonths()));
 
         genderFemale.setText("Female");
+        buttonGroup1.add(genderFemale);
         genderFemale.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 genderFemaleActionPerformed(evt);
             }
         });
 
-        if(((String)map.get("gender")).equals("MALE"))
+        auth_year1.setModel(new javax.swing.DefaultComboBoxModel<>(getYears()));
+
+        genderMale.setText("Male");
+        if(person.gender.equals("MALE"))
         {
             genderMale.setSelected(true);
         }
@@ -159,280 +210,352 @@ public class Profile extends javax.swing.JFrame {
         {
             genderFemale.setSelected(true);
         }
-        genderMale.setText("Male");
+        buttonGroup1.add(genderMale);
         genderMale.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 genderMaleActionPerformed(evt);
             }
         });
 
-        jLabel8.setText("SSN");
+        isSickYes.setText("Yes");
+        if(person.is_sick)
+        isSickYes.setSelected(true);
+        else
+        isSickNo.setSelected(true);
+        isSickYes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                isSickYesActionPerformed(evt);
+            }
+        });
+        buttonGroup2.add(isSickYes);
+        if(isSickYes.isSelected())
+        diseaseName.setEnabled(true);
+
+        isSickNo.setText("No");
+        isSickNo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                isSickNoActionPerformed(evt);
+            }
+        });
+        buttonGroup2.add(isSickNo);
+
+        jLabel2.setText("Health Supporter 1");
 
         months.setModel(new javax.swing.DefaultComboBoxModel<>(getMonths()));
-        days.setSelectedItem(((java.util.Date)(map.get("date_of_birth"))).getMonth());
+        months.setSelectedItem(dateString[1]);
         months.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 monthsActionPerformed(evt);
             }
         });
 
-        jLabel12.setText("Zipcode");
-
         years.setModel(new javax.swing.DefaultComboBoxModel<>(getYears()));
-        days.setSelectedItem(((java.util.Date)(map.get("date_of_birth"))).getYear());
+        years.setSelectedItem(dateString[0]);
 
         days.setModel(new javax.swing.DefaultComboBoxModel<>(getDays()));
-        days.setSelectedItem(((java.util.Date)(map.get("date_of_birth"))).getDay());
-
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Please add these fields:");
+        days.setSelectedItem(dateString[2]);
 
         jLabel3.setText("Street");
 
-        nameLbl.setText("Name:");
+        address1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                address1ActionPerformed(evt);
+            }
+        });
+        address1.setText(person.address1);
 
         jLabel4.setText("City");
-
-        dobLbl.setText("Date of Birth:");
 
         jLabel5.setText("State");
 
         jLabel6.setText("Country");
 
-        genderLbl.setText("Gender:");
-
-        apt.addActionListener(new java.awt.event.ActionListener() {
+        address2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aptActionPerformed(evt);
+                address2ActionPerformed(evt);
             }
         });
+        address2.setText(person.address2);
 
-        passwordLbl.setText("Password:");
+        city.setText(person.city);
+
+        state.setText(person.state);
+
+        country.setText(person.country);
+
+        jLabel7.setText("Apt No");
+
+        ssn.setText(person.ssn);
+
+        jLabel8.setText("SSN");
+
+        phone1.setText(person.phone1);
 
         jLabel9.setText("Primary Contact No");
 
         jLabel10.setText("Secondary Contact No");
 
+        phone2.setText(person.phone2);
+
         jLabel11.setText("Email Address");
 
-        submit.setText("Update");
+        email_id.setText(person.email_id);
+
+        zipcode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zipcodeActionPerformed(evt);
+            }
+        });
+        zipcode.setText(person.zipcode);
+
+        jLabel12.setText("Zipcode");
+
+        jLabel13.setText("Authorization Date of 1");
+
+        auth_day.setModel(new javax.swing.DefaultComboBoxModel<>(getDays()));
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Your Profile");
+
+        auth_month.setModel(new javax.swing.DefaultComboBoxModel<>(getMonths()));
+
+        submit.setText("Submit");
         submit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 submitActionPerformed(evt);
             }
         });
 
-        cpasswordLbl.setText("Confirm Password:");
-
-        jLabel14.setText("Health Supporter 1:");
-
-        jLabel15.setText("Health Supporter 2:");
-
-        jButton1.setText("Back");
+        jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
+        jLabel17.setText("Supporter 1");
+
+        jLabel18.setText("Supporter 2");
+
+        jLabel19.setText(person.username);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(69, 69, 69)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(apt, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(street, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                        .addComponent(jLabel3)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8))
+                        .addGap(69, 69, 69)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(address2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(address1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(ssn, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(35, 35, 35)
+                                .addComponent(city, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(usernameLbl)
+                                .addComponent(jLabel10)
+                                .addComponent(jLabel11)
+                                .addComponent(jLabel9)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel10)
-                                                .addComponent(jLabel11)
-                                                .addComponent(jLabel9)
-                                                .addComponent(passwordLbl)
-                                                .addComponent(cpasswordLbl))
-                                            .addGap(46, 46, 46))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel4)
-                                            .addGap(27, 27, 27)
-                                            .addComponent(city, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel5)
-                                            .addGap(18, 18, 18)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(genderLbl)
-                                        .addGap(161, 161, 161)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(cpassword, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
-                                            .addComponent(password)
-                                            .addComponent(email)
-                                            .addComponent(smobile))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE))
-                                    .addComponent(pmobile)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(state, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(country, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel12)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(zip))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(8, 8, 8)
-                                        .addComponent(genderFemale)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(jButton1)
+                                .addGap(3, 3, 3)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(state, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(country, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(zipcode))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(71, 71, 71)
+                                .addComponent(jLabel19)
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addComponent(jLabel14)
+                        .addGap(92, 92, 92)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(dobLbl))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(name)
+                            .addComponent(phone2)
+                            .addComponent(phone1)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(genderMale)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(days, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(months, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(years, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ssn))))
+                                        .addComponent(years, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(genderMale)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(genderFemale))
+                                    .addComponent(email_id, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(isSickYes)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(isSickNo)
+                                        .addGap(65, 65, 65)
+                                        .addComponent(jLabel16)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(diseaseName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel14)
-                            .addComponent(nameLbl))
-                        .addGap(84, 84, 84)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameLbl)
+                            .addComponent(genderLbl)
+                            .addComponent(isSickLbl)
+                            .addComponent(dobLbl)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(name1)
-                                .addGap(65, 65, 65)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(name))))
+                                .addComponent(jLabel13)
+                                .addGap(34, 34, 34)
+                                .addComponent(auth_day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(auth_month, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(auth_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(auth_day1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(auth_month1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(auth_year1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel18)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addGap(96, 96, 96)
+                                    .addComponent(jLabel17))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(78, 78, 78)
+                .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(128, 128, 128))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(89, 89, 89)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addGap(5, 5, 5)
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nameLbl)
+                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nameLbl))
-                        .addGap(3, 3, 3)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel14)
-                            .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel15))
-                    .addComponent(name1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(days, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(months, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(years, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dobLbl))
-                .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dobLbl)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(years, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(days, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(months, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(genderLbl)
-                    .addComponent(genderMale)
-                    .addComponent(genderFemale))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(genderFemale)
+                        .addComponent(genderMale)))
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(isSickLbl)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(isSickYes)
+                        .addComponent(isSickNo)
+                        .addComponent(jLabel16)
+                        .addComponent(diseaseName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel17))
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(ssn, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel18))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(auth_day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(auth_month, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(auth_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15)
+                    .addComponent(auth_day1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(auth_month1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(auth_year1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 24, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ssn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(street, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(address1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(apt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(address2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(city, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(state, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(country, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addComponent(zipcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 52, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(city, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
-                            .addComponent(pmobile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(phone1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabel10)
                         .addGap(18, 18, 18)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(smobile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(passwordLbl)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(cpasswordLbl)
-                                    .addComponent(cpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addGap(17, 17, 17))
-                            .addComponent(submit, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(state, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(country, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12)
-                            .addComponent(zip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(usernameLbl)
+                            .addComponent(jLabel19)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(phone2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(email_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(submit)
+                    .addComponent(jButton1))
+                .addGap(12, 12, 12))
         );
 
         pack();
@@ -446,101 +569,99 @@ public class Profile extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_genderMaleActionPerformed
 
+    private void isSickYesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isSickYesActionPerformed
+        diseaseName.setEnabled(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_isSickYesActionPerformed
+
+    private void isSickNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isSickNoActionPerformed
+        diseaseName.setEnabled(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_isSickNoActionPerformed
+
     private void monthsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_monthsActionPerformed
 
-    private void aptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aptActionPerformed
+    private void address1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_address1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_aptActionPerformed
+    }//GEN-LAST:event_address1ActionPerformed
+
+    private void address2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_address2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_address2ActionPerformed
+
+    private void zipcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zipcodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_zipcodeActionPerformed
 
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
+        /*
+        Date dob = DateFormatManager.getDate((String)days.getSelectedItem(), (String)months.getSelectedItem(), (String)years.getSelectedItem());
+        String gender = genderMale.isSelected() ? "MALE" : "FEMALE" ;
+        Person person = new Person(username.getText(), 
+                name.getText(), 
+                dob,
+                gender, 
+                ssn.getText(), 
+                email.getText(),
+                pmobile.getText(),
+                smobile.getText(),
+                address1.getText(),
+                address2.getText(),
+                city.getText(),
+                state.getText(),
+                zip.getText(),
+                country.getText());
+   
+        String dName = (String)(this.diseaseName.getSelectedItem());
 
-        HashMap<String, String> map2 = new HashMap<String, String>();
-        map2.put("password", new String(this.password.getText()));
-        map2.put("cpassword", new String(this.cpassword.getText()));
-        map2.put("street", new String(this.street.getText().trim()));
-        map2.put("apt", new String(this.apt.getText().trim()));
-        //map2.put("ssn", new String(this.ssn.getText().trim()));
-        map2.put("city", new String(this.city.getText().trim()));
-        map2.put("state", new String(this.state.getText().trim()));
-        map2.put("country", new String(this.country.getText().trim()));
-        map2.put("name", new String(this.name.getText().trim()));
-        map2.put("pmobile", new String(this.pmobile.getText().trim()));
-        map2.put("smobile", new String(this.smobile.getText().trim()));
-        map2.put("email", new String(this.email.getText().trim()));
-        map2.put("zip", new String(this.zip.getText().trim()));
-        String day = (String) days.getSelectedItem();
-        String month = (String) months.getSelectedItem();
-        String year = (String) years.getSelectedItem();
-        map2.put("dob", day + "-" + month + "-" + year);
-        if (this.genderMale.isSelected()) {
-            map2.put("gender", "MALE");
+        map.put("disease_id", diseaseMap.get(dName).toString());
+
+        java.util.Date date = new java.util.Date();
+        String modifiedDate = new SimpleDateFormat("yyyy/MM/dd").format(date);
+        map.put("date", modifiedDate);
+        String day = (String)days.getSelectedItem();
+        String month = (String)months.getSelectedItem();
+        String year = (String)years.getSelectedItem();
+        map.put("dob", year + "/" + month + "/" + day);
+        if(this.genderMale.isSelected())
+        {
+            map.put("gender", "MALE");
+        }
+        else
+        {
+            map.put("gender", "FEMALE");
+        }
+
+        if(this.isSickYes.isSelected()){
+            map.put("isSick", "1");
         } else {
-            map2.put("gender", "FEMALE");
+            map.put("isSick", "0");
         }
-
-        map2.put("isSick", "0");
-
-        
-        if (validateForm(map2)) {
-            Database db = Database.getInstance();
-            System.out.println("Update Person");
-            /*
-            ArrayList<String> o1 = null, o2 = null, o3 = null;
-            try {
-                
-                //o1 = updatePerson(map2);
-                //o1 = db.addPerson(map);
-            } catch (SQLException ex) {
-                Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (this.isSickYes.isSelected()) {
-                try {
-                    o2 = db.addHealthSupporter(map.get("username"), map.get("supporter"), getDate(auth_date));
-                    o3 = db.toggleIsSick(map.get("username"));
-                } catch (Exception e) {
-
-                }
-
-            }
-            if (o1.get(0).equals("SUCCESS") && (o2 == null || o2.get(0).equals("SUCCESS")) && (o2 == null || o3.get(0).equals("SUCCESS"))) {
-
-                JOptionPane.showMessageDialog(null, o1.get(1));
-                Main m = new Main(db);
-                m.setVisible(true);
-                this.dispose();
-            } else {
-                try {
-                    //TODO: how to effectively rollback
-                    db.removePerson(map2.get("username"));
-                } catch (SQLException ex) {
-                    Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                //db.removeHealthSupporter(map.get("username"), map.get("supporter"));
-                if (!o1.get(0).equals("SUCCESS")) {
-                    JOptionPane.showMessageDialog(null, o1.get(1));
-                } else if (o2 != null && !o2.get(0).equals("SUCCESS")) {
-                    JOptionPane.showMessageDialog(null, o2.get(1));
-                } else if (o3 != null && !o3.get(0).equals("SUCCESS")) {
-                    JOptionPane.showMessageDialog(null, o3.get(1));
-                }
-            }*/
+        String auth_date_1 = (String)auth_year.getSelectedItem() +
+        "/" + (String)auth_month.getSelectedItem() + "/" + (String)auth_day.getSelectedItem();
+        String auth_date_2 = (String)auth_year1.getSelectedItem() +
+        "/" + (String)auth_month1.getSelectedItem() + "/" + (String)auth_day1.getSelectedItem();
+        map.put("auth_date_1", auth_date_1);
+        // TODO Capture the auth date 2
+        map.put("auth_date_2", auth_date_2);
+        try {
+            ArrayList<String> o1 = db.addPerson(person);
+            JOptionPane.showMessageDialog(null, o1.get(1));
+            if(o1.get(0).equals("SUCCESS"))
+            this.dispose();
+        } catch(HeadlessException e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
+        */
     }//GEN-LAST:event_submitActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        //new Main().setVisible(true);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
     private String[] getMonths() {
         String months[] = new String[12];
         for (int i = 0; i < 12; i++) {
@@ -576,24 +697,41 @@ public class Profile extends javax.swing.JFrame {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField apt;
+    private javax.swing.JTextField address1;
+    private javax.swing.JTextField address2;
+    private javax.swing.JComboBox<String> auth_day;
+    private javax.swing.JComboBox<String> auth_day1;
+    private javax.swing.JComboBox<String> auth_month;
+    private javax.swing.JComboBox<String> auth_month1;
+    private javax.swing.JComboBox<String> auth_year;
+    private javax.swing.JComboBox<String> auth_year1;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JTextField city;
     private javax.swing.JTextField country;
-    private javax.swing.JTextField cpassword;
-    private javax.swing.JLabel cpasswordLbl;
     private javax.swing.JComboBox<String> days;
+    private javax.swing.JComboBox<String> diseaseName;
     private javax.swing.JLabel dobLbl;
-    private javax.swing.JTextField email;
+    private javax.swing.JTextField email_id;
     private javax.swing.JRadioButton genderFemale;
     private javax.swing.JLabel genderLbl;
     private javax.swing.JRadioButton genderMale;
+    private javax.swing.JLabel isSickLbl;
+    private javax.swing.JRadioButton isSickNo;
+    private javax.swing.JRadioButton isSickYes;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -601,20 +739,16 @@ public class Profile extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JComboBox<String> months;
     private javax.swing.JTextField name;
-    private javax.swing.JTextField name1;
     private javax.swing.JLabel nameLbl;
-    private javax.swing.JTextField password;
-    private javax.swing.JLabel passwordLbl;
-    private javax.swing.JTextField pmobile;
-    private javax.swing.JTextField smobile;
+    private javax.swing.JTextField phone1;
+    private javax.swing.JTextField phone2;
     private javax.swing.JTextField ssn;
     private javax.swing.JTextField state;
-    private javax.swing.JTextField street;
     private javax.swing.JToggleButton submit;
+    private javax.swing.JLabel usernameLbl;
     private javax.swing.JComboBox<String> years;
-    private javax.swing.JTextField zip;
+    private javax.swing.JTextField zipcode;
     // End of variables declaration//GEN-END:variables
 }

@@ -19,6 +19,11 @@
             <artifactId>commons-validator</artifactId>
             <version>1.5.1</version>
         </dependency>
+        <dependency>
+            <groupId>asdas</groupId>
+            <artifactId>asdasd</artifactId>
+            <version>asdasd</version>
+        </dependency>
     </dependencies>
     <properties>
         <maven.compiler.source>9</maven.compiler.source>

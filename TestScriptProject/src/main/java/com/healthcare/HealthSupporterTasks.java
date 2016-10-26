@@ -130,7 +130,7 @@ public class HealthSupporterTasks extends javax.swing.JFrame {
 
         PatientName.setText(patient.name);
 
-        PatientDOB.setText(patient.dob);
+        PatientDOB.setText(patient.getDateOfBirth());
 
         PatientGender.setText(patient.gender);
 

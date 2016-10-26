@@ -155,6 +155,7 @@ public class SignUp extends javax.swing.JFrame {
 
         gender.add(genderMale);
         gender.add(genderFemale);
+        gender.clearSelection();
 
         isSick.add(isSickYes);
         isSick.add(isSickNo);
@@ -188,6 +189,7 @@ public class SignUp extends javax.swing.JFrame {
         passwordLbl.setText("Password:");
 
         genderFemale.setText("Female");
+        gender.add(genderFemale);
         genderFemale.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 genderFemaleActionPerformed(evt);
@@ -195,6 +197,7 @@ public class SignUp extends javax.swing.JFrame {
         });
 
         genderMale.setText("Male");
+        gender.add(genderMale);
         genderMale.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 genderMaleActionPerformed(evt);
@@ -498,7 +501,7 @@ public class SignUp extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ssn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(street, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))

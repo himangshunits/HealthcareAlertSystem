@@ -1,8 +1,6 @@
 package com.healthcare;
 
-import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -225,13 +223,13 @@ public class Database {
         out.add(category);
         return out;
     }
-    HashMap<String, Object> getProfile(String username)
+    Person getProfile(String username)
     {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
         String showProfileCall = "{call SHOW_PROFILE(?, ?, ?, ?)}";
-        HashMap<String, Object> map = new HashMap<String, Object>();
+        Person person = null;
         try 
         {
             callableStatement = CONN.prepareCall(showProfileCall);
@@ -242,58 +240,14 @@ public class Database {
             callableStatement.execute();
             ResultSet rset = (ResultSet)callableStatement.getObject(4);
             rset.next();
-            ResultSetMetaData rsmd = rset.getMetaData();
-            int numberOfColumns = rsmd.getColumnCount();
-            for(int i=1;i<=numberOfColumns;i++)
-            {
-                System.out.println(rsmd.getColumnName(i));
-                System.out.println("--------------");
-                System.out.println(rset.getObject(rsmd.getColumnName(i)));
-                map.put(rsmd.getColumnName(i),rset.getObject(rsmd.getColumnName(i)));
-            }
-            status = callableStatement.getString(2);
-            message = callableStatement.getString(3);            
-
-        } catch (SQLException e) {
-
-            System.out.println(e.getMessage());
-
-        } finally {
-
-            if (callableStatement != null) {
-                try {
-                    callableStatement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-            if (dbConnection != null) {
-                try {
-                    CONN.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        //TODO: proc to insert person
-        //String s = "INSERT INTO PERSON VALUES (4, '%s',TO_DATE ('%s', 'yyyy/mm/dd hh24:mi:ss'),'%s',%s,'%s','%s')";
-        //String query = String.format(s, map.get("name"), map.get("dob"), map.get("gender"), map.get("isSick"), map.get("username"), map.get("password"));
-         /*      
-        try
-        {
-            Statement stmt = db.conn.createStatement();
-            stmt.executeUpdate(query);
-        }
-        catch(Exception e)
+            person = new Person(rset);
+            person.username = username;
+        } 
+        catch (SQLException e) 
         {
             
         }
-        System.out.println(query);
-        */
-        
-        map.put(status, message);
-        return map;
+        return person;
     }
     String[] getSupporters()
     {

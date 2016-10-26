@@ -5,6 +5,7 @@
  */
 package com.healthcare;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 /**
@@ -12,6 +13,7 @@ import java.text.SimpleDateFormat;
  * @author Himangshu
  */
 public class DateFormatManager {
+    
     public static java.sql.Date getSqlDateFromString(String date){
         try{
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
@@ -48,6 +50,11 @@ public class DateFormatManager {
         result[1] = String.valueOf(month);
         result[2] = String.valueOf(day);
         return result;
+    }
+
+    static Date getDate(String day, String month, String year) {
+        Date date = new Date(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+        return date;
     }
     
     
