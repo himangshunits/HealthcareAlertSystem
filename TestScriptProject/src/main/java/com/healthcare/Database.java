@@ -1223,4 +1223,45 @@ public class Database {
         }
     }
 
+    ArrayList<String> updateProfile(Person person) {
+        ArrayList<String> result = new ArrayList<>();
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        System.out.println(person.toString());
+        String updateProfileCall = "{call UPDATE_PROFILE(?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        try {
+            callableStatement = CONN.prepareCall(updateProfileCall);
+            callableStatement.setString (1,  person.name);
+            callableStatement.setDate   (2,  person.dob);
+            callableStatement.setString (3,  person.gender);
+            callableStatement.setString (4,  person.username);
+            callableStatement.setString (5,  person.address1);
+            callableStatement.setString (6,  person.address2);
+            callableStatement.setString (7,  person.city);
+            callableStatement.setString (8,  person.country);
+            callableStatement.setString (9, person.zipcode);
+            callableStatement.setString (10, person.state);
+            callableStatement.setString (11, person.phone1);
+            callableStatement.setString (12, person.phone2);
+            callableStatement.setString (13, person.email_id);
+            callableStatement.setString (14, person.ssn);
+                     
+            callableStatement.registerOutParameter(15, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(16, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getString(15);
+            message = callableStatement.getString(16);
+            System.out.println("Status : " + status + "\nMessage : " + message);
+            
+            result.add(status);
+            result.add(message);
+
+            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
+
 }

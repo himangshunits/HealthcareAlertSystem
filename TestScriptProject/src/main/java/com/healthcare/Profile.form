@@ -4,11 +4,6 @@
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
     </Component>
-    <Component class="javax.swing.ButtonGroup" name="buttonGroup2">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="buttonGroup2.add(isSickYes);&#xa;buttonGroup2.add(isSickNo);"/>
-      </AuxValues>
-    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -78,15 +73,6 @@
                                       <Component id="genderFemale" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="email_id" alignment="0" min="-2" pref="318" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="isSickYes" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="isSickNo" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
-                                      <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="diseaseName" min="-2" max="-2" attributes="0"/>
-                                  </Group>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -127,7 +113,11 @@
                           </Group>
                           <Component id="nameLbl" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="genderLbl" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="isSickLbl" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="isSickLbl" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="122" max="-2" attributes="0"/>
+                              <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="dobLbl" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="163" max="-2" attributes="0"/>
@@ -175,17 +165,17 @@
                       <Component id="genderMale" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="isSickLbl" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="isSickYes" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="isSickNo" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="diseaseName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                      <Component id="isSickLbl" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace type="separate" max="32767" attributes="0"/>
+              <EmptySpace pref="27" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="ssn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -222,7 +212,7 @@
                       <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="17" max="32767" attributes="0"/>
+                      <EmptySpace pref="19" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="usernameLbl" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -269,24 +259,17 @@
     </Component>
     <Component class="javax.swing.JLabel" name="isSickLbl">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Are you Sick?"/>
+        <Property name="text" type="java.lang.String" value="Health Status:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel16">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Disease"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="diseaseName">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(populateDiseaseNames)" type="code"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="status" type="code"/>
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="diseaseName.setEnabled(false);"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="HashMap&lt;String, Integer&gt; tempMap = db.getDiseases();&#xa;&#xa;this.diseaseMap = tempMap;&#xa;String[] populateDiseaseNames = new String[tempMap.size()];&#xa;int i = 0;&#xa;for(String item:tempMap.keySet()){&#xa;    populateDiseaseNames[i] = item;&#xa;    i++;&#xa;}"/>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="String status = person.is_sick ? &quot;SICK&quot; : &quot;WELL&quot;;"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="usernameLbl">
@@ -314,29 +297,6 @@
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(person.gender.equals(&quot;MALE&quot;))&#xa;{&#xa;    genderMale.setSelected(true);&#xa;}&#xa;else&#xa;{&#xa;    genderFemale.setSelected(true);&#xa;}&#xa;buttonGroup1.add(genderMale);"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="isSickYes">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Yes"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="isSickYesActionPerformed"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(person.is_sick)&#xa;    isSickYes.setSelected(true);&#xa;else&#xa;    isSickNo.setSelected(true);"/>
-        <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="buttonGroup2.add(isSickYes);&#xa;if(isSickYes.isSelected())&#xa;    diseaseName.setEnabled(true);"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="isSickNo">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="No"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="isSickNoActionPerformed"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="buttonGroup2.add(isSickNo);"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JComboBox" name="months">

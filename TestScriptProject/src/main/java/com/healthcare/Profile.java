@@ -99,19 +99,15 @@ public class Profile extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        buttonGroup2 = new javax.swing.ButtonGroup();
         nameLbl = new javax.swing.JLabel();
         dobLbl = new javax.swing.JLabel();
         name = new javax.swing.JTextField(person.name);
         genderLbl = new javax.swing.JLabel();
         isSickLbl = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        diseaseName = new javax.swing.JComboBox<>();
         usernameLbl = new javax.swing.JLabel();
         genderFemale = new javax.swing.JRadioButton();
         genderMale = new javax.swing.JRadioButton();
-        isSickYes = new javax.swing.JRadioButton();
-        isSickNo = new javax.swing.JRadioButton();
         months = new javax.swing.JComboBox();
         years = new javax.swing.JComboBox();
         String[] dateString = DateFormatManager.getYearMonthDayFromDate(person.dob);
@@ -141,9 +137,6 @@ public class Profile extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
 
-        buttonGroup2.add(isSickYes);
-        buttonGroup2.add(isSickNo);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         nameLbl.setText("Name:");
@@ -152,21 +145,10 @@ public class Profile extends javax.swing.JFrame {
 
         genderLbl.setText("Gender:");
 
-        isSickLbl.setText("Are you Sick?");
+        isSickLbl.setText("Health Status:");
 
-        jLabel16.setText("Disease");
-
-        HashMap<String, Integer> tempMap = db.getDiseases();
-
-        this.diseaseMap = tempMap;
-        String[] populateDiseaseNames = new String[tempMap.size()];
-        int i = 0;
-        for(String item:tempMap.keySet()){
-            populateDiseaseNames[i] = item;
-            i++;
-        }
-        diseaseName.setModel(new javax.swing.DefaultComboBoxModel<>(populateDiseaseNames));
-        diseaseName.setEnabled(false);
+        String status = person.is_sick ? "SICK" : "WELL";
+        jLabel16.setText(status);
 
         usernameLbl.setText("Username:");
 
@@ -193,28 +175,6 @@ public class Profile extends javax.swing.JFrame {
                 genderMaleActionPerformed(evt);
             }
         });
-
-        isSickYes.setText("Yes");
-        if(person.is_sick)
-        isSickYes.setSelected(true);
-        else
-        isSickNo.setSelected(true);
-        isSickYes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                isSickYesActionPerformed(evt);
-            }
-        });
-        buttonGroup2.add(isSickYes);
-        if(isSickYes.isSelected())
-        diseaseName.setEnabled(true);
-
-        isSickNo.setText("No");
-        isSickNo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                isSickNoActionPerformed(evt);
-            }
-        });
-        buttonGroup2.add(isSickNo);
 
         months.setModel(new javax.swing.DefaultComboBoxModel<>(getMonths()));
         months.setSelectedItem(dateString[1]);
@@ -345,15 +305,7 @@ public class Profile extends javax.swing.JFrame {
                                         .addComponent(genderMale)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(genderFemale))
-                                    .addComponent(email_id, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(isSickYes)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(isSickNo)
-                                        .addGap(65, 65, 65)
-                                        .addComponent(jLabel16)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(diseaseName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(email_id, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(142, 142, 142)
@@ -385,7 +337,10 @@ public class Profile extends javax.swing.JFrame {
                                 .addComponent(jLabel19))
                             .addComponent(nameLbl)
                             .addComponent(genderLbl)
-                            .addComponent(isSickLbl)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(isSickLbl)
+                                .addGap(122, 122, 122)
+                                .addComponent(jLabel16))
                             .addComponent(dobLbl)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(163, 163, 163)
@@ -421,15 +376,14 @@ public class Profile extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(genderFemale)
                         .addComponent(genderMale)))
-                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(isSickLbl)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(isSickYes)
-                        .addComponent(isSickNo)
-                        .addComponent(jLabel16)
-                        .addComponent(diseaseName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(isSickLbl))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel16)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ssn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
@@ -461,7 +415,7 @@ public class Profile extends javax.swing.JFrame {
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(usernameLbl)
                             .addComponent(jLabel19)))
@@ -489,16 +443,6 @@ public class Profile extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_genderMaleActionPerformed
 
-    private void isSickYesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isSickYesActionPerformed
-        diseaseName.setEnabled(true);
-        // TODO add your handling code here:
-    }//GEN-LAST:event_isSickYesActionPerformed
-
-    private void isSickNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isSickNoActionPerformed
-        diseaseName.setEnabled(false);
-        // TODO add your handling code here:
-    }//GEN-LAST:event_isSickNoActionPerformed
-
     private void monthsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_monthsActionPerformed
@@ -517,65 +461,29 @@ public class Profile extends javax.swing.JFrame {
 
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
-        /*
-        Date dob = DateFormatManager.getDate((String)days.getSelectedItem(), (String)months.getSelectedItem(), (String)years.getSelectedItem());
+        
+        
+        
+        Date date_of_birth = DateFormatManager.getDate((String)days.getSelectedItem(), (String)months.getSelectedItem(), (String)years.getSelectedItem());
         String gender = genderMale.isSelected() ? "MALE" : "FEMALE" ;
-        Person person = new Person(username.getText(), 
+        Person updatedPerson = new Person(person.username, 
                 name.getText(), 
-                dob,
+                date_of_birth,
                 gender, 
                 ssn.getText(), 
-                email.getText(),
-                pmobile.getText(),
-                smobile.getText(),
+                email_id.getText(),
+                phone1.getText(),
+                phone2.getText(),
                 address1.getText(),
                 address2.getText(),
                 city.getText(),
                 state.getText(),
-                zip.getText(),
+                zipcode.getText(),
                 country.getText());
-   
-        String dName = (String)(this.diseaseName.getSelectedItem());
-
-        map.put("disease_id", diseaseMap.get(dName).toString());
-
-        java.util.Date date = new java.util.Date();
-        String modifiedDate = new SimpleDateFormat("yyyy/MM/dd").format(date);
-        map.put("date", modifiedDate);
-        String day = (String)days.getSelectedItem();
-        String month = (String)months.getSelectedItem();
-        String year = (String)years.getSelectedItem();
-        map.put("dob", year + "/" + month + "/" + day);
-        if(this.genderMale.isSelected())
-        {
-            map.put("gender", "MALE");
-        }
-        else
-        {
-            map.put("gender", "FEMALE");
-        }
-
-        if(this.isSickYes.isSelected()){
-            map.put("isSick", "1");
-        } else {
-            map.put("isSick", "0");
-        }
-        String auth_date_1 = (String)auth_year.getSelectedItem() +
-        "/" + (String)auth_month.getSelectedItem() + "/" + (String)auth_day.getSelectedItem();
-        String auth_date_2 = (String)auth_year1.getSelectedItem() +
-        "/" + (String)auth_month1.getSelectedItem() + "/" + (String)auth_day1.getSelectedItem();
-        map.put("auth_date_1", auth_date_1);
-        // TODO Capture the auth date 2
-        map.put("auth_date_2", auth_date_2);
-        try {
-            ArrayList<String> o1 = db.addPerson(person);
-            JOptionPane.showMessageDialog(null, o1.get(1));
-            if(o1.get(0).equals("SUCCESS"))
-            this.dispose();
-        } catch(HeadlessException e){
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-        */
+       
+        ArrayList<String> out = db.updateProfile(updatedPerson);
+        JOptionPane.showMessageDialog(null, out.get(1));
+        
     }//GEN-LAST:event_submitActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -620,19 +528,15 @@ public class Profile extends javax.swing.JFrame {
     private javax.swing.JTextField address1;
     private javax.swing.JTextField address2;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JTextField city;
     private javax.swing.JTextField country;
     private javax.swing.JComboBox<String> days;
-    private javax.swing.JComboBox<String> diseaseName;
     private javax.swing.JLabel dobLbl;
     private javax.swing.JTextField email_id;
     private javax.swing.JRadioButton genderFemale;
     private javax.swing.JLabel genderLbl;
     private javax.swing.JRadioButton genderMale;
     private javax.swing.JLabel isSickLbl;
-    private javax.swing.JRadioButton isSickNo;
-    private javax.swing.JRadioButton isSickYes;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
