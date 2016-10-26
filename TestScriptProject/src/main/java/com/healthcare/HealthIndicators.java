@@ -22,6 +22,7 @@ public class HealthIndicators extends javax.swing.JFrame {
     String username;
     String statusMessage;
     boolean isHs;
+    private String status;
     public HealthIndicators(String username, boolean isHs) {
         this.username = username;
         this.isHs = isHs;
@@ -114,6 +115,7 @@ public class HealthIndicators extends javax.swing.JFrame {
         Object[] statusMessage = data.get(data.size() - 1).toArray();
         //add it to the display
         this.statusMessage = statusMessage[1].toString();
+        this.status = statusMessage[0].toString();
         recommendationsTable.setModel(model);
         jScrollPane2.setViewportView(recommendationsTable);
 
@@ -136,7 +138,7 @@ public class HealthIndicators extends javax.swing.JFrame {
         jLabel5.setText("If enabled, please select a row above and click Remove Recommendations(For Health Supporters Only!)");
 
         removeRecoButton.setText("Remove Recommendation");
-        if(!isHs)
+        if(!isHs || status.equals("DEFAULT"))
         removeRecoButton.setEnabled(false);
         removeRecoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -193,11 +195,11 @@ public class HealthIndicators extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(recoStatus))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(removeRecoButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -246,24 +248,27 @@ public class HealthIndicators extends javax.swing.JFrame {
 
     private void removeRecoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeRecoButtonActionPerformed
                 // Send DB the signal ro remove the dessease!
-        //db.removeDiseaseForName();
-        JOptionPane.showMessageDialog(null, "Recommendation Not Getting removed from DB yet!");
         int [] toDelete = this.recommendationsTable.getSelectedRows();
         Arrays.sort(toDelete); // be shure to have them in ascending order.
         NonEditableModel myTableModel = (NonEditableModel)recommendationsTable.getModel();
         for(int ii = toDelete.length -1; ii >=0; ii--) {
             myTableModel.removeRow(toDelete[ii]); // beginning at the largest.
+            ArrayList<String> res = db.deleteRecommendation(username);
+            JOptionPane.showMessageDialog(null, "Messaeg from DB :: " + res.get(1));
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_removeRecoButtonActionPerformed
 
     private void removeObservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeObservationBtnActionPerformed
-        JOptionPane.showMessageDialog(null, "Observation Not Getting removed from DB yet!");
+        //JOptionPane.showMessageDialog(null, "Observation Not Getting removed from DB yet!");
         int [] toDelete = this.observationsTable.getSelectedRows();
         Arrays.sort(toDelete); // be shure to have them in ascending order.
         NonEditableModel myTableModel = (NonEditableModel)observationsTable.getModel();
-        for(int ii = toDelete.length -1; ii >=0; ii--) {
-            myTableModel.removeRow(toDelete[ii]); // beginning at the largest.
+        for(int iNdex = toDelete.length -1; iNdex >= 0; iNdex--) {
+            Integer oId = (Integer)myTableModel.getValueAt(iNdex, 0);
+            myTableModel.removeRow(toDelete[iNdex]); // beginning at the largest.            
+            ArrayList<String> res = db.deleteObservation(oId);
+            JOptionPane.showMessageDialog(null, "Messaeg from DB :: " + res.get(1));
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_removeObservationBtnActionPerformed

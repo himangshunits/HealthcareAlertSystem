@@ -85,12 +85,12 @@
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="recoStatus" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="56" max="32767" attributes="0"/>
+              <EmptySpace pref="62" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel5" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
                   <Component id="removeRecoButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="131" max="-2" attributes="0"/>
@@ -177,7 +177,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="String[] header = new String [] {&#xa;                &quot;Pain Level&quot;,&quot;Pain Level Frequency&quot;,&quot;Mood&quot;,&quot;Mood Level Frequency&quot;, &quot;Temperature Low Limit&quot;, &quot;Temperature High Limit&quot;, &quot;Temperature Frequency&quot;,&#xa;                &quot;Weight Low Limit&quot;,&quot;Weight High Limit&quot;,&quot;Weight Frequency&quot;,&quot;BP Diastolic Low Limit&quot;,&quot;BP Diastolic High Limit&quot;,&quot;BP Systolic Low Limit&quot;,&quot;BP Systolic High limit&quot;,&#xa;                &quot;BP Frequency&quot;, &quot;Oxygen Saturation Low Limit&quot;, &quot;Oxygen Saturation High Limit&quot;,&quot;Oxygen Saturation Frequency&quot;};&#xa;&#xa;&#xa;NonEditableModel model = new NonEditableModel(header, 0);&#xa;ArrayList&lt;ArrayList&lt;Object&gt;&gt; data = db.getBestRecommendations(username);&#xa;/*for(ArrayList&lt;Object&gt; d: data)&#xa;{   &#xa;    model.addRow(d.toArray());&#xa;}*/&#xa;for(int i = 0; i &lt; data.size() - 1;i++){&#xa;    model.addRow(data.get(i).toArray());&#xa;}&#xa;Object[] statusMessage = data.get(data.size() - 1).toArray();&#xa;//add it to the display&#xa;this.statusMessage = statusMessage[1].toString();"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="String[] header = new String [] {&#xa;                &quot;Pain Level&quot;,&quot;Pain Level Frequency&quot;,&quot;Mood&quot;,&quot;Mood Level Frequency&quot;, &quot;Temperature Low Limit&quot;, &quot;Temperature High Limit&quot;, &quot;Temperature Frequency&quot;,&#xa;                &quot;Weight Low Limit&quot;,&quot;Weight High Limit&quot;,&quot;Weight Frequency&quot;,&quot;BP Diastolic Low Limit&quot;,&quot;BP Diastolic High Limit&quot;,&quot;BP Systolic Low Limit&quot;,&quot;BP Systolic High limit&quot;,&#xa;                &quot;BP Frequency&quot;, &quot;Oxygen Saturation Low Limit&quot;, &quot;Oxygen Saturation High Limit&quot;,&quot;Oxygen Saturation Frequency&quot;};&#xa;&#xa;&#xa;NonEditableModel model = new NonEditableModel(header, 0);&#xa;ArrayList&lt;ArrayList&lt;Object&gt;&gt; data = db.getBestRecommendations(username);&#xa;/*for(ArrayList&lt;Object&gt; d: data)&#xa;{   &#xa;    model.addRow(d.toArray());&#xa;}*/&#xa;for(int i = 0; i &lt; data.size() - 1;i++){&#xa;    model.addRow(data.get(i).toArray());&#xa;}&#xa;Object[] statusMessage = data.get(data.size() - 1).toArray();&#xa;//add it to the display&#xa;this.statusMessage = statusMessage[1].toString();&#xa;this.status = statusMessage[0].toString();"/>
           </AuxValues>
         </Component>
       </SubComponents>
@@ -223,7 +223,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeRecoButtonActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(!isHs)&#xa;    removeRecoButton.setEnabled(false);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(!isHs || status.equals(&quot;DEFAULT&quot;))&#xa;    removeRecoButton.setEnabled(false);"/>
       </AuxValues>
     </Component>
   </SubComponents>

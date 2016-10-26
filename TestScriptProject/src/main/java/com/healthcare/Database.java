@@ -225,6 +225,8 @@ public class Database {
         out.add(category);
         return out;
     }
+    
+    
     HashMap<String, Object> getProfile(String username)
     {
         Connection dbConnection = null;
@@ -1150,5 +1152,89 @@ public class Database {
         out.add(status);
         out.add(message);
         return out;
-    }    
+    }
+    
+    
+    ArrayList<String> deleteObservation(Integer observationId) {
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String userDiseasesCall = "{call DELETE_OBSERVATION(?, ?, ?)}";
+
+        try {
+            callableStatement = CONN.prepareCall(userDiseasesCall);            
+            callableStatement.setInt(1, observationId);            
+            // out Parameters            
+            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+
+            // execute getDBUSERByUserId store procedure
+            callableStatement.execute();
+            status = callableStatement.getString(2);
+            message = callableStatement.getString(3);            
+        } catch (SQLException e) {            
+            System.out.println("Error is Delete Observation ::" + e.getMessage());
+        } finally {
+            if (callableStatement != null) {                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }       
+        ArrayList<String> out = new ArrayList<String>();
+        out.add(status);
+        out.add(message);
+        return out;
+    }
+    
+    
+    ArrayList<String> deleteRecommendation(String username) {
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String userDiseasesCall = "{call DELETE_RECOMMENDATION(?, ?, ?)}";
+
+        try {
+            callableStatement = CONN.prepareCall(userDiseasesCall);            
+            callableStatement.setString(1, username);          
+            // out Parameters
+            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            // execute getDBUSERByUserId store procedure
+            callableStatement.execute();
+            status = callableStatement.getString(2);
+            message = callableStatement.getString(3);            
+        } catch (SQLException e) {            
+            System.out.println("Error is Delete Recommendation ::" + e.getMessage());
+        } finally {
+            if (callableStatement != null) {                
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }       
+        ArrayList<String> out = new ArrayList<String>();
+        out.add(status);
+        out.add(message);
+        return out;
+    }
+    
+    
 }
