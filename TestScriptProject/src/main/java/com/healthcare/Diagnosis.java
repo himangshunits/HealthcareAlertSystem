@@ -190,7 +190,7 @@ public class Diagnosis extends javax.swing.JFrame {
             if(evt.getKeyChar() == 'D')
             {
                 // Send DB the signal ro remove the dessease!
-                Database.getInstance().removeDiseaseForName();
+                //Database.getInstance().removeDiseaseForName();
                 JOptionPane.showMessageDialog(null, "Not Getting removed from DB yet!");
                 int [] toDelete = this.diseaseTable.getSelectedRows();
                 Arrays.sort(toDelete); // be shure to have them in ascending order.
