@@ -75,12 +75,7 @@ public class DashboardHs extends javax.swing.JFrame {
         seeDiseasesBtn = new javax.swing.JButton();
         healthIndicatorsBtn = new javax.swing.JButton();
         alertsBtn = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        primaryHsNameField = new javax.swing.JLabel();
-        primaryHsIdField = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -147,7 +142,7 @@ public class DashboardHs extends javax.swing.JFrame {
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(16, 16, 16))
         );
@@ -156,7 +151,7 @@ public class DashboardHs extends javax.swing.JFrame {
 
         jLabel1.setText("Your Own Details as Person");
 
-        getProfileBtn.setText("Get Profile");
+        getProfileBtn.setText("View/Update Profile");
         getProfileBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 getProfileBtnActionPerformed(evt);
@@ -184,17 +179,12 @@ public class DashboardHs extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Your primary health supporter");
-
-        jLabel3.setText("Your secondary health supporter");
-
-        primaryHsNameField.setText(healthSupp1);
-
-        primaryHsIdField.setText(healthId1);
-
-        jLabel4.setText(healthSupp2);
-
-        jLabel5.setText(healthId2);
+        jButton3.setText("View/Update Health Supporters");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout userDetailsFrameLayout = new javax.swing.GroupLayout(userDetailsFrame.getContentPane());
         userDetailsFrame.getContentPane().setLayout(userDetailsFrameLayout);
@@ -202,27 +192,21 @@ public class DashboardHs extends javax.swing.JFrame {
             userDetailsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(userDetailsFrameLayout.createSequentialGroup()
                 .addGroup(userDetailsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userDetailsFrameLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(alertsBtn))
                     .addGroup(userDetailsFrameLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel2))
-                    .addGroup(userDetailsFrameLayout.createSequentialGroup()
-                        .addGap(42, 42, 42)
+                        .addGap(110, 110, 110)
                         .addGroup(userDetailsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1)
-                            .addComponent(alertsBtn)
                             .addComponent(healthIndicatorsBtn)
                             .addComponent(seeDiseasesBtn)
-                            .addComponent(getProfileBtn))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userDetailsFrameLayout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
-                .addGroup(userDetailsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(primaryHsIdField)
-                    .addComponent(primaryHsNameField)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4))
-                .addGap(34, 34, 34))
+                            .addComponent(getProfileBtn))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userDetailsFrameLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton3)))
+                .addContainerGap())
         );
         userDetailsFrameLayout.setVerticalGroup(
             userDetailsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,21 +219,11 @@ public class DashboardHs extends javax.swing.JFrame {
                 .addComponent(seeDiseasesBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(healthIndicatorsBtn)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(alertsBtn)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addGap(14, 14, 14)
-                .addComponent(primaryHsNameField)
                 .addGap(12, 12, 12)
-                .addComponent(primaryHsIdField)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addGap(12, 12, 12)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addComponent(jButton3)
+                .addContainerGap(135, Short.MAX_VALUE))
         );
 
         jButton2.setText("LOGOUT");
@@ -343,6 +317,11 @@ public class DashboardHs extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_healthIndicatorsBtnActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        new HealthSupporter(username).setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -385,19 +364,14 @@ public class DashboardHs extends javax.swing.JFrame {
     private javax.swing.JButton healthIndicatorsBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JList<String> patientsList;
-    private javax.swing.JLabel primaryHsIdField;
-    private javax.swing.JLabel primaryHsNameField;
     private javax.swing.JButton seeDiseasesBtn;
     private javax.swing.JInternalFrame userDetailsFrame;
     private javax.swing.JLabel wecomeMessage;

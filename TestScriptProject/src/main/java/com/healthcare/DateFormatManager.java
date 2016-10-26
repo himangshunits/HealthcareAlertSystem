@@ -58,5 +58,40 @@ public class DateFormatManager {
     }
     
     
-    
+    public static String[] getMonths()
+    {
+        String months[] = new String[12];
+        for(int i=0;i<12;i++)
+        {
+
+            months[i] = "" + (i + 1);
+            if(months[i].length() == 1)
+            {
+                months[i] = "0" + months[i];
+            }
+        }
+        return months;
+    }
+    public static String[] getDays()
+    {
+        String days[] = new String[31];
+        for(int i=0;i<31;i++)
+        {
+            days[i] = "" + (i + 1);
+            if(days[i].length() == 1)
+            {
+                days[i] = "0" + days[i];
+            }
+        }
+        return days;
+    }
+    public static String[] getYears()
+    {
+        String years[] = new String[76];
+        for(int i=0;i<76;i++)
+        {
+            years[i] = "" + (1940 + i + 1);
+        }
+        return years;
+    }
 }
