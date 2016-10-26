@@ -36,19 +36,7 @@ public class Database {
             e.printStackTrace();
         }
     }
-    public ResultSet getPerson(String username) 
-    {
-        try{
-            Statement stmt = CONN.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Person p WHERE p.\"username\" = '"+username+"'");
-            return rs;
-        }
-        catch(SQLException se)
-        {
-            System.out.println(se.getMessage());
-        }
-        return null;
-    }
+    
     ArrayList<String> toggleIsSick(String username) throws SQLException
     {
         Connection dbConnection = null;
@@ -245,7 +233,24 @@ public class Database {
         } 
         catch (SQLException e) 
         {
-            
+            System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return person;
     }
@@ -300,24 +305,7 @@ public class Database {
         }
         return ret;
     }
-    void removePerson(String username) throws SQLException
-    {
-        Statement stmt = CONN.createStatement();
-        //TODO: Add remove Person proc
-        stmt.executeUpdate("DELETE FROM PERSON p WHERE p.\"username\"='"+username+"'");
-    }
-    void removeHealthSupporter(String username, String supporter) throws SQLException
-    {
-        Statement stmt = CONN.createStatement();
-        //TODO: Add remove Health Supporter proc
-        int uid = Integer.parseInt(stmt.executeQuery("SELECT p.\"person_id\" FROM PERSON p WHERE p.\"username\"='"+username+"'").getString(1));
-        System.out.println(uid);
-        int sid = Integer.parseInt(stmt.executeQuery("SELECT p.\"person_id\" FROM PERSON p WHERE p.\"username\"='"+supporter+"'").getString(1));
-        System.out.println(sid);
-        String query = String.format("DELETE FROM TAKES_CARE t WHERE t.\"person_id\" = %d t.\"supporter_id\" = %d", uid, sid);
-        stmt.executeUpdate(query);
-        System.out.println("Success kiss");
-    }
+    
     ArrayList<String> addPerson(HashMap<String, String> map) throws SQLException
     {
         
@@ -334,7 +322,7 @@ public class Database {
             //String[] today  = map.get("date").split("-");
             //String[] auth_date_1 = map.get("auth_date_1").split("-");
             //String[] auth_date_2 = map.get("auth_date_1").split("-");
-            callableStatement.setDate(2, DateFormatManager.getSqlDateFromString(map.get("dob")));
+            callableStatement.setDate(2, DateFormatManager.getSqlDateFromString(map.get("dob"), "yyyy/MM/dd"));
             callableStatement.setString(3, map.get("gender"));
             callableStatement.setInt(4, Integer.parseInt(map.get("isSick")));
             callableStatement.setString(5, map.get("username"));
@@ -349,12 +337,12 @@ public class Database {
             callableStatement.setString(14, map.get("smobile"));
             callableStatement.setString(15, map.get("email"));
             callableStatement.setString(16, map.get("ssn"));
-            callableStatement.setDate(17, DateFormatManager.getSqlDateFromString(map.get("date")));
+            callableStatement.setDate(17, DateFormatManager.getSqlDateFromString(map.get("date"),"yyyy/MM/dd"));
             callableStatement.setString(18, map.get("supporter"));
             callableStatement.setString(19, map.get("supporter2"));
             callableStatement.setInt(20, Integer.parseInt(map.get("disease_id")));
-            callableStatement.setDate(21, DateFormatManager.getSqlDateFromString(map.get("auth_date_1")));
-            callableStatement.setDate(22, DateFormatManager.getSqlDateFromString(map.get("auth_date_2")));
+            callableStatement.setDate(21, DateFormatManager.getSqlDateFromString(map.get("auth_date_1"), "yyyy/MM/dd"));
+            callableStatement.setDate(22, DateFormatManager.getSqlDateFromString(map.get("auth_date_2"), "yyyy/MM/dd"));
             // out Parameters
             callableStatement.registerOutParameter(23, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(24, java.sql.Types.VARCHAR);
@@ -546,17 +534,7 @@ public class Database {
     }
 
     
-    
-    
-    
-    
-    public ResultSet execute(String query) throws SQLException{
-        Statement stmt = CONN.createStatement();
-        stmt.executeQuery(query);
-        ResultSet result = stmt.getResultSet();
-        //stmt.close();
-        return result;
-    }
+
     
     
     
@@ -658,8 +636,8 @@ public class Database {
                 name = rset.getString(1);
                 dob = rset.getDate(2);
                 gender = rset.getString(3);
-                email_id = rset.getString(8);
-                phone = rset.getString(9);
+                email_id = rset.getString(14);
+                phone = rset.getString(12);
             }
         } catch(SQLException e) {
             System.out.println(e.getMessage());
@@ -674,7 +652,7 @@ public class Database {
             }
         }
         
-        Person patient = new Person(username, name, dob, gender, email_id, phone);
+        Person patient = new Person(username, name, DateFormatManager.getSqlDateFromString(dob.split(" ")[0], "yyyy-MM-dd"), gender, email_id, phone);
         return patient;
     }
 
@@ -696,8 +674,8 @@ public class Database {
             callableStatement.setString(6, observation.mood);
             callableStatement.setFloat(7, observation.temperature);
             callableStatement.setFloat(8, observation.weight);
-            callableStatement.setDate(9, DateFormatManager.getSqlDateFromString(observation.observedOn));
-            callableStatement.setDate(10, DateFormatManager.getSqlDateFromString(observation.recordedOn));
+            callableStatement.setDate(9, DateFormatManager.getSqlDateFromString(observation.observedOn, "yyyy/MM/dd"));
+            callableStatement.setDate(10, DateFormatManager.getSqlDateFromString(observation.recordedOn, "yyyy/MM/dd"));
             callableStatement.registerOutParameter(11, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(12, java.sql.Types.VARCHAR);
             callableStatement.execute();
@@ -771,9 +749,6 @@ public class Database {
         }
     }
 
-    void removeDiseaseForName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
     ArrayList<ArrayList<Object>> getAlertsForUsername(String username) {
         //return null;
@@ -1259,8 +1234,26 @@ public class Database {
             result.add(message);
 
             
-        } catch(SQLException e) {
+        } catch (SQLException e) 
+        {
             System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return result;
     }

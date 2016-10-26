@@ -14,9 +14,9 @@ import java.text.SimpleDateFormat;
  */
 public class DateFormatManager {
     
-    public static java.sql.Date getSqlDateFromString(String date){
+    public static java.sql.Date getSqlDateFromString(String date, String format){
         try{
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+                SimpleDateFormat formatter = new SimpleDateFormat(format);
                 java.util.Date utilDate = formatter.parse(date);
                 java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
                 return sqlDate;
@@ -28,9 +28,14 @@ public class DateFormatManager {
     }
     
     
+    public static java.util.Date getJavaDateFromString(String date, String format){
+        java.sql.Date sqlDate = getSqlDateFromString(date, format);
+        return(getJavaDateFromSqlDate(sqlDate));
+    }
+    
+    
     public static java.sql.Date getSqlDateFromJavaDate(java.util.Date date){
         try{
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
                 java.sql.Date sqlDate = new java.sql.Date(date.getTime());
                 return sqlDate;
             } catch(Exception e){
@@ -39,6 +44,19 @@ public class DateFormatManager {
             }
         return null;
     }
+    
+    
+    public static java.util.Date getJavaDateFromSqlDate(java.sql.Date date){
+        try{
+                java.util.Date utilDate = new java.util.Date(date.getTime());
+                return utilDate;
+            } catch(Exception e){
+                System.out.println("Error in Observed On parse =" + e.getMessage());
+                e.printStackTrace();
+            }
+        return null;
+    }
+    
     
     
     public static String[] getYearMonthDayFromDate(java.util.Date today){
