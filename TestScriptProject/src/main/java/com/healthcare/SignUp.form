@@ -400,10 +400,19 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="username">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="hborah"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="password">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="test"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="cpassword">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="test"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -464,7 +473,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="street">
       <Properties>
-        <Property name="text" type="java.lang.String" value="qwe"/>
+        <Property name="text" type="java.lang.String" value="517 Tartan Circle"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="streetActionPerformed"/>
@@ -487,7 +496,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="apt">
       <Properties>
-        <Property name="text" type="java.lang.String" value="asdasdsad"/>
+        <Property name="text" type="java.lang.String" value="Apartment 21"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aptActionPerformed"/>
@@ -495,18 +504,21 @@
     </Component>
     <Component class="javax.swing.JTextField" name="city">
       <Properties>
-        <Property name="text" type="java.lang.String" value="asdsad"/>
+        <Property name="text" type="java.lang.String" value="Raleigh"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="state">
       <Properties>
-        <Property name="text" type="java.lang.String" value="asdasd"/>
+        <Property name="text" type="java.lang.String" value="NC"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="country">
       <Properties>
-        <Property name="text" type="java.lang.String" value="asdasd"/>
+        <Property name="text" type="java.lang.String" value="USA"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="countryActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Properties>
@@ -515,7 +527,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="ssn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="sdasdasdasd"/>
+        <Property name="text" type="java.lang.String" value="123-234-4567"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
@@ -525,7 +537,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="pmobile">
       <Properties>
-        <Property name="text" type="java.lang.String" value="919874752"/>
+        <Property name="text" type="java.lang.String" value="9197858515"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
@@ -540,8 +552,11 @@
     </Component>
     <Component class="javax.swing.JTextField" name="smobile">
       <Properties>
-        <Property name="text" type="java.lang.String" value="asdaskdl"/>
+        <Property name="text" type="java.lang.String" value="9197858516"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="smobileActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel11">
       <Properties>
@@ -550,7 +565,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="email">
       <Properties>
-        <Property name="text" type="java.lang.String" value="wha@asdasd.com"/>
+        <Property name="text" type="java.lang.String" value="hborah@ncsu.edu"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="zip">

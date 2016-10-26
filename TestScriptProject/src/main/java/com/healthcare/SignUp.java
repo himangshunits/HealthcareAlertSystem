@@ -218,6 +218,12 @@ public class SignUp extends javax.swing.JFrame {
             }
         });
 
+        username.setText("hborah");
+
+        password.setText("test");
+
+        cpassword.setText("test");
+
         jLabel2.setText("Add Health Supporter 1");
 
         supporters.setModel(new javax.swing.DefaultComboBoxModel<>(Database.getInstance().getSupporters()));
@@ -235,7 +241,7 @@ public class SignUp extends javax.swing.JFrame {
 
         jLabel3.setText("Street");
 
-        street.setText("qwe");
+        street.setText("517 Tartan Circle");
         street.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 streetActionPerformed(evt);
@@ -248,36 +254,46 @@ public class SignUp extends javax.swing.JFrame {
 
         jLabel6.setText("Country");
 
-        apt.setText("asdasdsad");
+        apt.setText("Apartment 21");
         apt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aptActionPerformed(evt);
             }
         });
 
-        city.setText("asdsad");
+        city.setText("Raleigh");
 
-        state.setText("asdasd");
+        state.setText("NC");
 
-        country.setText("asdasd");
+        country.setText("USA");
+        country.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                countryActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Apt No");
 
-        ssn.setText("sdasdasdasd");
+        ssn.setText("123-234-4567");
 
         jLabel8.setText("SSN");
 
-        pmobile.setText("919874752");
+        pmobile.setText("9197858515");
 
         jLabel9.setText("Primary Contact No");
 
         jLabel10.setText("Secondary Contact No");
 
-        smobile.setText("asdaskdl");
+        smobile.setText("9197858516");
+        smobile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                smobileActionPerformed(evt);
+            }
+        });
 
         jLabel11.setText("Email Address");
 
-        email.setText("wha@asdasd.com");
+        email.setText("hborah@ncsu.edu");
 
         zip.setText("27606");
         zip.addActionListener(new java.awt.event.ActionListener() {
@@ -657,6 +673,14 @@ public class SignUp extends javax.swing.JFrame {
         diseaseName.setEnabled(false);
         // TODO add your handling code here:
     }//GEN-LAST:event_isSickNoActionPerformed
+
+    private void countryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_countryActionPerformed
+
+    private void smobileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smobileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_smobileActionPerformed
     private Date getDate(String s)
     {
         String b[] = s.split("-");
