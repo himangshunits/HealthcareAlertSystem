@@ -26,7 +26,6 @@ public class Alert extends javax.swing.JFrame {
         this.db = Database.getInstance();
         this.isHs = isHs;        
         //initComponents();        
-        AlertManager am = new AlertManager(username);
         initComponents();
     }
     public Alert() {

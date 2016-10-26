@@ -304,6 +304,10 @@ public class Observations extends javax.swing.JFrame {
       
         ArrayList<String> result = mDb.addObservation(patientName, observation);
         JOptionPane.showMessageDialog(null, "Message from the Database Service :: " + result.get(1));
+        
+        if (result.get(0).equalsIgnoreCase("SUCCESS")) {
+            AlertManager am = new AlertManager(username);
+        }
         this.dispose();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Message from the Service Daemon:: " + e.getMessage());
