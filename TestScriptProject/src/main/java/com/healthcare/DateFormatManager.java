@@ -64,15 +64,27 @@ public class DateFormatManager {
         int year = today.getYear();
         int month = today.getMonth();
         int day = today.getDay();
-        result[0] = String.valueOf(year);
-        result[1] = String.valueOf(month);
+        
+        result[0] = String.valueOf(1900 + year);
+        
+        result[1] = String.valueOf(1 + month);
+        if(result[1].length() == 1)
+        {
+            result[1] = "0" + result[1];
+        }
         result[2] = String.valueOf(day);
+        if(result[2].length() == 1)
+        {
+            result[2] = "0" + result[2];
+        }
         return result;
     }
 
-    static Date getDate(String day, String month, String year) {
-        Date date = new Date(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
-        return date;
+    static Date getDate(String dateS, String monthS, String yearS) {
+        int year = Integer.parseInt(yearS)- 1900;
+        int month = Integer.parseInt(monthS) - 1;
+        int date = Integer.parseInt(dateS);
+        return new Date(year, month, date);
     }
     
     

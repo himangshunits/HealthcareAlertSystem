@@ -61,7 +61,7 @@ public class Main extends javax.swing.JFrame
             }
         });
 
-        username.setText("hborah1");
+        username.setText("hborah");
         username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameActionPerformed(evt);
@@ -79,7 +79,7 @@ public class Main extends javax.swing.JFrame
 
         jLabel3.setText("Username");
 
-        password.setText("test_qwerty");
+        password.setText("test");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

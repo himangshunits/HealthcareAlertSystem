@@ -5,15 +5,13 @@
  */
 package com.healthcare;
 
-import java.awt.HeadlessException;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 //import org.apache.commons.validator.routines.EmailValidator;
 

@@ -90,6 +90,8 @@ public class Person {
     
     String getDateOfBirth()
     {
-        return dob.getDate() + "-" + dob.getMonth() + "-" + dob.getYear();
+        
+        String[] arr = DateFormatManager.getYearMonthDayFromDate(dob);
+        return arr[2] + "/" + arr[1] + "/" + arr[0];
     }
 }
