@@ -376,11 +376,11 @@ public class Database {
             callableStatement = CONN.prepareCall(insertPersonDataCall);
 
             callableStatement.setString(1, map.get("name"));
-            String[] date = map.get("dob").split("-");
-            String[] today  = map.get("date").split("-");
-            String[] auth_date_1 = map.get("auth_date_1").split("-");
-            String[] auth_date_2 = map.get("auth_date_1").split("-");
-            callableStatement.setDate(2, new Date(Integer.parseInt(date[2])%100,Integer.parseInt(date[1]),Integer.parseInt(date[0])));
+            //String[] date = map.get("dob").split("-");
+            //String[] today  = map.get("date").split("-");
+            //String[] auth_date_1 = map.get("auth_date_1").split("-");
+            //String[] auth_date_2 = map.get("auth_date_1").split("-");
+            callableStatement.setDate(2, DateFormatManager.getSqlDateFromString(map.get("dob")));
             callableStatement.setString(3, map.get("gender"));
             callableStatement.setInt(4, Integer.parseInt(map.get("isSick")));
             callableStatement.setString(5, map.get("username"));
@@ -395,12 +395,12 @@ public class Database {
             callableStatement.setString(14, map.get("smobile"));
             callableStatement.setString(15, map.get("email"));
             callableStatement.setString(16, map.get("ssn"));
-            callableStatement.setDate(17, new Date(Integer.parseInt(today[0])%100,Integer.parseInt(today[1]),Integer.parseInt(today[2])));
+            callableStatement.setDate(17, DateFormatManager.getSqlDateFromString(map.get("date")));
             callableStatement.setString(18, map.get("supporter"));
-            callableStatement.setString(19, map.get("supporter1"));
+            callableStatement.setString(19, map.get("supporter2"));
             callableStatement.setInt(20, Integer.parseInt(map.get("disease_id")));
-            callableStatement.setDate(21, new Date(Integer.parseInt(auth_date_1[0])%100,Integer.parseInt(auth_date_1[1]),Integer.parseInt(auth_date_1[2])));
-            callableStatement.setDate(22, new Date(Integer.parseInt(auth_date_2[0])%100,Integer.parseInt(auth_date_2[1]),Integer.parseInt(auth_date_2[2])));
+            callableStatement.setDate(21, DateFormatManager.getSqlDateFromString(map.get("auth_date_1")));
+            callableStatement.setDate(22, DateFormatManager.getSqlDateFromString(map.get("auth_date_2")));
             // out Parameters
             callableStatement.registerOutParameter(23, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(24, java.sql.Types.VARCHAR);
@@ -723,7 +723,7 @@ public class Database {
         return patient;
     }
 
-ArrayList<String> addObservation(String patientName, Observation observation) throws SQLException {
+    ArrayList<String> addObservation(String patientName, Observation observation) throws SQLException {
         ArrayList<String> result = new ArrayList<>();
         
         Connection dbConnection = null;
@@ -741,30 +741,8 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
             callableStatement.setString(6, observation.mood);
             callableStatement.setFloat(7, observation.temperature);
             callableStatement.setFloat(8, observation.weight);
-            
-            try{
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-                java.util.Date utilDate = formatter.parse(observation.observedOn);
-                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-                callableStatement.setDate(9, sqlDate);
-            } catch(Exception e){
-                callableStatement.setDate(9, null);
-                System.out.println("Error in Observed On parse =" + e.getMessage());
-                e.printStackTrace();
-            }
-
-
-            try{
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-                java.util.Date utilDate = formatter.parse(observation.recordedOn);
-                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-                callableStatement.setDate(10, sqlDate);
-            } catch(Exception e){
-                callableStatement.setDate(10, null);
-                System.out.println("Error in Observed On parse =" + e.getMessage());
-                e.printStackTrace();
-            }
-            
+            callableStatement.setDate(9, DateFormatManager.getSqlDateFromString(observation.observedOn));
+            callableStatement.setDate(10, DateFormatManager.getSqlDateFromString(observation.recordedOn));
             callableStatement.registerOutParameter(11, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(12, java.sql.Types.VARCHAR);
             callableStatement.execute();
@@ -842,9 +820,6 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    
-    
-    
     ArrayList<ArrayList<Object>> getAlertsForUsername(String username) {
         //return null;
         ArrayList<ArrayList<Object>> result = new ArrayList<ArrayList<Object>>();
@@ -873,6 +848,7 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
                 y.add(rset.getString(1));
                 y.add(rset.getTimestamp(2));
                 y.add(rset.getString(3));
+                y.add(rset.getString(4));
                 result.add(y);
             }            
             return result;
@@ -1006,7 +982,6 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
         statusMessage.add(message);
         result.add(statusMessage);
         return result;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     ArrayList<ArrayList<Object>> getAllObservations(String username) {
@@ -1068,7 +1043,6 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
             }
         }       
         return result;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     Observation getLatestObservation(String username) {
@@ -1126,8 +1100,54 @@ ArrayList<String> addObservation(String patientName, Observation observation) th
             }
         }       
         return ob;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
+
+    ArrayList<String> deleteDisease(String username, Integer diseaseId) {
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String userDiseasesCall = "{call REMOVE_DISEASE_FOR_PATIENT(?, ?, ?, ?)}";
+
+        try {
+            callableStatement = CONN.prepareCall(userDiseasesCall);            
+            callableStatement.setString(1, username);            
+            callableStatement.setInt(2, diseaseId);
+            // out Parameters            
+            
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+
+            // execute getDBUSERByUserId store procedure
+            callableStatement.execute();
+
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+            
+        } catch (SQLException e) {
+            
+            System.out.println(e.getMessage());
+
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }       
+        ArrayList<String> out = new ArrayList<String>();
+        out.add(status);
+        out.add(message);
+        return out;
+    }    
 }

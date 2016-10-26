@@ -51,7 +51,7 @@ public class Alert extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        String[] header = new String [] {"Alert", "Generated On", "Severity"};
+        String[] header = new String [] {"Alert", "Generated On", "Severity", "Reason"};
         //String[] header = new String [] {"Alert", "Severity"};
 
         NonEditableModel model = new NonEditableModel(header, 0);

@@ -32,8 +32,6 @@ public class Observation {
         this.observedOn = observedOn;
         this.recordedOn = recordedOn;
     }
-
-    
     
     @Override
     public String toString() {

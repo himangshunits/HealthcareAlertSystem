@@ -50,11 +50,6 @@ public class Recommendation {
         this.weightFrequency = weightFrequency;
     }
 
-
-
-
-
-
     public Recommendation() {
         
     }

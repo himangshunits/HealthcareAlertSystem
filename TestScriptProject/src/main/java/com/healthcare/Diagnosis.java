@@ -208,15 +208,18 @@ public class Diagnosis extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // Send DB the signal ro remove the dessease!
-        //db.removeDiseaseForName();
-        JOptionPane.showMessageDialog(null, "Not Getting removed from DB yet!");
         int [] toDelete = this.diseaseTable.getSelectedRows();
         Arrays.sort(toDelete); // be shure to have them in ascending order.
         NonEditableModel myTableModel = (NonEditableModel)diseaseTable.getModel();
+        ArrayList<String>  out = null;
         for(int ii = toDelete.length -1; ii >=0; ii--) {
-            myTableModel.removeRow(toDelete[ii]); // beginning at the largest.
+            out = db.deleteDisease(username, diseaseMap.get((String)(myTableModel.getValueAt(ii, 0))));
+            myTableModel.removeRow(toDelete[ii]);
         }
+        if(out != null)
+            JOptionPane.showMessageDialog(null, "Message from Database :: " + out.get(1));
+        else
+            JOptionPane.showMessageDialog(null, "No Value assigned in the Dlete Disease DB Wrapper!");
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 

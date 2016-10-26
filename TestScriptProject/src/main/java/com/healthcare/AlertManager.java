@@ -111,7 +111,6 @@ public class AlertManager {
             // create alert id 13
         }
 
-        
     }
 
     private boolean isOutside(Integer low, Integer high, Integer x) {
