@@ -124,7 +124,7 @@ public class HealthSupporterTasks extends javax.swing.JFrame {
                 .addGap(43, 43, 43))
         );
 
-        healthSupName.setText(healthSupporter.name);
+        healthSupName.setText("Patients under :: " + healthSupporter.name);
 
         jLabel2.setText("Patient");
 
@@ -143,20 +143,16 @@ public class HealthSupporterTasks extends javax.swing.JFrame {
         patientInfoPanelLayout.setHorizontalGroup(
             patientInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(patientInfoPanelLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(patientInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(patientInfoPanelLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(healthSupName))
-                    .addGroup(patientInfoPanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(patientInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(PatientName)
-                            .addComponent(jLabel2)
-                            .addComponent(PatientDOB)
-                            .addComponent(PatientGender)
-                            .addComponent(PatientEmailId)
-                            .addComponent(PatientPhone))))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addComponent(healthSupName)
+                    .addComponent(PatientName)
+                    .addComponent(jLabel2)
+                    .addComponent(PatientDOB)
+                    .addComponent(PatientGender)
+                    .addComponent(PatientEmailId)
+                    .addComponent(PatientPhone))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         patientInfoPanelLayout.setVerticalGroup(
             patientInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

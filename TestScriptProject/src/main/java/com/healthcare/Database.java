@@ -322,7 +322,7 @@ public class Database {
             //String[] today  = map.get("date").split("-");
             //String[] auth_date_1 = map.get("auth_date_1").split("-");
             //String[] auth_date_2 = map.get("auth_date_1").split("-");
-            callableStatement.setDate(2, DateFormatManager.getSqlDateFromString(map.get("dob")));
+            callableStatement.setDate(2, DateFormatManager.getSqlDateFromString(map.get("dob"), "yyyy/MM/dd"));
             callableStatement.setString(3, map.get("gender"));
             callableStatement.setInt(4, Integer.parseInt(map.get("isSick")));
             callableStatement.setString(5, map.get("username"));
@@ -337,12 +337,12 @@ public class Database {
             callableStatement.setString(14, map.get("smobile"));
             callableStatement.setString(15, map.get("email"));
             callableStatement.setString(16, map.get("ssn"));
-            callableStatement.setDate(17, DateFormatManager.getSqlDateFromString(map.get("date")));
+            callableStatement.setDate(17, DateFormatManager.getSqlDateFromString(map.get("date"),"yyyy/MM/dd"));
             callableStatement.setString(18, map.get("supporter"));
             callableStatement.setString(19, map.get("supporter2"));
             callableStatement.setInt(20, Integer.parseInt(map.get("disease_id")));
-            callableStatement.setDate(21, DateFormatManager.getSqlDateFromString(map.get("auth_date_1")));
-            callableStatement.setDate(22, DateFormatManager.getSqlDateFromString(map.get("auth_date_2")));
+            callableStatement.setDate(21, DateFormatManager.getSqlDateFromString(map.get("auth_date_1"), "yyyy/MM/dd"));
+            callableStatement.setDate(22, DateFormatManager.getSqlDateFromString(map.get("auth_date_2"), "yyyy/MM/dd"));
             // out Parameters
             callableStatement.registerOutParameter(23, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(24, java.sql.Types.VARCHAR);
@@ -635,8 +635,8 @@ public class Database {
                 name = rset.getString(1);
                 dob = rset.getString(2);
                 gender = rset.getString(3);
-                email_id = rset.getString(8);
-                phone = rset.getString(9);
+                email_id = rset.getString(14);
+                phone = rset.getString(12);
             }
         } catch(SQLException e) {
             System.out.println(e.getMessage());
@@ -651,7 +651,7 @@ public class Database {
             }
         }
         
-        Person patient = new Person(username, name, dob, gender, email_id, phone);
+        Person patient = new Person(username, name, DateFormatManager.getSqlDateFromString(dob.split(" ")[0], "yyyy-MM-dd"), gender, email_id, phone);
         return patient;
     }
 
@@ -673,8 +673,8 @@ public class Database {
             callableStatement.setString(6, observation.mood);
             callableStatement.setFloat(7, observation.temperature);
             callableStatement.setFloat(8, observation.weight);
-            callableStatement.setDate(9, DateFormatManager.getSqlDateFromString(observation.observedOn));
-            callableStatement.setDate(10, DateFormatManager.getSqlDateFromString(observation.recordedOn));
+            callableStatement.setDate(9, DateFormatManager.getSqlDateFromString(observation.observedOn, "yyyy/MM/dd"));
+            callableStatement.setDate(10, DateFormatManager.getSqlDateFromString(observation.recordedOn, "yyyy/MM/dd"));
             callableStatement.registerOutParameter(11, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(12, java.sql.Types.VARCHAR);
             callableStatement.execute();

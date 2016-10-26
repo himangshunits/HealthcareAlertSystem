@@ -130,25 +130,18 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-                          <Component id="healthSupName" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="PatientName" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                              <Component id="PatientDOB" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="PatientGender" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="PatientEmailId" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="PatientPhone" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="healthSupName" min="-2" max="-2" attributes="0"/>
+                      <Component id="PatientName" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                      <Component id="PatientDOB" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="PatientGender" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="PatientEmailId" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="PatientPhone" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                  <EmptySpace pref="39" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -178,7 +171,7 @@
         <Component class="javax.swing.JLabel" name="healthSupName">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="healthSupporter.name" type="code"/>
+              <Connection code="&quot;Patients under :: &quot; + healthSupporter.name" type="code"/>
             </Property>
           </Properties>
         </Component>
