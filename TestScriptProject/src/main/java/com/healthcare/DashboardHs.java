@@ -98,7 +98,10 @@ public class DashboardHs extends javax.swing.JFrame {
         patientsList.setModel(new javax.swing.AbstractListModel<String>() {
             //String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return patientsUnderYou.size(); }
-            public String getElementAt(int i) { return patientsUnderYou.get(i).name; }
+            public String getElementAt(int i) {
+                String temp = patientsUnderYou.get(i).name + " (" +  patientsUnderYou.get(i).username + ")";
+                return temp;
+            }
         });
         jScrollPane1.setViewportView(patientsList);
 

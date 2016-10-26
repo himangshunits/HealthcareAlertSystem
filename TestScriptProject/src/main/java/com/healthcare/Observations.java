@@ -25,12 +25,14 @@ public class Observations extends javax.swing.JFrame {
     
     String patientName;
     Database mDb;
-    //String[] todayDate;
+    ObservationSignature signature;
 
     public Observations(String patientName) {
         this.patientName = patientName;
         //this.todayDate = DateFormatManager.getYearMonthDayFromDate(new java.util.Date());
-        this.mDb = Database.getInstance(); 
+        this.mDb = Database.getInstance();
+        this.signature = new ObservationSignature();
+        populateObservationSignature();
         initComponents();
     }
     
@@ -65,7 +67,7 @@ public class Observations extends javax.swing.JFrame {
         diastolicInput = new javax.swing.JTextField();
         systolicInput = new javax.swing.JTextField();
         oxygenSaturationInput = new javax.swing.JTextField();
-        moodComboBox = new javax.swing.JComboBox<>();
+        moodInput = new javax.swing.JComboBox<>();
         temperatureInput = new javax.swing.JTextField();
         painLevelInput = new javax.swing.JSpinner();
         days = new javax.swing.JComboBox<>();
@@ -105,18 +107,39 @@ public class Observations extends javax.swing.JFrame {
         jLabel9.setText("Observation Date");
 
         weightInput.setPreferredSize(new java.awt.Dimension(75, 26));
+        if(signature.isWeight){
+            weightInput.setEnabled(false);
+        }
 
         diastolicInput.setPreferredSize(new java.awt.Dimension(75, 26));
+        if(signature.isBp){
+            diastolicInput.setEnabled(false);
+        }
 
         systolicInput.setPreferredSize(new java.awt.Dimension(75, 26));
+        if(signature.isBp){
+            systolicInput.setEnabled(false);
+        }
 
         oxygenSaturationInput.setPreferredSize(new java.awt.Dimension(75, 26));
+        if(signature.isOxygenSat){
+            oxygenSaturationInput.setEnabled(false);
+        }
 
-        moodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Happy", "Sad", "Neutral" }));
+        moodInput.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Happy", "Sad", "Neutral" }));
+        if(signature.isMood){
+            moodInput.setEnabled(false);
+        }
 
         temperatureInput.setPreferredSize(new java.awt.Dimension(75, 26));
+        if(signature.isTemperature){
+            temperatureInput.setEnabled(false);
+        }
 
         painLevelInput.setModel(new javax.swing.SpinnerNumberModel(1, 1, 10, 1));
+        if(signature.isPainLevel){
+            painLevelInput.setEnabled(false);
+        }
 
         days.setModel(new javax.swing.DefaultComboBoxModel<>(getDays()));
 
@@ -169,7 +192,7 @@ public class Observations extends javax.swing.JFrame {
                                 .addComponent(months1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(years1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(moodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(moodInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(oxygenSaturationInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(systolicInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(diastolicInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -216,7 +239,7 @@ public class Observations extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(moodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(moodInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
@@ -281,7 +304,7 @@ public class Observations extends javax.swing.JFrame {
             oxygenSat = Float.parseFloat(this.oxygenSaturationInput.getText());
         }
         painLevel = this.painLevelInput.getValue().toString()  ;
-        mood = (String)this.moodComboBox.getSelectedItem();
+        mood = (String)this.moodInput.getSelectedItem();
 
         if (this.temperatureInput.getText() != null) {
             temperature = Float.parseFloat(this.temperatureInput.getText());
@@ -304,6 +327,10 @@ public class Observations extends javax.swing.JFrame {
       
         ArrayList<String> result = mDb.addObservation(patientName, observation);
         JOptionPane.showMessageDialog(null, "Message from the Database Service :: " + result.get(1));
+        
+        if (result.get(0).equalsIgnoreCase("SUCCESS")) {
+            AlertManager am = new AlertManager(patientName);
+        }
         this.dispose();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Message from the Service Daemon:: " + e.getMessage());
@@ -408,7 +435,7 @@ public class Observations extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JComboBox<String> months;
     private javax.swing.JComboBox<String> months1;
-    private javax.swing.JComboBox<String> moodComboBox;
+    private javax.swing.JComboBox<String> moodInput;
     private javax.swing.JTextField oxygenSaturationInput;
     private javax.swing.JSpinner painLevelInput;
     private javax.swing.JButton submitObservation;
@@ -418,4 +445,16 @@ public class Observations extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> years;
     private javax.swing.JComboBox<String> years1;
     // End of variables declaration//GEN-END:variables
+
+    private void populateObservationSignature() {
+       ArrayList<Object> bestReco = mDb.getBestRecommendations(patientName).get(0);
+       // if the best reco has more than one element, then it's a severe error!
+        signature.isPainLevel = bestReco.get(1) == null || (Integer)bestReco.get(1) == 0;
+        signature.isMood = bestReco.get(3) == null || (Integer)bestReco.get(3) == 0;
+        signature.isTemperature = bestReco.get(6) == null || (Integer)bestReco.get(6) == 0;
+        signature.isWeight = bestReco.get(9) == null || (Integer)bestReco.get(9) == 0;
+        signature.isBp = bestReco.get(14) == null || (Integer)bestReco.get(14) == 0;
+        signature.isOxygenSat = bestReco.get(17) == null || (Integer)bestReco.get(17) == 0;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

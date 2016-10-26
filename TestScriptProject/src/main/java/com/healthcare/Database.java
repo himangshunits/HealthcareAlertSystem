@@ -1104,5 +1104,123 @@ public class Database {
         out.add(status);
         out.add(message);
         return out;
-    }    
+
+    }
+    
+    
+    ArrayList<String> deleteObservation(Integer observationId) {
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String userDiseasesCall = "{call DELETE_OBSERVATION(?, ?, ?)}";
+
+        try {
+            callableStatement = CONN.prepareCall(userDiseasesCall);            
+            callableStatement.setInt(1, observationId);            
+            // out Parameters            
+            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+
+            // execute getDBUSERByUserId store procedure
+            callableStatement.execute();
+            status = callableStatement.getString(2);
+            message = callableStatement.getString(3);            
+        } catch (SQLException e) {            
+            System.out.println("Error is Delete Observation ::" + e.getMessage());
+        } finally {
+            if (callableStatement != null) {                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }       
+        ArrayList<String> out = new ArrayList<String>();
+        out.add(status);
+        out.add(message);
+        return out;
+    }
+    
+    
+    ArrayList<String> deleteRecommendation(String username) {
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String userDiseasesCall = "{call DELETE_RECOMMENDATION(?, ?, ?)}";
+
+        try {
+            callableStatement = CONN.prepareCall(userDiseasesCall);            
+            callableStatement.setString(1, username);          
+            // out Parameters
+            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            // execute getDBUSERByUserId store procedure
+            callableStatement.execute();
+            status = callableStatement.getString(2);
+            message = callableStatement.getString(3);            
+        } catch (SQLException e) {            
+            System.out.println("Error is Delete Recommendation ::" + e.getMessage());
+        } finally {
+            if (callableStatement != null) {                
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }       
+        ArrayList<String> out = new ArrayList<String>();
+        out.add(status);
+        out.add(message);
+        return out;
+    } 
+    
+    
+    public void createAlert(String username, Integer alertId, String alertReason) throws SQLException{
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String callAddObservation = "{call CREATE_ALERT(?, ?, ?, ?, ?, ?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(callAddObservation);
+            callableStatement.setString(1, username);
+            callableStatement.setInt(2, alertId);
+            callableStatement.setDate(3, DateFormatManager.getSqlDateFromJavaDate(new java.util.Date()));
+            callableStatement.setInt(4, 1);
+            callableStatement.setInt(5, 0);
+            callableStatement.setString(6, alertReason);
+            callableStatement.registerOutParameter(7, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(8, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getString(7);
+            message = callableStatement.getString(8);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStatement != null) {
+                callableStatement.close();
+            }
+
+            if (dbConnection != null) {
+                CONN.close();
+            }
+        }
+    }
+
 }
