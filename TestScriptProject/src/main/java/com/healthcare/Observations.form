@@ -81,7 +81,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="years1" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="moodComboBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="moodInput" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="oxygenSaturationInput" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="systolicInput" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="diastolicInput" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -142,7 +142,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="moodComboBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="moodInput" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -235,6 +235,9 @@
               <Dimension value="[75, 26]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(signature.isWeight){&#xa;    weightInput.setEnabled(false);&#xa;}"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="diastolicInput">
           <Properties>
@@ -242,6 +245,9 @@
               <Dimension value="[75, 26]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(signature.isBp){&#xa;    diastolicInput.setEnabled(false);&#xa;}"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="systolicInput">
           <Properties>
@@ -249,6 +255,9 @@
               <Dimension value="[75, 26]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(signature.isBp){&#xa;    systolicInput.setEnabled(false);&#xa;}"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="oxygenSaturationInput">
           <Properties>
@@ -256,8 +265,11 @@
               <Dimension value="[75, 26]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(signature.isOxygenSat){&#xa;    oxygenSaturationInput.setEnabled(false);&#xa;}"/>
+          </AuxValues>
         </Component>
-        <Component class="javax.swing.JComboBox" name="moodComboBox">
+        <Component class="javax.swing.JComboBox" name="moodInput">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="3">
@@ -268,6 +280,7 @@
             </Property>
           </Properties>
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(signature.isMood){&#xa;    moodInput.setEnabled(false);&#xa;}"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
@@ -277,6 +290,9 @@
               <Dimension value="[75, 26]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(signature.isTemperature){&#xa;    temperatureInput.setEnabled(false);&#xa;}"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JSpinner" name="painLevelInput">
           <Properties>
@@ -284,6 +300,9 @@
               <SpinnerModel initial="1" maximum="10" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(signature.isPainLevel){&#xa;    painLevelInput.setEnabled(false);&#xa;}"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JComboBox" name="days">
           <Properties>
