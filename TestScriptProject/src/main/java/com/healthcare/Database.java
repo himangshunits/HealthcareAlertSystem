@@ -1010,13 +1010,14 @@ public class Database {
                 ArrayList<Object> y = new ArrayList<Object>();
                 y.add(rset.getInt(1));
                 y.add(rset.getInt(2));
-                y.add(rset.getString(3));
-                y.add(rset.getFloat(4));
-                y.add(rset.getString(5));
-                y.add(rset.getFloat(6));
+                y.add(rset.getInt(3));
+                y.add(rset.getString(4));
+                y.add(rset.getFloat(5));
+                y.add(rset.getString(6));
                 y.add(rset.getFloat(7));
-                y.add(rset.getDate(8));
+                y.add(rset.getFloat(8));
                 y.add(rset.getDate(9));
+                y.add(rset.getDate(10));
                 result.add(y);
             }            
             return result;

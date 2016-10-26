@@ -70,7 +70,7 @@ public class HealthIndicators extends javax.swing.JFrame {
         jLabel1.setText("The Best Recommendation for " + username);
 
         String[] header1 = new String [] {
-            "BP Diastolic","BP Systolic","Mood","Oxygen Saturation","Pain Level","Temperature","Weight","Observed On","Recorded On"};
+            "ID","BP Diastolic","BP Systolic","Mood","Oxygen Saturation","Pain Level","Temperature","Weight","Observed On","Recorded On"};
 
         NonEditableModel model1 = new NonEditableModel(header1, 0);
         ArrayList<ArrayList<Object>> data1 = db.getAllObservations(username);
@@ -232,7 +232,7 @@ public class HealthIndicators extends javax.swing.JFrame {
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         //TODO : Remove the initalizer code from constructor.
         String[] header1 = new String [] {
-            "BP Diastolic","BP Systolic","Mood","Oxygen Saturation","Pain Level","Temperature","Weight","Observed On","Recorded On"};
+            "ID","BP Diastolic","BP Systolic","Mood","Oxygen Saturation","Pain Level","Temperature","Weight","Observed On","Recorded On"};
 
         NonEditableModel model1 = new NonEditableModel(header1, 0);
         ArrayList<ArrayList<Object>> data1 = db.getAllObservations(username);
