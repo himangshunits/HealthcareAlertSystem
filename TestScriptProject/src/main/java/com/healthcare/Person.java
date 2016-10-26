@@ -60,16 +60,6 @@ public class Person {
         this.country = country;
     }
     
-    
-    public Person(String username, String name, String dob, String gender, String email_id, String phone1) {
-        this.username = username;
-        this.name = name;
-        this.dob = DateFormatManager.getSqlDateFromString(name);
-        this.gender = gender;
-        this.email_id = email_id;
-        this.phone1 = phone1;
-    }
-    
     public Person(String username, String name, Date dob, String gender, String email_id, String phone1) {
         this.username = username;
         this.name = name;

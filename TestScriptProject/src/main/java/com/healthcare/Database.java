@@ -641,7 +641,8 @@ public class Database {
         CallableStatement callableStatement = null;
         String message = "", status = "";
         String showProfile = "{call SHOW_PROFILE(?, ?, ?, ?)}";
-        String name = "", dob = "", gender = "", email_id = "", phone = "";
+        String name = "", gender = "", email_id = "", phone = "";
+        Date dob = null;
         try {
             callableStatement = CONN.prepareCall(showProfile);
             callableStatement.setString(1, username);
@@ -655,7 +656,7 @@ public class Database {
             ResultSet rset = (ResultSet)callableStatement.getObject(4);
             if(rset.next()) {
                 name = rset.getString(1);
-                dob = rset.getString(2);
+                dob = rset.getDate(2);
                 gender = rset.getString(3);
                 email_id = rset.getString(8);
                 phone = rset.getString(9);
