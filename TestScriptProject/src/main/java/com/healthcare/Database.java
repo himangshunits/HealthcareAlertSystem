@@ -31,9 +31,8 @@ public class Database {
             CONN = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
             System.out.println("Connection Successful");
         }
-        catch(Exception e)
+        catch(ClassNotFoundException | SQLException e)
         {
-            e.printStackTrace();
         }
     }
     
@@ -1256,6 +1255,14 @@ public class Database {
             }
         }
         return result;
+    }
+
+    void closeConn() {
+        try {
+                CONN.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
 
 }

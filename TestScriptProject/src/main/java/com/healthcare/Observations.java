@@ -448,6 +448,10 @@ public class Observations extends javax.swing.JFrame {
 
     private void populateObservationSignature() {
        ArrayList<Object> bestReco = mDb.getBestRecommendations(patientName).get(0);
+       if(bestReco.size() == 2){
+           System.out.println("Severe error is recommendation rerieval, nulls coming :: " + bestReco);
+           System.exit(0);
+       }
        // if the best reco has more than one element, then it's a severe error!
         signature.isPainLevel = bestReco.get(1) == null || (Integer)bestReco.get(1) == 0;
         signature.isMood = bestReco.get(3) == null || (Integer)bestReco.get(3) == 0;
