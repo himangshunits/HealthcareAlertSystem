@@ -1265,4 +1265,43 @@ public class Database {
             }
     }
 
+    void updateSupporter(String patient, String username, String new_username, java.util.Date auth_date) {
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String callUpdateHS = "{call UPDATE_HS(?, ?, ?, ?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(callUpdateHS);
+            callableStatement.setString(1, patient);
+            callableStatement.setString(2, username);
+            callableStatement.setString(3, new_username);
+            callableStatement.setDate(4, DateFormatManager.getSqlDateFromJavaDate(auth_date));
+            callableStatement.registerOutParameter(5, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(6, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getString(5);
+            message = callableStatement.getString(6);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
 }

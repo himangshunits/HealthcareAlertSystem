@@ -20,7 +20,9 @@ public class HealthSupporter extends javax.swing.JFrame {
     String supp1_username = "", supp1_name = "";
     String supp2_username = "", supp2_name = "";
     Database db;
+    String username;
     public HealthSupporter(String username) {
+        this.username = username;
         db = Database.getInstance();
         try
         {
@@ -295,10 +297,12 @@ public class HealthSupporter extends javax.swing.JFrame {
 
     private void changePrimaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePrimaryActionPerformed
         // TODO add your handling code here:
+        new ChangeSupporter(this.username, this.supp1_username).setVisible(true);
     }//GEN-LAST:event_changePrimaryActionPerformed
 
     private void changeSecondaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeSecondaryActionPerformed
         // TODO add your handling code here:
+        new ChangeSupporter(this.username, this.supp2_username).setVisible(true);
     }//GEN-LAST:event_changeSecondaryActionPerformed
 
     /**
