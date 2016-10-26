@@ -652,7 +652,7 @@ public class Database {
             }
         }
         
-        Person patient = new Person(username, name, DateFormatManager.getSqlDateFromString(dob.split(" ")[0], "yyyy-MM-dd"), gender, email_id, phone);
+        Person patient = new Person(username, name, dob, gender, email_id, phone);
         return patient;
     }
 
