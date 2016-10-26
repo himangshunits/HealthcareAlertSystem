@@ -133,9 +133,9 @@ public class Profile extends javax.swing.JFrame {
         zipcode = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        submit = new javax.swing.JToggleButton();
         jButton1 = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -248,13 +248,6 @@ public class Profile extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Your Profile");
 
-        submit.setText("Submit");
-        submit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                submitActionPerformed(evt);
-            }
-        });
-
         jButton1.setText("Close");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -263,6 +256,13 @@ public class Profile extends javax.swing.JFrame {
         });
 
         jLabel19.setText(person.username);
+
+        jButton2.setText("Submit");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -345,8 +345,8 @@ public class Profile extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(163, 163, 163)
                                 .addComponent(jButton1)
-                                .addGap(70, 70, 70)
-                                .addComponent(submit, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(186, 186, 186)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -427,8 +427,8 @@ public class Profile extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(submit)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addGap(12, 12, 12))
         );
 
@@ -459,11 +459,12 @@ public class Profile extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_zipcodeActionPerformed
 
-    private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
         // TODO add your handling code here:
-        
-        
-        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Date date_of_birth = DateFormatManager.getDate((String)days.getSelectedItem(), (String)months.getSelectedItem(), (String)years.getSelectedItem());
         String gender = genderMale.isSelected() ? "MALE" : "FEMALE" ;
         Person updatedPerson = new Person(person.username, 
@@ -482,14 +483,10 @@ public class Profile extends javax.swing.JFrame {
                 country.getText());
        
         ArrayList<String> out = db.updateProfile(updatedPerson);
-        JOptionPane.showMessageDialog(null, out.get(1));
-        
-    }//GEN-LAST:event_submitActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JOptionPane.showMessageDialog(null, "Message from DB = " + out.get(1));
         this.dispose();
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButton2ActionPerformed
     private String[] getMonths() {
         String months[] = new String[12];
         for (int i = 0; i < 12; i++) {
@@ -538,6 +535,7 @@ public class Profile extends javax.swing.JFrame {
     private javax.swing.JRadioButton genderMale;
     private javax.swing.JLabel isSickLbl;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -558,7 +556,6 @@ public class Profile extends javax.swing.JFrame {
     private javax.swing.JTextField phone2;
     private javax.swing.JTextField ssn;
     private javax.swing.JTextField state;
-    private javax.swing.JToggleButton submit;
     private javax.swing.JLabel usernameLbl;
     private javax.swing.JComboBox<String> years;
     private javax.swing.JTextField zipcode;
