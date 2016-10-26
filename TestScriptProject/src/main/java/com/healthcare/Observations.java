@@ -306,7 +306,7 @@ public class Observations extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Message from the Database Service :: " + result.get(1));
         
         if (result.get(0).equalsIgnoreCase("SUCCESS")) {
-            AlertManager am = new AlertManager(username);
+            AlertManager am = new AlertManager(patientName);
         }
         this.dispose();
         } catch (SQLException e) {
