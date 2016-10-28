@@ -289,7 +289,7 @@ public class Observations extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void submitObservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitObservationActionPerformed
-        // TODO add your handling code here:
+        // TODO add yourzs handling code here:
     try {
         if (this.weightInput.getText() != null) {
             weight = Float.parseFloat(this.weightInput.getText());
@@ -323,16 +323,19 @@ public class Observations extends javax.swing.JFrame {
 
         recordedOn = year1 + "/" + month1 + "/" + day1;
        
-        Observation observation = new Observation(weight, bpDiastolic, bpSystolic, oxygenSat, painLevel, mood, temperature, observedOn, recordedOn);
-      
-        ArrayList<String> result = mDb.addObservation(patientName, observation);
+        Observation observation = null;
+        //Observation observation = new Observation(weight, bpDiastolic, bpSystolic, oxygenSat, painLevel, mood, temperature, observedOn, recordedOn);
+        //Obers
+        ArrayList<String> result = null;//mDb.addObservation(patientName, observation);
+        if(result == null)
+            throw new Exception("Useless Exception!");
         JOptionPane.showMessageDialog(null, "Message from the Database Service :: " + result.get(1));
         System.out.println(result.get(0));
         if (result.get(0).equalsIgnoreCase("SUCCESS")) {
             AlertManager am = new AlertManager(patientName);
         }
         this.dispose();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Message from the Service Daemon:: " + e.getMessage());
             e.printStackTrace();
         }
