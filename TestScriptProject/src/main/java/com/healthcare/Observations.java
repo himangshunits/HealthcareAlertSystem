@@ -327,7 +327,7 @@ public class Observations extends javax.swing.JFrame {
       
         ArrayList<String> result = mDb.addObservation(patientName, observation);
         JOptionPane.showMessageDialog(null, "Message from the Database Service :: " + result.get(1));
-        
+        System.out.println(result.get(0));
         if (result.get(0).equalsIgnoreCase("SUCCESS")) {
             AlertManager am = new AlertManager(patientName);
         }

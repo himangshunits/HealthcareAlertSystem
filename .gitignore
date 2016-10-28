@@ -1,4 +1,7 @@
 *.iml
 *.idea
-/TestScriptProject/target/
+*/target/
 *.nbproject
+*/pom.xml
+pom.xml
+*/TestScriptProject/pom.xml

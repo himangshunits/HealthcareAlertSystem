@@ -1406,4 +1406,54 @@ public class Database {
         return result;
     }
     
+    
+    public ArrayList<Float> getObservedWeight (String username) {
+        ArrayList<Float> result = new ArrayList<>();
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String GetDiseasesCall = "{call GET_WEIGHT_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        try 
+        {
+            callableStatement = CONN.prepareCall(GetDiseasesCall);
+            callableStatement.setString(1, username);
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            ResultSet rset = (ResultSet)callableStatement.getObject(2);
+//            while(rset.next())
+//            {
+//                arr.add(rset.getFloat(2),rset.getInt(1));
+//            }
+            if (rset.next()) {
+                result.add(rset.getFloat("weight_val"));
+            }
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        return result;
+
+    }
 }
