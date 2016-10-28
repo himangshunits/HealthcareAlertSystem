@@ -117,6 +117,11 @@ public class HealthSupporter extends javax.swing.JFrame {
         });
 
         jButton2.setText("Update");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         addPrimary.setText("Add");
 
@@ -304,6 +309,10 @@ public class HealthSupporter extends javax.swing.JFrame {
         // TODO add your handling code here:
         new ChangeSupporter(this.username, this.supp2_username).setVisible(true);
     }//GEN-LAST:event_changeSecondaryActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

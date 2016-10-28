@@ -33,6 +33,8 @@ public class Database {
         }
         catch(ClassNotFoundException | SQLException e)
         {
+            System.out.println("Issue in connection = " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
@@ -774,10 +776,13 @@ public class Database {
             while(rset.next())
             {
                 ArrayList<Object> y = new ArrayList<Object>();
-                y.add(rset.getString(1));
-                y.add(rset.getTimestamp(2));
-                y.add(rset.getString(3));
-                y.add(rset.getString(4));
+                y.add(rset.getString(1));//sent alert id
+                y.add(rset.getInt(2));//is_seen
+                y.add(rset.getString(4));// alert_text
+                y.add(rset.getTimestamp(5));//sent on
+                
+                y.add(rset.getString(6));//severity
+                y.add(rset.getString(7));//reason for alert
                 result.add(y);
             }            
             return result;
@@ -1265,7 +1270,7 @@ public class Database {
             }
     }
 
-    void updateSupporter(String patient, String username, String new_username, java.util.Date auth_date) {
+    String[] updateSupporter(String patient, String username, String new_username, java.util.Date auth_date) {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
@@ -1302,6 +1307,97 @@ public class Database {
                 }
             }
         }
+        String[] out = new String[2];
+        out[0] = status;
+        out[1] = message;
+        return out;
+    }
+    
+    
+    
+    
+    
+    String[] markAlertAsSeen(Integer sentAlertId) {
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String markCall = "{call MARK_AS_SEEN(?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(markCall);
+            callableStatement.setInt(1, sentAlertId);
+
+            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.executeUpdate();
+            status = callableStatement.getString(2);
+            message = callableStatement.getString(3);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        String[] out = new String[2];
+        out[0] = status;
+        out[1] = message;
+        return out;
+    }
+    
+    
+    String[] deactivateAlert(Integer sentAlertId) {
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String deactivateCall = "{call DEACTIVATE_ALERT(?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(deactivateCall);
+            callableStatement.setInt(1, sentAlertId);
+
+            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.executeUpdate();
+            status = callableStatement.getString(2);
+            message = callableStatement.getString(3);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        String[] out = new String[2];
+        out[0] = status;
+        out[1] = message;
+        return out;
     }
 
 }
