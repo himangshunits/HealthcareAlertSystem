@@ -127,10 +127,14 @@
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="diseaseName" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="supporters" alignment="0" min="-2" pref="185" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="supporters" min="-2" pref="185" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                                      <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                                   <Component id="supporters2" alignment="0" min="-2" pref="185" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="101" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -221,7 +225,10 @@
                   </Group>
                   <Group type="102" attributes="0">
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="supporters" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="supporters" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="supporters2" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -691,6 +698,13 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel17">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="&quot;Can&apos;t find your supporter?\nPlease add them first !&quot;" type="code"/>
+        </Property>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
