@@ -659,37 +659,30 @@ public class Database {
         return patient;
     }
 
-    ArrayList<String> addObservation(String patientName, Observation observation) throws SQLException {
+    ArrayList<String> addObservation(String username, ObservationNew observation) throws SQLException {
         ArrayList<String> result = new ArrayList<>();
-        
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
-        String callAddObservation = "{call ADD_OBSERVATION(?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?)}";
+        String callAddObservation = "{call ADD_OBS_GENERIC(?, ?, ?, ?, ? ,?, ?, ?)}";
         
         try {
             callableStatement = CONN.prepareCall(callAddObservation);
-            callableStatement.setString(1, patientName);
-            callableStatement.setInt(2, observation.bpDiastolic);
-            callableStatement.setInt(3, observation.bpSystolic);
-            callableStatement.setFloat(4, observation.oxygenSat);
-            callableStatement.setString(5, observation.painLevel);
-            callableStatement.setString(6, observation.mood);
-            callableStatement.setFloat(7, observation.temperature);
-            callableStatement.setFloat(8, observation.weight);
-            callableStatement.setDate(9, DateFormatManager.getSqlDateFromString(observation.observedOn, "yyyy/MM/dd"));
-            callableStatement.setDate(10, DateFormatManager.getSqlDateFromString(observation.recordedOn, "yyyy/MM/dd"));
-            callableStatement.registerOutParameter(11, java.sql.Types.VARCHAR);
-            callableStatement.registerOutParameter(12, java.sql.Types.VARCHAR);
+            callableStatement.setString(1, username);
+            callableStatement.setString(2, observation.type);
+            callableStatement.setString(3, observation.value1);
+            callableStatement.setString(4, observation.value2);
+            callableStatement.setDate(5, (Date)observation.observed_on);
+            callableStatement.setDate(6, (Date)observation.recorded_on);
+            callableStatement.registerOutParameter(7, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(8, java.sql.Types.VARCHAR);
             callableStatement.execute();
-            status = callableStatement.getString(11);
-            message = callableStatement.getString(12);
+            status = callableStatement.getString(7);
+            message = callableStatement.getString(8);
             System.out.println("Status : " + status + "\nMessage : " + message);
             
             result.add(status);
             result.add(message);
-
-            
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -704,6 +697,8 @@ public class Database {
         }
         return result;
     }
+    
+    
     
     
     public void addRecommendation(Recommendation newReco, String username) throws SQLException{
@@ -981,7 +976,11 @@ public class Database {
         }       
         return result;
     }
-    
+    Observation getLatestObservation(String username)
+    {
+        return null;
+    }
+    /*
     Observation getLatestObservation(String username) {
         Observation ob = null;
         Connection dbConnection = null;
@@ -1038,7 +1037,7 @@ public class Database {
         }       
         return ob;
     }
-
+    */
     ArrayList<String> deleteDisease(String username, Integer diseaseId) {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
@@ -1404,6 +1403,10 @@ public class Database {
             }
         }
         return result;
+    }
+
+    void deleteHS(String username, String supporter) {
+        // TODO 
     }
     
     
