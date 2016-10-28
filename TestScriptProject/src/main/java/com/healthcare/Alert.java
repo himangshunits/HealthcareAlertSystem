@@ -8,6 +8,7 @@ package com.healthcare;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -27,6 +28,7 @@ public class Alert extends javax.swing.JFrame {
         this.isHs = isHs;        
         //initComponents();        
         initComponents();
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
     public Alert() {
         initComponents();

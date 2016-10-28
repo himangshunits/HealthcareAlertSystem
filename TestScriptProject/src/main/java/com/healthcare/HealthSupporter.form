@@ -78,21 +78,21 @@
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="primaryLbl1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="primary_auth1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="secondaryLbl" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="secondary_auth" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="primaryUsername1" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="auth_date3" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="secondaryUsername" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="auth_date2" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="auth_month3" min="-2" max="-2" attributes="0"/>
+                              <Component id="auth_month2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="auth_year3" min="-2" max="-2" attributes="0"/>
+                              <Component id="auth_year2" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -152,16 +152,16 @@
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="primaryUsername1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="primaryLbl1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="secondaryUsername" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="secondaryLbl" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="auth_date3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="auth_month3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="auth_year3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="primary_auth1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="auth_date2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="auth_month2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="auth_year2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="secondary_auth" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jButton1" min="-2" max="-2" attributes="0"/>
@@ -335,7 +335,7 @@
         <Property name="text" type="java.lang.String" value="Authorization Date:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="auth_date3">
+    <Component class="javax.swing.JComboBox" name="auth_date2">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(DateFormatManager.getDays())" type="code"/>
@@ -345,7 +345,7 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JComboBox" name="auth_month3">
+    <Component class="javax.swing.JComboBox" name="auth_month2">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(DateFormatManager.getMonths())" type="code"/>
@@ -355,7 +355,7 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JComboBox" name="auth_year3">
+    <Component class="javax.swing.JComboBox" name="auth_year2">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(DateFormatManager.getYears())" type="code"/>
@@ -365,18 +365,18 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JComboBox" name="primaryUsername1">
+    <Component class="javax.swing.JComboBox" name="secondaryUsername">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(db.getSupporters())" type="code"/>
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(supp2 == null)&#xa;{&#xa;    primaryUsername1.setVisible(true);&#xa;    auth_date3.setVisible(true);&#xa;    auth_month3.setVisible(true);&#xa;    auth_year3.setVisible(true);&#xa;}&#xa;else&#xa;{&#xa;    primaryUsername1.setVisible(false);&#xa;    auth_date3.setVisible(false);&#xa;    auth_month3.setVisible(false);&#xa;    auth_year3.setVisible(false);&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if(supp2 == null)&#xa;{&#xa;    secondaryUsername.setVisible(true);&#xa;    auth_date2.setVisible(true);&#xa;    auth_month2.setVisible(true);&#xa;    auth_year2.setVisible(true);&#xa;}&#xa;else&#xa;{&#xa;    secondaryUsername.setVisible(false);&#xa;    auth_date2.setVisible(false);&#xa;    auth_month2.setVisible(false);&#xa;    auth_year2.setVisible(false);&#xa;}"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="primaryLbl1">
+    <Component class="javax.swing.JLabel" name="secondaryLbl">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="supp2.username" type="code"/>
@@ -387,7 +387,7 @@
         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="if(supp2 != null)&#xa;{"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="primary_auth1">
+    <Component class="javax.swing.JLabel" name="secondary_auth">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="date[2] + &quot;/&quot; + date[1] + &quot;/&quot; + date[0]" type="code"/>

@@ -33,6 +33,7 @@ public class Database {
         }
         catch(ClassNotFoundException | SQLException e)
         {
+
             System.out.println("Issue in connection = " + e.getMessage());
             e.printStackTrace();
         }
