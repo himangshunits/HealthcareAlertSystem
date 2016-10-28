@@ -20,9 +20,9 @@
             <version>1.5.1</version>
         </dependency>
         <dependency>
-            <groupId>asdas</groupId>
-            <artifactId>asdasd</artifactId>
-            <version>asdasd</version>
+            <groupId>abcd</groupId>
+            <artifactId>abcd</artifactId>
+            <version>2.0</version>
         </dependency>
     </dependencies>
     <properties>

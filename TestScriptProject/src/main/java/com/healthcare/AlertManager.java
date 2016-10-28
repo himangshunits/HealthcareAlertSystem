@@ -58,6 +58,7 @@ public class AlertManager {
         aaj.set(Calendar.SECOND, 0);
         Calendar today = Calendar.getInstance();
         String[] obsDateString = observation.observedOn.split("-");
+        
         SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
         String inputString1 = obsDateString[2] + " " + obsDateString[1] + 
                 " " + obsDateString[0];
