@@ -5,6 +5,8 @@
  */
 package com.healthcare;
 
+import java.util.Date;
+
 /**
  *
  * @author Rahul
@@ -12,9 +14,14 @@ package com.healthcare;
 public class HsInfo{
         String name;
         String username;
-
+        Date auth_date;
         public HsInfo(String name, String username) {
             this.name = name;
             this.username = username;
+        }
+        public HsInfo(String name, String username, Date auth_date) {
+            this.name = name;
+            this.username = username;
+            this.auth_date = auth_date;
         }
     }

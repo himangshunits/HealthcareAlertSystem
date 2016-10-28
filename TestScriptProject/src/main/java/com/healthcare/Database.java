@@ -125,18 +125,19 @@ public class Database {
         return arr;
         
     }
-    ArrayList<String> addHealthSupporter(String username, String supporter, Date auth_date) throws SQLException
+    ArrayList<String> addHealthSupporter(String username, String supporter, java.util.Date auth_date) throws SQLException
     {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
+        
         String insertHealthSupporterCall = "{call ADD_HEALTH_SUPPORTER(?, ?, ?, ?, ?)}";
         try {
             callableStatement = CONN.prepareCall(insertHealthSupporterCall);
 
             callableStatement.setString(1, username);
             callableStatement.setString(2, supporter);
-            callableStatement.setDate(3, auth_date);
+            callableStatement.setDate(3, (Date)auth_date);
             // out Parameters
             callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(5, java.sql.Types.VARCHAR);
@@ -595,7 +596,7 @@ public class Database {
             ResultSet rset = (ResultSet)callableStatement.getObject(2);
             while(rset.next())
             {
-                arr.add(new HsInfo(rset.getString(1), rset.getString(2)));
+                arr.add(new HsInfo(rset.getString(1), rset.getString(2), rset.getDate(3)));
             }
         } catch (SQLException e) 
         {
@@ -1204,7 +1205,7 @@ public class Database {
     }
 
     ArrayList<String> updateProfile(Person person) {
-        ArrayList<String> result = new ArrayList<>();
+        ArrayList<String> result = new ArrayList<String>();
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
@@ -1220,7 +1221,7 @@ public class Database {
             callableStatement.setString (6,  person.address2);
             callableStatement.setString (7,  person.city);
             callableStatement.setString (8,  person.country);
-            callableStatement.setString (9, person.zipcode);
+            callableStatement.setString (9,  person.zipcode);
             callableStatement.setString (10, person.state);
             callableStatement.setString (11, person.phone1);
             callableStatement.setString (12, person.phone2);
@@ -1270,7 +1271,11 @@ public class Database {
             }
     }
 
-    String[] updateSupporter(String patient, String username, String new_username, java.util.Date auth_date) {
+
+    ArrayList<String> updateSupporter(String patient, String username, String new_username, java.util.Date auth_date) 
+    {
+        ArrayList<String> result = new ArrayList<String>();
+
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
@@ -1287,7 +1292,8 @@ public class Database {
             callableStatement.execute();
             status = callableStatement.getString(5);
             message = callableStatement.getString(6);
-            System.out.println("Status : " + status + "\nMessage : " + message);            
+            result.add(status); 
+            result.add(message);
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -1307,22 +1313,21 @@ public class Database {
                 }
             }
         }
-        String[] out = new String[2];
-        out[0] = status;
-        out[1] = message;
-        return out;
+
+        return result;
     }
     
     
     
     
     
-    String[] markAlertAsSeen(Integer sentAlertId) {
+    ArrayList<String> markAlertAsSeen(Integer sentAlertId) 
+    {
+        ArrayList<String> result = new ArrayList<String>();
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
         String markCall = "{call MARK_AS_SEEN(?, ?, ?)}";
-        
         try {
             callableStatement = CONN.prepareCall(markCall);
             callableStatement.setInt(1, sentAlertId);
@@ -1332,6 +1337,8 @@ public class Database {
             callableStatement.executeUpdate();
             status = callableStatement.getString(2);
             message = callableStatement.getString(3);
+            result.add(status);
+            result.add(message);
             System.out.println("Status : " + status + "\nMessage : " + message);            
         } catch(SQLException e) {
             System.out.println(e.getMessage());
@@ -1352,14 +1359,13 @@ public class Database {
                 }
             }
         }
-        String[] out = new String[2];
-        out[0] = status;
-        out[1] = message;
-        return out;
+        return result;
     }
     
     
-    String[] deactivateAlert(Integer sentAlertId) {
+    ArrayList<String> deactivateAlert(Integer sentAlertId) 
+    {
+        ArrayList<String> result = new ArrayList<String>();
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
@@ -1368,13 +1374,15 @@ public class Database {
         try {
             callableStatement = CONN.prepareCall(deactivateCall);
             callableStatement.setInt(1, sentAlertId);
-
             callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
             callableStatement.executeUpdate();
             status = callableStatement.getString(2);
             message = callableStatement.getString(3);
+            result.add(status);
+            result.add(message);
             System.out.println("Status : " + status + "\nMessage : " + message);            
+            
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -1394,10 +1402,7 @@ public class Database {
                 }
             }
         }
-        String[] out = new String[2];
-        out[0] = status;
-        out[1] = message;
-        return out;
+        return result;
     }
-
+    
 }
