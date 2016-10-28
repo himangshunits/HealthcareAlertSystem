@@ -63,7 +63,7 @@ public class DateFormatManager {
         String[] result = new String[3];
         int year = today.getYear();
         int month = today.getMonth();
-        int day = today.getDay();
+        int date = today.getDate();
         
         result[0] = String.valueOf(1900 + year);
         
@@ -72,7 +72,7 @@ public class DateFormatManager {
         {
             result[1] = "0" + result[1];
         }
-        result[2] = String.valueOf(day);
+        result[2] = String.valueOf(date);
         if(result[2].length() == 1)
         {
             result[2] = "0" + result[2];

@@ -1,6 +1,11 @@
 package com.healthcare;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,8 +22,7 @@ public class HealthSupporter extends javax.swing.JFrame {
     /**
      * Creates new form HealthSupporter
      */
-    String supp1_username = "", supp1_name = "";
-    String supp2_username = "", supp2_name = "";
+    HsInfo supp1, supp2;
     Database db;
     String username;
     public HealthSupporter(String username) {
@@ -30,23 +34,25 @@ public class HealthSupporter extends javax.swing.JFrame {
             String name = data.get(0);
             int person_id = Integer.parseInt(data.get(1));            
             ArrayList<HsInfo> arr = db.getHsInfo(person_id);
+            supp1 = null;
+            supp2 = null;
             if(arr.size() >= 1)
             {
-                supp1_username = arr.get(0).username;
-                supp1_name = arr.get(0).name;
+                supp1 = arr.get(0);
+                
             }
             if(arr.size() >= 2)
             {
-                supp2_username = arr.get(1).username;
-                supp2_name = arr.get(1).name;
+                supp2 = arr.get(1);
             }
-                
         }
         catch(Exception e)
         {
         }
         
         initComponents();
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
     }
 
     /**
@@ -67,21 +73,24 @@ public class HealthSupporter extends javax.swing.JFrame {
         auth_date1 = new javax.swing.JComboBox<>();
         auth_month1 = new javax.swing.JComboBox<>();
         auth_year1 = new javax.swing.JComboBox<>();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        auth_date2 = new javax.swing.JComboBox<>();
-        auth_month2 = new javax.swing.JComboBox<>();
-        auth_year2 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         addPrimary = new javax.swing.JButton();
         editPrimary = new javax.swing.JButton();
         addSecondary = new javax.swing.JButton();
         editSecondary = new javax.swing.JButton();
         primaryUsername = new javax.swing.JComboBox<>();
-        secondaryUsername = new javax.swing.JComboBox<>();
         changePrimary = new javax.swing.JButton();
         changeSecondary = new javax.swing.JButton();
+        primaryLbl = new javax.swing.JLabel();
+        primary_auth = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        auth_date3 = new javax.swing.JComboBox<>();
+        auth_month3 = new javax.swing.JComboBox<>();
+        auth_year3 = new javax.swing.JComboBox<>();
+        primaryUsername1 = new javax.swing.JComboBox<>();
+        primaryLbl1 = new javax.swing.JLabel();
+        primary_auth1 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,16 +108,6 @@ public class HealthSupporter extends javax.swing.JFrame {
 
         auth_year1.setModel(new javax.swing.DefaultComboBoxModel<>(DateFormatManager.getYears()));
 
-        jLabel9.setText("Username");
-
-        jLabel10.setText("Authorization Date:");
-
-        auth_date2.setModel(new javax.swing.DefaultComboBoxModel<>(DateFormatManager.getDays()));
-
-        auth_month2.setModel(new javax.swing.DefaultComboBoxModel<>(DateFormatManager.getMonths()));
-
-        auth_year2.setModel(new javax.swing.DefaultComboBoxModel<>(DateFormatManager.getYears()));
-
         jButton1.setText("Go Back");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,20 +115,29 @@ public class HealthSupporter extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Update");
-
         addPrimary.setText("Add");
-
-        editPrimary.setText("Edit Supporter's Profile");
-        if(supp1_username.equals(""))
+        addPrimary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addPrimaryActionPerformed(evt);
+            }
+        });
+        if(supp1 != null)
         {
-            editPrimary.setEnabled(false);
-            changePrimary.setEnabled(false);
+            addPrimary.setEnabled(false);
         }
         else
         {
-            addPrimary.setEnabled(false);
-            changePrimary.setEnabled(true);
+            addPrimary.setEnabled(true);
+        }
+
+        editPrimary.setText("Edit Supporter's Profile");
+        if(supp1 != null)
+        {
+            editPrimary.setEnabled(true);
+        }
+        else
+        {
+            editPrimary.setEnabled(false);
         }
         editPrimary.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,17 +146,20 @@ public class HealthSupporter extends javax.swing.JFrame {
         });
 
         addSecondary.setText("Add");
+        addSecondary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addSecondaryActionPerformed(evt);
+            }
+        });
 
         editSecondary.setText("Edit Supporter's Profile");
-        if(supp2_username.equals(""))
+        if(supp2 != null)
         {
-            editSecondary.setEnabled(false);
-            changeSecondary.setEnabled(false);
+            editSecondary.setEnabled(true);
         }
         else
         {
-            addSecondary.setEnabled(false);
-            changeSecondary.setEnabled(true);
+            editSecondary.setEnabled(false);
         }
         editSecondary.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,10 +168,20 @@ public class HealthSupporter extends javax.swing.JFrame {
         });
 
         primaryUsername.setModel(new javax.swing.DefaultComboBoxModel<>(db.getSupporters()));
-        primaryUsername.setSelectedItem(supp1_username);
-
-        secondaryUsername.setModel(new javax.swing.DefaultComboBoxModel<>(db.getSupporters()));
-        secondaryUsername.setSelectedItem(supp2_username);
+        if(supp1 == null)
+        {
+            primaryUsername.setVisible(true);
+            auth_date1.setVisible(true);
+            auth_month1.setVisible(true);
+            auth_year1.setVisible(true);
+        }
+        else
+        {
+            primaryUsername.setVisible(false);
+            auth_date1.setVisible(false);
+            auth_month1.setVisible(false);
+            auth_year1.setVisible(false);
+        }
 
         changePrimary.setText("Change Supporter");
         changePrimary.addActionListener(new java.awt.event.ActionListener() {
@@ -176,106 +197,192 @@ public class HealthSupporter extends javax.swing.JFrame {
             }
         });
 
+        if(supp1 != null)
+        {
+            primaryLbl.setText(supp1.username);
+        }
+
+        if(supp1 != null)
+        {
+
+            String[] date = DateFormatManager.getYearMonthDayFromDate(supp1.auth_date);
+            primary_auth.setText(date[2] + "/" + date[1] + "/" + date[0]);
+        }
+
+        jLabel8.setText("Authorization Date:");
+
+        auth_date3.setModel(new javax.swing.DefaultComboBoxModel<>(DateFormatManager.getDays()));
+
+        auth_month3.setModel(new javax.swing.DefaultComboBoxModel<>(DateFormatManager.getMonths()));
+
+        auth_year3.setModel(new javax.swing.DefaultComboBoxModel<>(DateFormatManager.getYears()));
+
+        primaryUsername1.setModel(new javax.swing.DefaultComboBoxModel<>(db.getSupporters()));
+        if(supp2 == null)
+        {
+            primaryUsername1.setVisible(true);
+            auth_date3.setVisible(true);
+            auth_month3.setVisible(true);
+            auth_year3.setVisible(true);
+        }
+        else
+        {
+            primaryUsername1.setVisible(false);
+            auth_date3.setVisible(false);
+            auth_month3.setVisible(false);
+            auth_year3.setVisible(false);
+        }
+
+        if(supp2 != null)
+        {
+            primaryLbl1.setText(supp2.username);
+        }
+
+        if(supp2 != null)
+        {
+            String[] date = DateFormatManager.getYearMonthDayFromDate(supp2.auth_date);
+            primary_auth1.setText(date[2] + "/" + date[1] + "/" + date[0]);
+        }
+
+        jLabel11.setText("Username");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addGap(26, 26, 26)
-                            .addComponent(addSecondary)
-                            .addGap(18, 18, 18)
-                            .addComponent(changeSecondary)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(editSecondary))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(18, 18, Short.MAX_VALUE)
-                                    .addComponent(addPrimary))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel6)
-                                            .addGap(79, 79, 79)
-                                            .addComponent(primaryUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel7)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(auth_date1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGap(12, 12, 12)
-                                    .addComponent(auth_month1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(auth_year1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(changePrimary)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(editPrimary)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(60, 60, 60)
+                                .addComponent(addPrimary))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addGap(20, 20, 20))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(80, 80, 80)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(primaryLbl)
+                                    .addComponent(primary_auth))
+                                .addGap(20, 20, 20)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(primaryUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(auth_date1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(20, 20, 20)
+                        .addComponent(auth_month1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(auth_year1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel9))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(79, 79, 79)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(primaryLbl1)
+                            .addComponent(primary_auth1))
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(primaryUsername1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(auth_date3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(secondaryUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(auth_month3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2))
+                                .addComponent(auth_year3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(changePrimary)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(auth_date2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(12, 12, 12)
-                                .addComponent(auth_month2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(auth_year2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jLabel3)
+                                .addGap(20, 20, 20)
+                                .addComponent(addSecondary)
+                                .addGap(20, 20, 20)
+                                .addComponent(changeSecondary)))
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(editSecondary)
+                            .addComponent(editPrimary))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(addPrimary)
                     .addComponent(editPrimary)
                     .addComponent(changePrimary))
-                .addGap(17, 17, 17)
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(primaryUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
+                    .addComponent(primaryUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(primaryLbl))
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(auth_date1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(auth_month1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(auth_year1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(auth_year1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(primary_auth))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(addSecondary)
                     .addComponent(editSecondary)
                     .addComponent(changeSecondary))
-                .addGap(19, 19, 19)
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(secondaryUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel11)
+                    .addComponent(primaryUsername1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(primaryLbl1))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(auth_date3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(auth_month3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(auth_year3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(primary_auth1))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(auth_date2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(auth_month2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(auth_year2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButton1)
+                .addGap(10, 10, 10))
         );
+
+        if(supp2 != null)
+        {
+            addSecondary.setEnabled(false);
+        }
+        else
+        {
+            addSecondary.setEnabled(true);
+        }
+        if(supp1 != null)
+        {
+            changePrimary.setEnabled(true);
+        }
+        else
+        {
+            changePrimary.setEnabled(false);
+        }
+        if(supp2 != null)
+        {
+            changeSecondary.setEnabled(true);
+        }
+        else
+        {
+            changeSecondary.setEnabled(false);
+        }
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -287,23 +394,69 @@ public class HealthSupporter extends javax.swing.JFrame {
 
     private void editPrimaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPrimaryActionPerformed
         // TODO add your handling code here:
-        new Profile(this.supp1_username).setVisible(true);
+        
+        new Profile(supp1.username).setVisible(true);
+        
     }//GEN-LAST:event_editPrimaryActionPerformed
 
     private void editSecondaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSecondaryActionPerformed
         // TODO add your handling code here:
-        new Profile(this.supp2_username).setVisible(true);
+        
+        new Profile(supp2.username).setVisible(true);
+        
+        
     }//GEN-LAST:event_editSecondaryActionPerformed
 
     private void changePrimaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePrimaryActionPerformed
         // TODO add your handling code here:
-        new ChangeSupporter(this.username, this.supp1_username).setVisible(true);
+        new ChangeSupporter(this.username, this.supp1.username).setVisible(true);
     }//GEN-LAST:event_changePrimaryActionPerformed
 
     private void changeSecondaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeSecondaryActionPerformed
         // TODO add your handling code here:
-        new ChangeSupporter(this.username, this.supp2_username).setVisible(true);
+        new ChangeSupporter(this.username, this.supp2.username).setVisible(true);
     }//GEN-LAST:event_changeSecondaryActionPerformed
+
+    private void addPrimaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPrimaryActionPerformed
+        // TODO add your handling code here:
+        Date auth_date = DateFormatManager.getDate((String)auth_date1.getSelectedItem(), (String)auth_month1.getSelectedItem(), (String)auth_year1.getSelectedItem());
+        try{
+            
+            ArrayList<String> out = db.addHealthSupporter(username, (String)(primaryUsername.getSelectedItem()), auth_date);
+            JOptionPane.showMessageDialog(null, out.get(1));
+        }
+        catch(SQLException sql)
+        {
+            
+        }
+        
+        
+    }//GEN-LAST:event_addPrimaryActionPerformed
+
+    private void addSecondaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSecondaryActionPerformed
+        // TODO add your handling code here:
+        Date auth_date = DateFormatManager.getDate((String)auth_date3.getSelectedItem(), (String)auth_month3.getSelectedItem(), (String)auth_year3.getSelectedItem());
+        
+        
+        try{
+            String selected = (String)(primaryUsername1.getSelectedItem());
+            if(!selected.equals(""))
+            {
+                ArrayList<String> out = db.addHealthSupporter(username, selected , auth_date);
+                JOptionPane.showMessageDialog(null, out.get(1));
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "please select a username");
+            }
+                   
+            
+        }
+        catch(SQLException sql)
+        {
+            
+        }
+    }//GEN-LAST:event_addSecondaryActionPerformed
 
     /**
      * @param args the command line arguments
@@ -336,6 +489,7 @@ public class HealthSupporter extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new HealthSupporter("").setVisible(true);
+                
             }
         });
     }
@@ -344,11 +498,11 @@ public class HealthSupporter extends javax.swing.JFrame {
     private javax.swing.JButton addPrimary;
     private javax.swing.JButton addSecondary;
     private javax.swing.JComboBox<String> auth_date1;
-    private javax.swing.JComboBox<String> auth_date2;
+    private javax.swing.JComboBox<String> auth_date3;
     private javax.swing.JComboBox<String> auth_month1;
-    private javax.swing.JComboBox<String> auth_month2;
+    private javax.swing.JComboBox<String> auth_month3;
     private javax.swing.JComboBox<String> auth_year1;
-    private javax.swing.JComboBox<String> auth_year2;
+    private javax.swing.JComboBox<String> auth_year3;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton changePrimary;
@@ -356,14 +510,17 @@ public class HealthSupporter extends javax.swing.JFrame {
     private javax.swing.JButton editPrimary;
     private javax.swing.JButton editSecondary;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel primaryLbl;
+    private javax.swing.JLabel primaryLbl1;
     private javax.swing.JComboBox<String> primaryUsername;
-    private javax.swing.JComboBox<String> secondaryUsername;
+    private javax.swing.JComboBox<String> primaryUsername1;
+    private javax.swing.JLabel primary_auth;
+    private javax.swing.JLabel primary_auth1;
     // End of variables declaration//GEN-END:variables
 }

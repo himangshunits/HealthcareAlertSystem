@@ -5,7 +5,10 @@
  */
 package com.healthcare;
 
+import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -129,7 +132,11 @@ public class ChangeSupporter extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         Date auth_date = DateFormatManager.getDate((String)auth_date1.getSelectedItem(), (String)auth_month1.getSelectedItem(), (String)auth_year1.getSelectedItem());
-        db.updateSupporter(patient, username, (String)this.username1.getSelectedItem(), auth_date);
+        ArrayList<String> out = db.updateSupporter(patient, username, (String)this.username1.getSelectedItem(), auth_date);
+        JOptionPane.showMessageDialog(null, out.get(1));
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            
+        
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
