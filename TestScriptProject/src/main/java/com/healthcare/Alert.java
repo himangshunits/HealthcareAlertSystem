@@ -64,8 +64,13 @@ public class Alert extends javax.swing.JFrame {
         {
             model.addRow(d.toArray());
         }
-        alertTable.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        alertTable.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         alertTable.setModel(model);
+        alertTable.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                alertTableFocusGained(evt);
+            }
+        });
         jScrollPane1.setViewportView(alertTable);
 
         jLabel1.setText("The Active Alerts !");
@@ -118,7 +123,7 @@ public class Alert extends javax.swing.JFrame {
                                 .addComponent(jButton3)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton4)))
-                        .addGap(0, 235, Short.MAX_VALUE)))
+                        .addGap(0, 532, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -134,7 +139,7 @@ public class Alert extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(jButton3)
                     .addComponent(jButton4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
 
         pack();
@@ -174,6 +179,19 @@ public class Alert extends javax.swing.JFrame {
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void alertTableFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_alertTableFocusGained
+        String[] header = new String [] {"Sent Alert ID","Is Seen","Alert", 
+        "Generated On", "Severity", "Reason"};
+        NonEditableModel model = new NonEditableModel(header, 0);
+        ArrayList<ArrayList<Object>> data = db.getAlertsForUsername(username);
+        for(ArrayList<Object> d: data)
+        {
+            model.addRow(d.toArray());
+        }
+        alertTable.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        // TODO add your handling code here:
+    }//GEN-LAST:event_alertTableFocusGained
 
     /**
      * @param args the command line arguments
