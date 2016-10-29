@@ -190,8 +190,6 @@ public class Alert extends javax.swing.JFrame {
         NonEditableModel myTableModel = (NonEditableModel)alertTable.getModel();
         for(int iNdex = toDelete.length -1; iNdex >= 0; iNdex--) {
             Integer aId = Integer.valueOf((String)myTableModel.getValueAt(toDelete[iNdex], 0));
-            //Sent Alert ID","Is Seen","Alert", 
-            //"Generated On", "Severity", "Reason"
             String alertText = (String)myTableModel.getValueAt(toDelete[iNdex], 2)+ " " +
                     (String)myTableModel.getValueAt(toDelete[iNdex], 5);
             String date = myTableModel.getValueAt(toDelete[iNdex], 3).toString();
