@@ -6,9 +6,7 @@
 package com.healthcare;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import javax.swing.JOptionPane;
 
 
 /**
@@ -79,6 +77,11 @@ public class DashboardHs extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         wecomeMessage.setText("Welcome, " + this.name);
 
@@ -302,22 +305,16 @@ public class DashboardHs extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed ( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        //doShit();
         
-        this.dispose (  ) ;
-        new Main (  ) .setVisible ( true ) ;
-        
-
-        //this.dispose (  ) ;
-        //new Main (  ) .setVisible ( true ) ;
-        
-        
-
+        this.dispose() ;
+        new Main().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void alertsBtnActionPerformed ( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_alertsBtnActionPerformed
         // TODO add your handling code here:
-        new Alert ( username, false ) .setVisible ( true ) ;
+        new Alert( username, false ) .setVisible ( true ) ;
     }//GEN-LAST:event_alertsBtnActionPerformed
 
     private void healthIndicatorsBtnActionPerformed ( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_healthIndicatorsBtnActionPerformed
@@ -330,11 +327,17 @@ public class DashboardHs extends javax.swing.JFrame {
         new HealthSupporter ( username ) .setVisible ( true ) ;
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        //System.out.println("I did this");
+        System.exit(0);
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
-    public static void main ( String args[] ) {
-        /* Set the Nimbus look and feel */
+    public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code ( optional ) ">
         /* If Nimbus ( introduced in Java SE 6 ) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -358,9 +361,9 @@ public class DashboardHs extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater ( new Runnable( ) {
-            public void run (  ) {
-                new Dashboard (  ) .setVisible ( true ) ;
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run () {
+                new Dashboard().setVisible(true);
             }
         });
     }
@@ -411,10 +414,11 @@ public class DashboardHs extends javax.swing.JFrame {
             } 
             
             // Add the Patients under you!
-            patientsUnderYou = mDb.getPatientsUnderYou ( person_id ) ;
-        } catch ( Exception e ) {
-            e.printStackTrace (  ) ;
-            System.out.println ( " The error in name retireval = " + e.getMessage( ) );
+            patientsUnderYou = mDb.getPatientsUnderYou(person_id);
+        } catch(Exception e) 
+        {
+            e.printStackTrace() ;
+            System.out.println(" The error in name retireval = " + e.getMessage());
         }
     }
 }

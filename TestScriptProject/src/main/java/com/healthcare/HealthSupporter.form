@@ -430,7 +430,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deletePrimaryActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if(supp2 != null)&#xa;{&#xa;    deletePrimary.setEnabled(true);&#xa;}&#xa;else&#xa;{&#xa;    deletePrimary.setEnabled(false);&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if(supp1 != null)&#xa;{&#xa;    deletePrimary.setEnabled(true);&#xa;}&#xa;else&#xa;{&#xa;    deletePrimary.setEnabled(false);&#xa;}"/>
       </AuxValues>
     </Component>
   </SubComponents>

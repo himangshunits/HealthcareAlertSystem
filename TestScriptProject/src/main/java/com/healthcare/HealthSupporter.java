@@ -419,7 +419,7 @@ public class HealthSupporter extends javax.swing.JFrame {
         {
             deleteSecondary.setEnabled(false);
         }
-        if(supp2 != null)
+        if(supp1 != null)
         {
             deletePrimary.setEnabled(true);
         }
