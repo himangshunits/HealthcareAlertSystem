@@ -86,12 +86,21 @@ public class AddObservation extends javax.swing.JFrame {
             typesList.add("Temperature");
         }
 
+        if(!signature.isWeight){
+            typesList.add("Weight");
+        }
+
         String types[] = new String[typesList.size()];
         typesList.toArray(types);
         observationType.setModel(new javax.swing.DefaultComboBoxModel<>(types));
         observationType.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 observationTypeItemStateChanged(evt);
+            }
+        });
+        observationType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                observationTypeActionPerformed(evt);
             }
         });
         observationType.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -110,13 +119,13 @@ public class AddObservation extends javax.swing.JFrame {
             }
         });
 
-        if(!((String)observationType.getSelectedItem()).equals("bp"))
+        if(!((String)observationType.getSelectedItem()).equals("Blood Pressure"))
         {
             value2.setEnabled(false);
         }
 
         jLabel3.setText("Value 2:");
-        if(!((String)observationType.getSelectedItem()).equals("bp"))
+        if(!((String)observationType.getSelectedItem()).equals("Blood Pressure"))
         {
             jLabel3.setEnabled(false);
         }
@@ -248,14 +257,17 @@ public class AddObservation extends javax.swing.JFrame {
         
         String type = (String)observationType.getSelectedItem();
         String value1 = this.value1.getText();
-        String value2 = this.value2.getText();
-        ObservationNew ob = new ObservationNew(type, value1, value2, observed_on, recorded_on);
+        String value2 = this.value2.getText();  
+                ObservationNew ob = new ObservationNew(type, value1, value2, observed_on, recorded_on);
         try{
-            db.addObservation(username, ob);
+            ArrayList<String> out = db.addObservation(username, ob);
+            JOptionPane.showMessageDialog(null, "Message from DB :: "+ out.get(1));
+            
         }
         catch(Exception e)
         {
-            
+            System.out.println("Error is add Observation = " + e.getMessage());
+            e.printStackTrace();
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -264,7 +276,7 @@ public class AddObservation extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         
-        if(observationType.getSelectedItem().equals("bp"))
+        if(observationType.getSelectedItem().equals("Blood Pressure"))
         {
             jLabel3.setEnabled(true);
             value2.setEnabled(true);
@@ -273,12 +285,16 @@ public class AddObservation extends javax.swing.JFrame {
 
     private void observationTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_observationTypeItemStateChanged
         // TODO add your handling code here:
+        value1.setText("");
+        value2.setText("");
         
-        
-        if(observationType.getSelectedItem().equals("bp"))
+        if(observationType.getSelectedItem().equals("Blood Pressure"))
         {
             jLabel3.setEnabled(true);
             value2.setEnabled(true);
+        } else {
+            jLabel3.setEnabled(false);
+            value2.setEnabled(false);
         }
     }//GEN-LAST:event_observationTypeItemStateChanged
 
@@ -286,6 +302,10 @@ public class AddObservation extends javax.swing.JFrame {
         this.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void observationTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_observationTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_observationTypeActionPerformed
 
     /**
      * @param args the command line arguments
