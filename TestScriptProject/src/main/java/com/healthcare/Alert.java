@@ -6,6 +6,7 @@
 package com.healthcare;
 
 import static com.healthcare.Database.db;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
@@ -50,7 +51,7 @@ public class Alert extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,11 +72,21 @@ public class Alert extends javax.swing.JFrame {
                 alertTableFocusGained(evt);
             }
         });
+        alertTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                alertTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(alertTable);
 
         jLabel1.setText("The Active Alerts !");
 
         jButton1.setText("Add Missing Observations");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Close");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -94,15 +105,7 @@ public class Alert extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Mark As Read");
-        if(isHs){
-            jButton4.setEnabled(false);
-        }
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
+        jLabel2.setText("Please Double Click on the Alert to view the details!");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -115,15 +118,17 @@ public class Alert extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton4)))
-                        .addGap(0, 532, Short.MAX_VALUE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jButton2)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jButton3))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(12, 12, 12)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 679, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -137,9 +142,10 @@ public class Alert extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
-                .addContainerGap(88, Short.MAX_VALUE))
+                    .addComponent(jButton3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -166,20 +172,6 @@ public class Alert extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        int [] toDelete = this.alertTable.getSelectedRows();
-        Arrays.sort(toDelete); // be shure to have them in ascending order.
-        NonEditableModel myTableModel = (NonEditableModel)alertTable.getModel();
-        for(int iNdex = toDelete.length -1; iNdex >= 0; iNdex--) {
-            Integer aId = Integer.valueOf((String)myTableModel.getValueAt(toDelete[iNdex], 0));
-            //myTableModel.removeRow(toDelete[iNdex]); // beginning at the largest. 
-            // TODO Set the 
-            ArrayList<String> res = db.markAlertAsSeen(aId);
-            JOptionPane.showMessageDialog(null, "Messaeg from DB :: " + res.get(1));
-        }
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void alertTableFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_alertTableFocusGained
         String[] header = new String [] {"Sent Alert ID","Is Seen","Alert", 
         "Generated On", "Severity", "Reason"};
@@ -192,6 +184,28 @@ public class Alert extends javax.swing.JFrame {
         alertTable.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         // TODO add your handling code here:
     }//GEN-LAST:event_alertTableFocusGained
+
+    private void alertTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_alertTableMouseClicked
+        int [] toDelete = this.alertTable.getSelectedRows();
+        NonEditableModel myTableModel = (NonEditableModel)alertTable.getModel();
+        for(int iNdex = toDelete.length -1; iNdex >= 0; iNdex--) {
+            Integer aId = Integer.valueOf((String)myTableModel.getValueAt(toDelete[iNdex], 0));
+            //Sent Alert ID","Is Seen","Alert", 
+            //"Generated On", "Severity", "Reason"
+            String alertText = (String)myTableModel.getValueAt(toDelete[iNdex], 2)+ " " +
+                    (String)myTableModel.getValueAt(toDelete[iNdex], 5);
+            String date = myTableModel.getValueAt(toDelete[iNdex], 3).toString();
+            JOptionPane.showMessageDialog(null, alertText + "Generated On = " + date);
+            ArrayList<String> res = db.markAlertAsSeen(aId);
+        }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_alertTableMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new AddObservation(username).setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,8 +247,8 @@ public class Alert extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
