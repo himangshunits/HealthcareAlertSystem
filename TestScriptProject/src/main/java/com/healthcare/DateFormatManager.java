@@ -7,6 +7,8 @@ package com.healthcare;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 /**
  *
@@ -124,4 +126,11 @@ public class DateFormatManager {
         }
         return years;
     }
+    public int getDays(Date date1, Date date2)
+    {
+        DateTime dt1 = new DateTime(date1);
+	DateTime dt2 = new DateTime(date2);
+        return Days.daysBetween(dt1, dt2).getDays();
+    }
 }
+

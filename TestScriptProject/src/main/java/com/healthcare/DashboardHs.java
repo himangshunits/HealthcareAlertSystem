@@ -58,225 +58,225 @@ public class DashboardHs extends javax.swing.JFrame {
      */
     @SuppressWarnings ( "unchecked" ) 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents (  ) {
+    private void initComponents() {
 
-        wecomeMessage = new javax.swing.JLabel (  ) ;
-        jTabbedPane2 = new javax.swing.JTabbedPane (  ) ;
-        careTakerFrame = new javax.swing.JInternalFrame (  ) ;
-        jLabel6 = new javax.swing.JLabel (  ) ;
-        jLabel7 = new javax.swing.JLabel (  ) ;
-        jLabel8 = new javax.swing.JLabel (  ) ;
-        jScrollPane1 = new javax.swing.JScrollPane (  ) ;
-        patientsList = new javax.swing.JList<> (  ) ;
-        jButton1 = new javax.swing.JButton (  ) ;
-        userDetailsFrame = new javax.swing.JInternalFrame (  ) ;
-        jLabel1 = new javax.swing.JLabel (  ) ;
-        getProfileBtn = new javax.swing.JButton (  ) ;
-        seeDiseasesBtn = new javax.swing.JButton (  ) ;
-        healthIndicatorsBtn = new javax.swing.JButton (  ) ;
-        alertsBtn = new javax.swing.JButton (  ) ;
-        jButton3 = new javax.swing.JButton (  ) ;
-        jButton2 = new javax.swing.JButton (  ) ;
+        wecomeMessage = new javax.swing.JLabel();
+        jTabbedPane2 = new javax.swing.JTabbedPane();
+        careTakerFrame = new javax.swing.JInternalFrame();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        patientsList = new javax.swing.JList<>();
+        jButton1 = new javax.swing.JButton();
+        userDetailsFrame = new javax.swing.JInternalFrame();
+        jLabel1 = new javax.swing.JLabel();
+        getProfileBtn = new javax.swing.JButton();
+        seeDiseasesBtn = new javax.swing.JButton();
+        healthIndicatorsBtn = new javax.swing.JButton();
+        alertsBtn = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation ( javax.swing.WindowConstants.EXIT_ON_CLOSE ) ;
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        wecomeMessage.setText ( "Welcome, " + this.name ) ;
+        wecomeMessage.setText("Welcome, " + this.name);
 
-        careTakerFrame.setVisible ( true ) ;
+        careTakerFrame.setVisible(true);
 
-        jLabel6.setText ( "Your Details as a Health Supporter" ) ;
+        jLabel6.setText("Your Details as a Health Supporter");
 
-        jLabel7.setText ( "Patients Under You are shown below." ) ;
+        jLabel7.setText("Patients Under You are shown below.");
 
-        jLabel8.setText ( "Please Select One from the list and click GO" ) ;
+        jLabel8.setText("Please Select One from the list and click GO");
 
-        patientsList.setModel ( new javax.swing.AbstractListModel<String>( ) {
+        patientsList.setModel(new javax.swing.AbstractListModel<String>() {
             //String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize (  ) { return patientsUnderYou.size (  ) ; }
-            public String getElementAt ( int i ) {
-                String temp = patientsUnderYou.get ( i ) .name + " ( " +  patientsUnderYou.get(i ) .username + ")";
+            public int getSize() { return patientsUnderYou.size(); }
+            public String getElementAt(int i) {
+                String temp = patientsUnderYou.get(i).name + " (" +  patientsUnderYou.get(i).username + ")";
                 return temp;
             }
         });
-        jScrollPane1.setViewportView ( patientsList ) ;
+        jScrollPane1.setViewportView(patientsList);
 
-        jButton1.setText ( "GO" ) ;
-        jButton1.addActionListener ( new java.awt.event.ActionListener( ) {
-            public void actionPerformed ( java.awt.event.ActionEvent evt ) {
-                jButton1ActionPerformed ( evt ) ;
+        jButton1.setText("GO");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout careTakerFrameLayout = new javax.swing.GroupLayout ( careTakerFrame.getContentPane( ) );
-        careTakerFrame.getContentPane (  ) .setLayout ( careTakerFrameLayout ) ;
+        javax.swing.GroupLayout careTakerFrameLayout = new javax.swing.GroupLayout(careTakerFrame.getContentPane());
+        careTakerFrame.getContentPane().setLayout(careTakerFrameLayout);
         careTakerFrameLayout.setHorizontalGroup(
-            careTakerFrameLayout.createParallelGroup ( javax.swing.GroupLayout.Alignment.LEADING ) 
-            .addGroup ( careTakerFrameLayout.createSequentialGroup( ) 
-                .addGroup ( careTakerFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING ) 
-                    .addGroup ( javax.swing.GroupLayout.Alignment.TRAILING, careTakerFrameLayout.createSequentialGroup( ) 
-                        .addContainerGap ( 36, Short.MAX_VALUE ) 
-                        .addGroup ( careTakerFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING ) 
-                            .addComponent ( jLabel8 ) 
-                            .addComponent ( jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE ) ))
-                    .addGroup ( careTakerFrameLayout.createSequentialGroup( ) 
-                        .addGroup ( careTakerFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING ) 
-                            .addGroup ( careTakerFrameLayout.createSequentialGroup( ) 
-                                .addGap ( 36, 36, 36 ) 
-                                .addGroup ( careTakerFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING ) 
-                                    .addComponent ( jLabel7 ) 
-                                    .addComponent ( jLabel6 ) ))
-                            .addGroup ( careTakerFrameLayout.createSequentialGroup( ) 
-                                .addGap ( 26, 26, 26 ) 
-                                .addComponent ( jButton1 ) ))
-                        .addGap ( 0, 0, Short.MAX_VALUE ) ))
-                .addContainerGap (  ) )
+            careTakerFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(careTakerFrameLayout.createSequentialGroup()
+                .addGroup(careTakerFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, careTakerFrameLayout.createSequentialGroup()
+                        .addContainerGap(36, Short.MAX_VALUE)
+                        .addGroup(careTakerFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(careTakerFrameLayout.createSequentialGroup()
+                        .addGroup(careTakerFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(careTakerFrameLayout.createSequentialGroup()
+                                .addGap(36, 36, 36)
+                                .addGroup(careTakerFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel6)))
+                            .addGroup(careTakerFrameLayout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(jButton1)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         careTakerFrameLayout.setVerticalGroup(
-            careTakerFrameLayout.createParallelGroup ( javax.swing.GroupLayout.Alignment.LEADING ) 
-            .addGroup ( careTakerFrameLayout.createSequentialGroup( ) 
-                .addGap ( 27, 27, 27 ) 
-                .addComponent ( jLabel6 ) 
-                .addGap ( 18, 18, 18 ) 
-                .addComponent ( jLabel7 ) 
-                .addPreferredGap ( javax.swing.LayoutStyle.ComponentPlacement.UNRELATED ) 
-                .addComponent ( jLabel8 ) 
-                .addGap ( 18, 18, 18 ) 
-                .addComponent ( jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE ) 
-                .addPreferredGap ( javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE ) 
-                .addComponent ( jButton1 ) 
-                .addGap ( 16, 16, 16 ) )
+            careTakerFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(careTakerFrameLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jLabel6)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel8)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(16, 16, 16))
         );
 
-        userDetailsFrame.setVisible ( true ) ;
+        userDetailsFrame.setVisible(true);
 
-        jLabel1.setText ( "Your Own Details as Person" ) ;
+        jLabel1.setText("Your Own Details as Person");
 
-        getProfileBtn.setText ( "View/Update Profile" ) ;
-        getProfileBtn.addActionListener ( new java.awt.event.ActionListener( ) {
-            public void actionPerformed ( java.awt.event.ActionEvent evt ) {
-                getProfileBtnActionPerformed ( evt ) ;
+        getProfileBtn.setText("View/Update Profile");
+        getProfileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getProfileBtnActionPerformed(evt);
             }
         });
 
-        seeDiseasesBtn.setText ( "See Diseases" ) ;
-        seeDiseasesBtn.addActionListener ( new java.awt.event.ActionListener( ) {
-            public void actionPerformed ( java.awt.event.ActionEvent evt ) {
-                seeDiseasesBtnActionPerformed ( evt ) ;
+        seeDiseasesBtn.setText("See Diseases");
+        seeDiseasesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                seeDiseasesBtnActionPerformed(evt);
             }
         });
 
-        healthIndicatorsBtn.setText ( "Health Indicators" ) ;
-        healthIndicatorsBtn.addActionListener ( new java.awt.event.ActionListener( ) {
-            public void actionPerformed ( java.awt.event.ActionEvent evt ) {
-                healthIndicatorsBtnActionPerformed ( evt ) ;
+        healthIndicatorsBtn.setText("Health Indicators");
+        healthIndicatorsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                healthIndicatorsBtnActionPerformed(evt);
             }
         });
 
-        alertsBtn.setText ( "See Alerts" ) ;
-        alertsBtn.addActionListener ( new java.awt.event.ActionListener( ) {
-            public void actionPerformed ( java.awt.event.ActionEvent evt ) {
-                alertsBtnActionPerformed ( evt ) ;
+        alertsBtn.setText("See Alerts");
+        alertsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alertsBtnActionPerformed(evt);
             }
         });
 
-        jButton3.setText ( "View/Update Health Supporters" ) ;
-        jButton3.addActionListener ( new java.awt.event.ActionListener( ) {
-            public void actionPerformed ( java.awt.event.ActionEvent evt ) {
-                jButton3ActionPerformed ( evt ) ;
+        jButton3.setText("View/Update Health Supporters");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout userDetailsFrameLayout = new javax.swing.GroupLayout ( userDetailsFrame.getContentPane( ) );
-        userDetailsFrame.getContentPane (  ) .setLayout ( userDetailsFrameLayout ) ;
+        javax.swing.GroupLayout userDetailsFrameLayout = new javax.swing.GroupLayout(userDetailsFrame.getContentPane());
+        userDetailsFrame.getContentPane().setLayout(userDetailsFrameLayout);
         userDetailsFrameLayout.setHorizontalGroup(
-            userDetailsFrameLayout.createParallelGroup ( javax.swing.GroupLayout.Alignment.LEADING ) 
-            .addGroup ( userDetailsFrameLayout.createSequentialGroup( ) 
-                .addGroup ( userDetailsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING ) 
-                    .addGroup ( javax.swing.GroupLayout.Alignment.TRAILING, userDetailsFrameLayout.createSequentialGroup( ) 
-                        .addContainerGap ( javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE ) 
-                        .addComponent ( alertsBtn ) )
-                    .addGroup ( userDetailsFrameLayout.createSequentialGroup( ) 
-                        .addGap ( 110, 110, 110 ) 
-                        .addGroup ( userDetailsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING ) 
-                            .addComponent ( jLabel1 ) 
-                            .addComponent ( healthIndicatorsBtn ) 
-                            .addComponent ( seeDiseasesBtn ) 
-                            .addComponent ( getProfileBtn ) )
-                        .addGap ( 0, 0, Short.MAX_VALUE ) )
-                    .addGroup ( javax.swing.GroupLayout.Alignment.TRAILING, userDetailsFrameLayout.createSequentialGroup( ) 
-                        .addGap ( 0, 0, Short.MAX_VALUE ) 
-                        .addComponent ( jButton3 ) ))
-                .addContainerGap (  ) )
+            userDetailsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(userDetailsFrameLayout.createSequentialGroup()
+                .addGroup(userDetailsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userDetailsFrameLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(alertsBtn))
+                    .addGroup(userDetailsFrameLayout.createSequentialGroup()
+                        .addGap(110, 110, 110)
+                        .addGroup(userDetailsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(healthIndicatorsBtn)
+                            .addComponent(seeDiseasesBtn)
+                            .addComponent(getProfileBtn))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userDetailsFrameLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton3)))
+                .addContainerGap())
         );
         userDetailsFrameLayout.setVerticalGroup(
-            userDetailsFrameLayout.createParallelGroup ( javax.swing.GroupLayout.Alignment.LEADING ) 
-            .addGroup ( userDetailsFrameLayout.createSequentialGroup( ) 
-                .addGap ( 12, 12, 12 ) 
-                .addComponent ( jLabel1 ) 
-                .addPreferredGap ( javax.swing.LayoutStyle.ComponentPlacement.UNRELATED ) 
-                .addComponent ( getProfileBtn ) 
-                .addPreferredGap ( javax.swing.LayoutStyle.ComponentPlacement.RELATED ) 
-                .addComponent ( seeDiseasesBtn ) 
-                .addPreferredGap ( javax.swing.LayoutStyle.ComponentPlacement.UNRELATED ) 
-                .addComponent ( healthIndicatorsBtn ) 
-                .addPreferredGap ( javax.swing.LayoutStyle.ComponentPlacement.UNRELATED ) 
-                .addComponent ( alertsBtn ) 
-                .addGap ( 12, 12, 12 ) 
-                .addComponent ( jButton3 ) 
-                .addContainerGap ( javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE ) )
+            userDetailsFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(userDetailsFrameLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(getProfileBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(seeDiseasesBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(healthIndicatorsBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(alertsBtn)
+                .addGap(12, 12, 12)
+                .addComponent(jButton3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton2.setText ( "LOGOUT" ) ;
-        jButton2.addActionListener ( new java.awt.event.ActionListener( ) {
-            public void actionPerformed ( java.awt.event.ActionEvent evt ) {
-                jButton2ActionPerformed ( evt ) ;
+        jButton2.setText("LOGOUT");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout ( getContentPane( ) );
-        getContentPane (  ) .setLayout ( layout ) ;
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup ( javax.swing.GroupLayout.Alignment.LEADING ) 
-            .addGroup ( layout.createSequentialGroup( ) 
-                .addGroup ( layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING ) 
-                    .addGroup ( layout.createSequentialGroup( ) 
-                        .addContainerGap (  ) 
-                        .addComponent ( wecomeMessage ) 
-                        .addPreferredGap ( javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE ) )
-                    .addGroup ( javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup( ) 
-                        .addContainerGap ( javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE ) 
-                        .addComponent ( careTakerFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE ) 
-                        .addGap ( 33, 33, 33 ) ))
-                .addComponent ( userDetailsFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE ) 
-                .addPreferredGap ( javax.swing.LayoutStyle.ComponentPlacement.RELATED ) 
-                .addGroup ( layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING ) 
-                    .addComponent ( jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE ) 
-                    .addComponent ( jButton2 ) )
-                .addGap ( 36, 36, 36 ) )
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(wecomeMessage)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(careTakerFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)))
+                .addComponent(userDetailsFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addGap(36, 36, 36))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup ( javax.swing.GroupLayout.Alignment.LEADING ) 
-            .addGroup ( javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup( ) 
-                .addGroup ( layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING ) 
-                    .addGroup ( layout.createSequentialGroup( ) 
-                        .addGap ( 16, 16, 16 ) 
-                        .addComponent ( wecomeMessage ) 
-                        .addGroup ( layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING ) 
-                            .addGroup ( layout.createSequentialGroup( ) 
-                                .addGap ( 108, 108, 108 ) 
-                                .addComponent ( jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE ) 
-                                .addPreferredGap ( javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE ) 
-                                .addComponent ( jButton2 ) )
-                            .addGroup ( layout.createSequentialGroup( ) 
-                                .addGap ( 12, 12, 12 ) 
-                                .addComponent ( careTakerFrame ) )))
-                    .addGroup ( layout.createSequentialGroup( ) 
-                        .addContainerGap (  ) 
-                        .addComponent ( userDetailsFrame ) ))
-                .addContainerGap (  ) )
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(wecomeMessage)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(108, 108, 108)
+                                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(careTakerFrame))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(userDetailsFrame)))
+                .addContainerGap())
         );
 
-        pack (  ) ;
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void getProfileBtnActionPerformed ( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_getProfileBtnActionPerformed

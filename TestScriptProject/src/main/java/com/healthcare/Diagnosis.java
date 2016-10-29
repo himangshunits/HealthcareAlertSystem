@@ -60,11 +60,6 @@ public class Diagnosis extends javax.swing.JFrame {
             model.addRow(d.toArray());
         }
         diseaseTable.setModel(model);
-        diseaseTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                diseaseTablePropertyChange(evt);
-            }
-        });
         diseaseTable.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 diseaseTableKeyTyped(evt);
@@ -177,10 +172,6 @@ public class Diagnosis extends javax.swing.JFrame {
         this.diseaseTable.repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void diseaseTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_diseaseTablePropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_diseaseTablePropertyChange
-
     private void diseaseTableKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_diseaseTableKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_diseaseTableKeyTyped
@@ -208,18 +199,24 @@ public class Diagnosis extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
         int [] toDelete = this.diseaseTable.getSelectedRows();
-        Arrays.sort(toDelete); // be shure to have them in ascending order.
+        Arrays.sort(toDelete);
+        
+         // be sure to have them in ascending order.
         NonEditableModel myTableModel = (NonEditableModel)diseaseTable.getModel();
         ArrayList<String>  out = null;
-        for(int ii = toDelete.length -1; ii >=0; ii--) {
-            out = db.deleteDisease(username, diseaseMap.get((String)(myTableModel.getValueAt(ii, 0))));
+        for(int ii = toDelete.length - 1; ii >=0; ii--) {
+            
+            String disease_name = (String)myTableModel.getValueAt(toDelete[ii], 0);
+            int disease_id = diseaseMap.get(disease_name);
+            out = db.deleteDisease(username, disease_id);
             myTableModel.removeRow(toDelete[ii]);
         }
         if(out != null)
             JOptionPane.showMessageDialog(null, "Message from Database :: " + out.get(1));
         else
-            JOptionPane.showMessageDialog(null, "No Value assigned in the Dlete Disease DB Wrapper!");
+            JOptionPane.showMessageDialog(null, "No Value assigned in the Delete Disease DB Wrapper!");
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 

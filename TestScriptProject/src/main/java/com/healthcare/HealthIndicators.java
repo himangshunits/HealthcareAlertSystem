@@ -71,10 +71,10 @@ public class HealthIndicators extends javax.swing.JFrame {
         jLabel1.setText("The Best Recommendation for " + username);
 
         String[] header1 = new String [] {
-            "ID","BP Diastolic","BP Systolic","Mood","Oxygen Saturation","Pain Level","Temperature","Weight","Observed On","Recorded On"};
+            "ID", "Observation Type", "Value 1", "Value 2", "Observed On", "Recorded On"};
 
         NonEditableModel model1 = new NonEditableModel(header1, 0);
-        ArrayList<ArrayList<Object>> data1 = db.getAllObservations(username);
+        ArrayList<ArrayList<Object>> data1 = db.getAllObservationsNew(username);
         for(ArrayList<Object> d: data1)
         {
             model1.addRow(d.toArray());
@@ -177,7 +177,7 @@ public class HealthIndicators extends javax.swing.JFrame {
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 672, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(31, 31, 31)
+                                        .addGap(29, 29, 29)
                                         .addComponent(removeRecoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(21, 21, 21))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,14 +195,14 @@ public class HealthIndicators extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(recoStatus))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(removeRecoButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -215,7 +215,7 @@ public class HealthIndicators extends javax.swing.JFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addGap(69, 69, 69)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(247, Short.MAX_VALUE)))
+                    .addContainerGap(300, Short.MAX_VALUE)))
         );
 
         pack();
@@ -233,11 +233,10 @@ public class HealthIndicators extends javax.swing.JFrame {
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         //TODO : Remove the initalizer code from constructor.
-        String[] header1 = new String [] {
-            "ID","BP Diastolic","BP Systolic","Mood","Oxygen Saturation","Pain Level","Temperature","Weight","Observed On","Recorded On"};
+        String[] header1 = new String [] {"ID", "Observation Type", "Value 1", "Value 2", "Observed On", "Recorded On"};
 
         NonEditableModel model1 = new NonEditableModel(header1, 0);
-        ArrayList<ArrayList<Object>> data1 = db.getAllObservations(username);
+        ArrayList<ArrayList<Object>> data1 = db.getAllObservationsNew(username);
         for(ArrayList<Object> d: data1)
         {
             model1.addRow(d.toArray());
@@ -260,15 +259,13 @@ public class HealthIndicators extends javax.swing.JFrame {
     }//GEN-LAST:event_removeRecoButtonActionPerformed
 
     private void removeObservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeObservationBtnActionPerformed
-        //JOptionPane.showMessageDialog(null, "Observation Not Getting removed from DB yet!");
         int [] toDelete = this.observationsTable.getSelectedRows();
         Arrays.sort(toDelete); // be shure to have them in ascending order.
         NonEditableModel myTableModel = (NonEditableModel)observationsTable.getModel();
         for(int iNdex = toDelete.length -1; iNdex >= 0; iNdex--) {
-            Integer oId = (Integer)myTableModel.getValueAt(iNdex, 0);
-            myTableModel.removeRow(toDelete[iNdex]); // beginning at the largest.            
-            ArrayList<String> res = db.deleteObservation(oId);
-            JOptionPane.showMessageDialog(null, "Messaeg from DB :: " + res.get(1));
+            Integer oId = (Integer)myTableModel.getValueAt(toDelete[iNdex], 0);
+            myTableModel.removeRow(toDelete[iNdex]); // beginning at the largest.
+            JOptionPane.showMessageDialog(null, "Not Getting removed from DB!Logic not implemented.");
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_removeObservationBtnActionPerformed

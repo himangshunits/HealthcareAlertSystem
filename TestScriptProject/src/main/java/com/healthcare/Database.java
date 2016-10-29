@@ -1405,8 +1405,46 @@ public class Database {
         return result;
     }
 
-    void deleteHS(String username, String supporter) {
-        // TODO 
+    ArrayList<String> deleteHS(String username, String supporter) {
+        ArrayList<String> result = new ArrayList<String>();
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String removeHSCall = "{call REMOVE_HS(?, ?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(removeHSCall);
+            callableStatement.setString(1, username);
+            callableStatement.setString(2, supporter);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.executeUpdate();
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+            result.add(status);
+            result.add(message);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return result;
     }
     
     
@@ -1781,5 +1819,191 @@ public class Database {
             }
         }
         return result;
+    }
+
+    ArrayList<ArrayList<Object>> getAllObservationsNew(String username) {
+        ArrayList<ArrayList<Object>> result = new ArrayList<ArrayList<Object>>();
+
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String bpCall = "{call GET_BP_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        String tempCall = "{call GET_TEMP_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        String weightCall = "{call GET_WEIGHT_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        String painCall = "{call GET_PAIN_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        String moodCall = "{call GET_MOOD_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        String oxyCall = "{call GET_OXY_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        try {
+            callableStatement = CONN.prepareCall(bpCall);            
+            callableStatement.setString(1, username);            
+            // out Parameters            
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getNString(3);
+            message = callableStatement.getNString(4);
+            ResultSet rset = (ResultSet)callableStatement.getObject(2);
+            while(rset.next()) 
+            {
+                ArrayList<Object> y = new ArrayList<Object>();
+                y.add(rset.getInt(1));
+                y.add("Blood Pressure");
+                y.add(rset.getInt(2));
+                y.add(rset.getInt(3));
+                y.add(rset.getDate(4));
+                y.add(rset.getDate(5));
+                result.add(y);
+            } 
+            callableStatement.close();
+            
+            //WEIGHT
+            
+            callableStatement = CONN.prepareCall(weightCall);            
+            callableStatement.setString(1, username);            
+            // out Parameters            
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getNString(3);
+            message = callableStatement.getNString(4);
+            rset = (ResultSet)callableStatement.getObject(2);
+            while(rset.next()) 
+            {
+                ArrayList<Object> y = new ArrayList<Object>();
+                y.add(rset.getInt(1));
+                y.add("Weight");
+                y.add(rset.getFloat(2));
+                y.add("");
+                y.add(rset.getDate(3));
+                y.add(rset.getDate(4));
+                result.add(y);
+            } 
+            callableStatement.close();
+            
+            // TEMP
+            callableStatement = CONN.prepareCall(tempCall);            
+            callableStatement.setString(1, username);            
+            // out Parameters            
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getNString(3);
+            message = callableStatement.getNString(4);
+            rset = (ResultSet)callableStatement.getObject(2);
+            while(rset.next()) 
+            {
+                ArrayList<Object> y = new ArrayList<Object>();
+                y.add(rset.getInt(1));
+                y.add("Temperature");
+                y.add(rset.getFloat(2));
+                y.add("");
+                y.add(rset.getDate(3));
+                y.add(rset.getDate(4));
+                result.add(y);
+            } 
+            callableStatement.close();
+            
+            // MOOD
+            callableStatement = CONN.prepareCall(moodCall);            
+            callableStatement.setString(1, username);            
+            // out Parameters            
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getNString(3);
+            message = callableStatement.getNString(4);
+            rset = (ResultSet)callableStatement.getObject(2);
+            while(rset.next()) 
+            {
+                ArrayList<Object> y = new ArrayList<Object>();
+                y.add(rset.getInt(1));
+                y.add("Mood");
+                y.add(rset.getString(2));
+                y.add("");
+                y.add(rset.getDate(3));
+                y.add(rset.getDate(4));
+                result.add(y);
+            } 
+            callableStatement.close();
+            
+            
+            //PAIN
+            callableStatement = CONN.prepareCall(painCall);            
+            callableStatement.setString(1, username);            
+            // out Parameters            
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getNString(3);
+            message = callableStatement.getNString(4);
+            rset = (ResultSet)callableStatement.getObject(2);
+            while(rset.next()) 
+            {
+                ArrayList<Object> y = new ArrayList<Object>();
+                y.add(rset.getInt(1));
+                y.add("Pain");
+                y.add(rset.getInt(2));
+                y.add("");
+                y.add(rset.getDate(3));
+                y.add(rset.getDate(4));
+                result.add(y);
+            } 
+            callableStatement.close();
+            
+            
+            //OXY
+            callableStatement = CONN.prepareCall(oxyCall);            
+            callableStatement.setString(1, username);            
+            // out Parameters            
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getNString(3);
+            message = callableStatement.getNString(4);
+            rset = (ResultSet)callableStatement.getObject(2);
+            while(rset.next()) 
+            {
+                ArrayList<Object> y = new ArrayList<Object>();
+                y.add(rset.getInt(1));
+                y.add("Oxygen Saturation");
+                y.add(rset.getFloat(2));
+                y.add("");
+                y.add(rset.getDate(3));
+                y.add(rset.getDate(4));
+                result.add(y);
+            } 
+            callableStatement.close();
+            return result;
+        } catch (SQLException e) {
+
+            System.out.println(e.getMessage());
+
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }       
+        return result;        
+
+//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
