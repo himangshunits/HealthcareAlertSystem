@@ -159,7 +159,9 @@ public class Main extends javax.swing.JFrame
                 if(out.get(0).equals("SUCCESS"))
                 {
                     JOptionPane.showMessageDialog(null, out.get(1));                
-                    System.out.println("It's not my job!");
+                    // Check for Low Activity Alerts.
+                    AlertManager am = new AlertManager(username);
+                    am.checkForLowActivityAlerts();
                     DashboardHs dash = new DashboardHs(username, out.get(2));
                     dash.setVisible(true);
                     this.dispose();
@@ -172,8 +174,7 @@ public class Main extends javax.swing.JFrame
             catch(SQLException sql)
             {
                 System.out.println(sql.getMessage());
-            }
-            
+            }   
             
         }
     }//GEN-LAST:event_loginBtnActionPerformed

@@ -262,7 +262,10 @@ public class AddObservation extends javax.swing.JFrame {
         try{
             ArrayList<String> out = db.addObservation(username, ob);
             JOptionPane.showMessageDialog(null, "Message from DB :: "+ out.get(1));
-            
+            if (out.get(0).equalsIgnoreCase("SUCCESS")) {
+                AlertManager am = new AlertManager(username);
+                am.checkForOutsideLimitAlerts(type);
+            }
         }
         catch(Exception e)
         {
