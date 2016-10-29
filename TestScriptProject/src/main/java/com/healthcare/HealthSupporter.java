@@ -256,6 +256,11 @@ public class HealthSupporter extends javax.swing.JFrame {
         });
 
         deletePrimary.setText("Delete");
+        deletePrimary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deletePrimaryActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -276,17 +281,15 @@ public class HealthSupporter extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(secondaryLbl)
                                             .addComponent(secondary_auth))
+                                        .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
                                                 .addComponent(auth_date2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(20, 20, 20)
                                                 .addComponent(auth_month2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(auth_year2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(secondaryUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(secondaryUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addComponent(jLabel3)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(1, 1, 1)
@@ -408,6 +411,22 @@ public class HealthSupporter extends javax.swing.JFrame {
         {
             changeSecondary.setEnabled(false);
         }
+        if(supp2 != null)
+        {
+            deleteSecondary.setEnabled(true);
+        }
+        else
+        {
+            deleteSecondary.setEnabled(false);
+        }
+        if(supp2 != null)
+        {
+            deletePrimary.setEnabled(true);
+        }
+        else
+        {
+            deletePrimary.setEnabled(false);
+        }
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -485,9 +504,16 @@ public class HealthSupporter extends javax.swing.JFrame {
     }//GEN-LAST:event_addSecondaryActionPerformed
 
     private void deleteSecondaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSecondaryActionPerformed
-        db.deleteHS(this.username, this.supp2.username);
+            ArrayList<String> out = db.deleteHS(this.username, this.supp2.username);
+            JOptionPane.showMessageDialog(null, out.get(1));
         
     }//GEN-LAST:event_deleteSecondaryActionPerformed
+
+    private void deletePrimaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePrimaryActionPerformed
+        // TODO add your handling code here:
+            ArrayList<String> out = db.deleteHS(this.username, this.supp1.username);
+            JOptionPane.showMessageDialog(null, out.get(1));
+    }//GEN-LAST:event_deletePrimaryActionPerformed
 
 
     /**

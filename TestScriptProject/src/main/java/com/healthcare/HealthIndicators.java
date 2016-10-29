@@ -233,8 +233,7 @@ public class HealthIndicators extends javax.swing.JFrame {
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         //TODO : Remove the initalizer code from constructor.
-        String[] header1 = new String [] {
-            "ID", "Observation Type", "Value 1", "Value 2", "Observed On", "Recorded On"};
+        String[] header1 = new String [] {"ID", "Observation Type", "Value 1", "Value 2", "Observed On", "Recorded On"};
 
         NonEditableModel model1 = new NonEditableModel(header1, 0);
         ArrayList<ArrayList<Object>> data1 = db.getAllObservationsNew(username);
@@ -260,15 +259,12 @@ public class HealthIndicators extends javax.swing.JFrame {
     }//GEN-LAST:event_removeRecoButtonActionPerformed
 
     private void removeObservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeObservationBtnActionPerformed
-        //JOptionPane.showMessageDialog(null, "Observation Not Getting removed from DB yet!");
         int [] toDelete = this.observationsTable.getSelectedRows();
         Arrays.sort(toDelete); // be shure to have them in ascending order.
         NonEditableModel myTableModel = (NonEditableModel)observationsTable.getModel();
         for(int iNdex = toDelete.length -1; iNdex >= 0; iNdex--) {
             Integer oId = (Integer)myTableModel.getValueAt(toDelete[iNdex], 0);
-            myTableModel.removeRow(toDelete[iNdex]); // beginning at the largest.            
-            //ArrayList<String> res = db.deleteObservation(oId);
-            //JOptionPane.showMessageDialog(null, "Messaeg from DB :: " + res.get(1));
+            myTableModel.removeRow(toDelete[iNdex]); // beginning at the largest.
             JOptionPane.showMessageDialog(null, "Not Getting removed from DB!Logic not implemented.");
         }
         // TODO add your handling code here:

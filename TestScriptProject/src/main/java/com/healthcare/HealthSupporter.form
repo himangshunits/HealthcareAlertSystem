@@ -46,19 +46,16 @@
                                           <Component id="secondaryLbl" min="-2" max="-2" attributes="0"/>
                                           <Component id="secondary_auth" min="-2" max="-2" attributes="0"/>
                                       </Group>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
                                               <Component id="auth_date2" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                                               <Component id="auth_month2" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Component id="auth_year2" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="secondaryUsername" min="-2" max="-2" attributes="0"/>
-                                          </Group>
+                                          <Component id="secondaryUsername" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -421,11 +418,20 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteSecondaryActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if(supp2 != null)&#xa;{&#xa;    deleteSecondary.setEnabled(true);&#xa;}&#xa;else&#xa;{&#xa;    deleteSecondary.setEnabled(false);&#xa;}"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="deletePrimary">
       <Properties>
         <Property name="text" type="java.lang.String" value="Delete"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deletePrimaryActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if(supp2 != null)&#xa;{&#xa;    deletePrimary.setEnabled(true);&#xa;}&#xa;else&#xa;{&#xa;    deletePrimary.setEnabled(false);&#xa;}"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

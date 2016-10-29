@@ -1405,8 +1405,46 @@ public class Database {
         return result;
     }
 
-    void deleteHS(String username, String supporter) {
-        // TODO 
+    ArrayList<String> deleteHS(String username, String supporter) {
+        ArrayList<String> result = new ArrayList<String>();
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String removeHSCall = "{call REMOVE_HS(?, ?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(removeHSCall);
+            callableStatement.setString(1, username);
+            callableStatement.setString(2, supporter);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.executeUpdate();
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+            result.add(status);
+            result.add(message);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return result;
     }
     
     
