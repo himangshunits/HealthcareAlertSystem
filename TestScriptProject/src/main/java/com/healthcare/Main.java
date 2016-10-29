@@ -23,6 +23,7 @@ public class Main extends javax.swing.JFrame
     /**
      * Creates new form SignUp
      */
+    String user;
     public Main() 
     {
         initComponents();
@@ -51,6 +52,11 @@ public class Main extends javax.swing.JFrame
         password = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Welcome to HealthCare System");
@@ -158,6 +164,7 @@ public class Main extends javax.swing.JFrame
                 ArrayList<String> out = Database.getInstance().inDatabase(username, password);
                 if(out.get(0).equals("SUCCESS"))
                 {
+                    this.user = user;
                     JOptionPane.showMessageDialog(null, out.get(1));                
                     // Check for Low Activity Alerts.
                     AlertManager am = new AlertManager(username);
@@ -232,6 +239,13 @@ public class Main extends javax.swing.JFrame
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_passwordKeyPressed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        ArrayList<String> out = db.deleteSentAlerts(user);
+        System.out.println(out.get(1));
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

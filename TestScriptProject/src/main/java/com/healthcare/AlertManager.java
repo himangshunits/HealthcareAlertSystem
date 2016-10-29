@@ -179,12 +179,26 @@ public class AlertManager {
         
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-        long wDays = getDifferenceDays(weightObservation.observed_on, sqlDate) - 1;
-        long bpDays = getDifferenceDays(bpObservation.observed_on, utilDate) - 1;
-        long osDays = getDifferenceDays(oxySatObservation.observed_on, utilDate) - 1;
-        long pDays = getDifferenceDays(painObservation.observed_on, utilDate) - 1;
-        long mDays = getDifferenceDays(moodObservation.observed_on, utilDate) - 1;
-        long tDays = getDifferenceDays(temperatureObservation.observed_on, utilDate) - 1;
+        long wDays = 0, bpDays = 0, osDays = 0, pDays = 0, mDays = 0, tDays = 0;
+        if (weightObservation.observed_on != null) {
+            wDays = getDifferenceDays(weightObservation.observed_on, sqlDate) - 1;
+        }
+        if (bpObservation.observed_on != null) {
+            bpDays = getDifferenceDays(bpObservation.observed_on, utilDate) - 1;
+        }
+        if (oxySatObservation.observed_on != null) {
+            osDays = getDifferenceDays(oxySatObservation.observed_on, utilDate) - 1;
+        }
+        
+        if (painObservation.observed_on != null) {
+            pDays = getDifferenceDays(painObservation.observed_on, utilDate) - 1;
+        }
+        if (moodObservation.observed_on != null) {
+            mDays = getDifferenceDays(moodObservation.observed_on, utilDate) - 1;
+        }
+        if (temperatureObservation.observed_on != null) {
+            tDays = getDifferenceDays(temperatureObservation.observed_on, utilDate) - 1;
+        }
         
         if (recommendation.weightFrequency != null && isLowFrequency(wDays, recommendation.weightFrequency)) {
             // create alert id 8

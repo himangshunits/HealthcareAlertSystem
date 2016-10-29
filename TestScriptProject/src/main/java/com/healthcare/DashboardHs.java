@@ -306,8 +306,8 @@ public class DashboardHs extends javax.swing.JFrame {
     private void jButton2ActionPerformed ( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        //doShit();
-        
+        ArrayList<String> out = mDb.deleteSentAlerts(username);
+        System.out.println(out.get(1));
         this.dispose() ;
         new Main().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed

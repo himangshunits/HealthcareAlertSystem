@@ -256,9 +256,10 @@ public class AddObservation extends javax.swing.JFrame {
         Date recorded_on = DateFormatManager.getDate((String)rdate.getSelectedItem(), (String)rmonth.getSelectedItem(), (String)ryear.getSelectedItem());
         
         String type = (String)observationType.getSelectedItem();
-        String value1 = this.value1.getText();
-        String value2 = this.value2.getText();  
-                ObservationNew ob = new ObservationNew(type, value1, value2, observed_on, recorded_on);
+        String v1 = this.value1.getText();
+        String v2 = this.value2.getText();
+        
+        ObservationNew ob = new ObservationNew(type, v1, v2, observed_on, recorded_on);
         try{
             ArrayList<String> out = db.addObservation(username, ob);
             JOptionPane.showMessageDialog(null, "Message from DB :: "+ out.get(1));
