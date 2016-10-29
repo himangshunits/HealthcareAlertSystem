@@ -836,8 +836,8 @@ public class Database {
                 y.add(7); // pain_level_freq
                 y.add("HAPPY"); // mood
                 y.add(7); // mood_freq
-                y.add(95.0); // temp_low
-                y.add(100.0); // temp_high
+                y.add(new Float(95.0f)); // temp_low
+                y.add(new Float(100.0f)); // temp_high
                 y.add(7); // temp_freq
                 y.add(new Float(100.0f)); // weight_low
                 y.add(new Float(200.0f)); // weight_high
@@ -847,8 +847,8 @@ public class Database {
                 y.add(100);
                 y.add(130);
                 y.add(7);
-                y.add(75.0);
-                y.add(100.0);
+                y.add(new Float(75.0f));
+                y.add(new Float(100.0f));
                 y.add(7);
                 result.add(y);
                 ArrayList<Object> statusMessage = new ArrayList<>();
