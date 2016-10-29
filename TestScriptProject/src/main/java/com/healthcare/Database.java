@@ -1742,7 +1742,7 @@ public class Database {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message, status;
-        String updateAlertsCall = "{call UPDATE_SENT_ALERTS(?, ?, ?, ?)}";
+        String updateAlertsCall = "{call UPDATE_SENT_ALERTS_NEW(?, ?, ?, ?)}";
         
         try {
             callableStatement = CONN.prepareCall(updateAlertsCall);
@@ -1779,7 +1779,7 @@ public class Database {
         return result;
     }
     
-    ArrayList<String> deleteSentAlerts(String username, Integer alertId) 
+    ArrayList<String> deleteSentAlerts(String username) 
     {
         ArrayList<String> result = new ArrayList<>();
         Connection dbConnection = null;
