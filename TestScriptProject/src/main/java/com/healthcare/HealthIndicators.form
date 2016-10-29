@@ -137,7 +137,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="String[] header1 = new String [] {&#xa;                &quot;ID&quot;,&quot;BP Diastolic&quot;,&quot;BP Systolic&quot;,&quot;Mood&quot;,&quot;Oxygen Saturation&quot;,&quot;Pain Level&quot;,&quot;Temperature&quot;,&quot;Weight&quot;,&quot;Observed On&quot;,&quot;Recorded On&quot;};&#xa;&#xa;&#xa;NonEditableModel model1 = new NonEditableModel(header1, 0);&#xa;ArrayList&lt;ArrayList&lt;Object&gt;&gt; data1 = db.getAllObservations(username);&#xa;for(ArrayList&lt;Object&gt; d: data1)&#xa;{   &#xa;    model1.addRow(d.toArray());&#xa;}"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="String[] header1 = new String [] {&#xa;                &quot;ID&quot;, &quot;Observation Type&quot;, &quot;Value 1&quot;, &quot;Value 2&quot;, &quot;Observed On&quot;, &quot;Recorded On&quot;};&#xa;&#xa;&#xa;NonEditableModel model1 = new NonEditableModel(header1, 0);&#xa;ArrayList&lt;ArrayList&lt;Object&gt;&gt; data1 = db.getAllObservationsNew(username);&#xa;for(ArrayList&lt;Object&gt; d: data1)&#xa;{   &#xa;    model1.addRow(d.toArray());&#xa;}"/>
           </AuxValues>
         </Component>
       </SubComponents>

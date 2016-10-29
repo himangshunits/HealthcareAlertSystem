@@ -71,10 +71,10 @@ public class HealthIndicators extends javax.swing.JFrame {
         jLabel1.setText("The Best Recommendation for " + username);
 
         String[] header1 = new String [] {
-            "ID","BP Diastolic","BP Systolic","Mood","Oxygen Saturation","Pain Level","Temperature","Weight","Observed On","Recorded On"};
+            "ID", "Observation Type", "Value 1", "Value 2", "Observed On", "Recorded On"};
 
         NonEditableModel model1 = new NonEditableModel(header1, 0);
-        ArrayList<ArrayList<Object>> data1 = db.getAllObservations(username);
+        ArrayList<ArrayList<Object>> data1 = db.getAllObservationsNew(username);
         for(ArrayList<Object> d: data1)
         {
             model1.addRow(d.toArray());
@@ -234,10 +234,10 @@ public class HealthIndicators extends javax.swing.JFrame {
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         //TODO : Remove the initalizer code from constructor.
         String[] header1 = new String [] {
-            "ID","BP Diastolic","BP Systolic","Mood","Oxygen Saturation","Pain Level","Temperature","Weight","Observed On","Recorded On"};
+            "ID", "Observation Type", "Value 1", "Value 2", "Observed On", "Recorded On"};
 
         NonEditableModel model1 = new NonEditableModel(header1, 0);
-        ArrayList<ArrayList<Object>> data1 = db.getAllObservations(username);
+        ArrayList<ArrayList<Object>> data1 = db.getAllObservationsNew(username);
         for(ArrayList<Object> d: data1)
         {
             model1.addRow(d.toArray());
@@ -267,8 +267,9 @@ public class HealthIndicators extends javax.swing.JFrame {
         for(int iNdex = toDelete.length -1; iNdex >= 0; iNdex--) {
             Integer oId = (Integer)myTableModel.getValueAt(iNdex, 0);
             myTableModel.removeRow(toDelete[iNdex]); // beginning at the largest.            
-            ArrayList<String> res = db.deleteObservation(oId);
-            JOptionPane.showMessageDialog(null, "Messaeg from DB :: " + res.get(1));
+            //ArrayList<String> res = db.deleteObservation(oId);
+            //JOptionPane.showMessageDialog(null, "Messaeg from DB :: " + res.get(1));
+            JOptionPane.showMessageDialog(null, "Not Getting removed from DB!Logic not implemented.");
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_removeObservationBtnActionPerformed
