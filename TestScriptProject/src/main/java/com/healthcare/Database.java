@@ -832,15 +832,15 @@ public class Database {
             if(status.equals("DEFAULT")){
                 //Give him the normal person's reco
                 ArrayList<Object> y = new ArrayList<Object>();
-                y.add("NO PAIN");
-                y.add(7);
-                y.add("HAPPY");
-                y.add(7);
-                y.add(95.0);
-                y.add(100.0);
-                y.add(7);
-                y.add(100.0);
-                y.add(200.0);
+                y.add("NO PAIN"); // pain_level
+                y.add(7); // pain_level_freq
+                y.add("HAPPY"); // mood
+                y.add(7); // mood_freq
+                y.add(95.0); // temp_low
+                y.add(100.0); // temp_high
+                y.add(7); // temp_freq
+                y.add(new Float(100.0f)); // weight_low
+                y.add(new Float(200.0f)); // weight_high
                 y.add(7);
                 y.add(60);
                 y.add(80);
@@ -1448,30 +1448,29 @@ public class Database {
     }
     
     
-    public ArrayList<Float> getObservedWeight (String username) {
-        ArrayList<Float> result = new ArrayList<>();
+    public ObservationNew getObservedWeight (String username) {
+        ObservationNew obs = new ObservationNew();        
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
-        String GetDiseasesCall = "{call GET_WEIGHT_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        String GetObservedWeightCall = "{call GET_WEIGHT_OBS_FOR_USERNAME(?, ?, ?, ?)}";
         try 
         {
-            callableStatement = CONN.prepareCall(GetDiseasesCall);
+            callableStatement = CONN.prepareCall(GetObservedWeightCall);
             callableStatement.setString(1, username);
             callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
             callableStatement.execute();
             ResultSet rset = (ResultSet)callableStatement.getObject(2);
-//            while(rset.next())
-//            {
-//                arr.add(rset.getFloat(2),rset.getInt(1));
-//            }
+            
             if (rset.next()) {
-                result.add(rset.getFloat("weight_val"));
+                obs.value1 = new Float(rset.getFloat("weight_val")).toString() ;
+                obs.observed_on = rset.getDate("observed_on");
             }
             status = callableStatement.getString(3);
             message = callableStatement.getString(4);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -1494,8 +1493,332 @@ public class Database {
             }
         }
         
-        return result;
+        return obs;
+    }
+    
+    public ObservationNew getObservedBloodPressure (String username) {
+        ObservationNew obs = new ObservationNew();
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String GetObservedBPCall = "{call GET_BP_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        try 
+        {
+            callableStatement = CONN.prepareCall(GetObservedBPCall);
+            callableStatement.setString(1, username);
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            ResultSet rset = (ResultSet)callableStatement.getObject(2);
 
+            if (rset.next()) {
+                obs.value1 = new Integer(rset.getInt("bp_diastolic")).toString();
+                obs.value2 = new Integer(rset.getInt("bp_systolic")).toString();
+                obs.observed_on = rset.getDate("observed_on");
+            }
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        return obs;
+    }
+    
+    public ObservationNew getObservedOxySat (String username) {
+        ObservationNew obs = new ObservationNew();
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String GetOxySatCall = "{call GET_OXY_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        try 
+        {
+            callableStatement = CONN.prepareCall(GetOxySatCall);
+            callableStatement.setString(1, username);
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            ResultSet rset = (ResultSet)callableStatement.getObject(2);
+
+            if (rset.next()) {
+                obs.value1 = new Float(rset.getFloat("oxy_sat_value")).toString();
+                obs.observed_on = rset.getDate("observed_on");
+            }
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        return obs;
+    }
+    
+    public ObservationNew getObservedPain (String username) {
+        ObservationNew obs = new ObservationNew();
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String GetObservedPainCall = "{call GET_PAIN_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        try 
+        {
+            callableStatement = CONN.prepareCall(GetObservedPainCall);
+            callableStatement.setString(1, username);
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            ResultSet rset = (ResultSet)callableStatement.getObject(2);
+
+            if (rset.next()) {
+                obs.value1 = new Integer(rset.getInt("pain_val")).toString();
+                obs.observed_on = rset.getDate("observed_on");
+            }
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        return obs;
+    }
+    
+    public ObservationNew getObservedMood (String username) {
+        ObservationNew obs = new ObservationNew();
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String GetObservedMoodCall = "{call GET_MOOD_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        try 
+        {
+            callableStatement = CONN.prepareCall(GetObservedMoodCall);
+            callableStatement.setString(1, username);
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            ResultSet rset = (ResultSet)callableStatement.getObject(2);
+
+            if (rset.next()) {
+                obs.value1 = rset.getString("mood_val");
+                obs.observed_on = rset.getDate("observed_on");
+            }
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        return obs;
+    }
+    
+    public ObservationNew getObservedTemperature (String username) {
+        ObservationNew obs = new ObservationNew();
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String GetObservedTemperatureCall = "{call GET_TEMP_OBS_FOR_USERNAME(?, ?, ?, ?)}";
+        try 
+        {
+            callableStatement = CONN.prepareCall(GetObservedTemperatureCall);
+            callableStatement.setString(1, username);
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            ResultSet rset = (ResultSet)callableStatement.getObject(2);
+
+            if (rset.next()) {
+                obs.value1 = new Float(rset.getFloat("temp_val")).toString();
+                obs.observed_on = rset.getDate("observed_on");
+            }
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+            System.out.println("Status : " + status + "\nMessage : " + message);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        return obs;
+    }
+    
+    ArrayList<String> updateSentAlerts(String username, Integer alertId) 
+    {
+        ArrayList<String> result = new ArrayList<>();
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message, status;
+        String updateAlertsCall = "{call UPDATE_SENT_ALERTS(?, ?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(updateAlertsCall);
+            callableStatement.setString(1, username);
+            callableStatement.setInt(2, alertId);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.executeUpdate();
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+            result.add(status);
+            result.add(message);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return result;
+    }
+    
+    ArrayList<String> deleteSentAlerts(String username, Integer alertId) 
+    {
+        ArrayList<String> result = new ArrayList<>();
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message, status;
+        String deleteLowActivityAlertsCall = "{call DELETE_LOW_ACTIVITY_ALERT(?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(deleteLowActivityAlertsCall);
+            callableStatement.setString(1, username);
+            callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getString(2);
+            message = callableStatement.getString(3);
+            result.add(status);
+            result.add(message);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return result;
     }
 
     ArrayList<ArrayList<Object>> getAllObservationsNew(String username) {

@@ -23,6 +23,10 @@ public class ObservationNew {
         return "Observation{" + "type=" + type + ", value1=" + value1 + ", value2=" + value2 + ", observed_on=" + observed_on + ", recorded_on=" + recorded_on + '}';
     }
 
+    public ObservationNew() {
+        
+    }
+    
     public ObservationNew(String type, String value1, String value2, Date observed_on, Date recorded_on) {
         this.type = type;
         this.value1 = value1;
