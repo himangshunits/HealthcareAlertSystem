@@ -21,9 +21,14 @@
             <version>1.5.1</version>
         </dependency>
         <dependency>
-            <groupId>abcs</groupId>
-            <artifactId>sadsda</artifactId>
-            <version>1.0</version>
+            <groupId>abcd</groupId>
+            <artifactId>abcd</artifactId>
+            <version>2</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.4</version>
         </dependency>
     </dependencies>
     <properties>

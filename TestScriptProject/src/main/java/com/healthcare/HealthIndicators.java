@@ -265,7 +265,7 @@ public class HealthIndicators extends javax.swing.JFrame {
         Arrays.sort(toDelete); // be shure to have them in ascending order.
         NonEditableModel myTableModel = (NonEditableModel)observationsTable.getModel();
         for(int iNdex = toDelete.length -1; iNdex >= 0; iNdex--) {
-            Integer oId = (Integer)myTableModel.getValueAt(iNdex, 0);
+            Integer oId = (Integer)myTableModel.getValueAt(toDelete[iNdex], 0);
             myTableModel.removeRow(toDelete[iNdex]); // beginning at the largest.            
             //ArrayList<String> res = db.deleteObservation(oId);
             //JOptionPane.showMessageDialog(null, "Messaeg from DB :: " + res.get(1));

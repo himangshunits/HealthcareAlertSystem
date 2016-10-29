@@ -153,7 +153,7 @@ public class Alert extends javax.swing.JFrame {
         Arrays.sort(toDelete); // be shure to have them in ascending order.
         NonEditableModel myTableModel = (NonEditableModel)alertTable.getModel();
         for(int ii = toDelete.length -1; ii >=0; ii--) {
-            Integer aId = Integer.valueOf((String)myTableModel.getValueAt(ii, 0));
+            Integer aId = Integer.valueOf((String)myTableModel.getValueAt(toDelete[ii], 0));
             myTableModel.removeRow(toDelete[ii]); // beginning at the largest.
             ArrayList<String> res = db.deactivateAlert(aId);
             JOptionPane.showMessageDialog(null, "Messaeg from DB :: " + res.get(1));            
@@ -166,7 +166,7 @@ public class Alert extends javax.swing.JFrame {
         Arrays.sort(toDelete); // be shure to have them in ascending order.
         NonEditableModel myTableModel = (NonEditableModel)alertTable.getModel();
         for(int iNdex = toDelete.length -1; iNdex >= 0; iNdex--) {
-            Integer aId = Integer.valueOf((String)myTableModel.getValueAt(iNdex, 0));
+            Integer aId = Integer.valueOf((String)myTableModel.getValueAt(toDelete[iNdex], 0));
             //myTableModel.removeRow(toDelete[iNdex]); // beginning at the largest. 
             // TODO Set the 
             ArrayList<String> res = db.markAlertAsSeen(aId);
