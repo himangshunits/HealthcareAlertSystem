@@ -35,4 +35,113 @@
         <maven.compiler.source>9</maven.compiler.source>
         <maven.compiler.target>9</maven.compiler.target>
     </properties>
+    <profiles>
+  <profile>
+    <id>java8-doclint-disabled</id>
+    <activation>
+      <jdk>[1.8,)</jdk>
+    </activation>
+    <properties>
+      <javadoc.opts>-Xdoclint:none</javadoc.opts>
+    </properties>
+  </profile>
+</profiles>
+<build>
+  <plugins>
+       <plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-jar-plugin</artifactId>
+  <version>2.3.2</version>
+  <configuration>
+    <archive>
+      <manifest>
+        <addClasspath>true</addClasspath>
+        <mainClass>com.healthcare.Main</mainClass>
+      </manifest>
+    </archive>
+  </configuration>
+</plugin>  
+  
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9</version>
+        <executions>
+            <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                    <goal>jar</goal>
+                </goals>
+                <configuration>
+                    <additionalparam>${javadoc.opts}</additionalparam>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <reportPlugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <configuration>
+                <additionalparam>${javadoc.opts}</additionalparam>
+              </configuration>
+            </plugin>
+          </reportPlugins>
+        </configuration>
+      </plugin>
+      <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>false</downloadJavadocs>
+				</configuration>
+			</plugin>
+
+			<!-- Set a compiler level -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+
+		<!-- Maven Shade Plugin -->
+		<plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-shade-plugin</artifactId>
+		  <version>2.3</version>
+		  <executions>
+		     <!-- Run shade goal on package phase -->
+		    <execution>
+			<phase>package</phase>
+			<goals>
+				<goal>shade</goal>
+			</goals>
+			<configuration>
+			  <transformers>
+				<!-- add Main-Class to manifest file -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+					<mainClass>com.healthcare.Main</mainClass>
+				</transformer>
+			  </transformers>
+			</configuration>
+		      </execution>
+		  </executions>
+		</plugin>
+      
+      
+      
+      
+   </plugins>
+</build>
 </project>
