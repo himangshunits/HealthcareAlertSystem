@@ -390,10 +390,10 @@ public class DashboardHs extends javax.swing.JFrame {
 
     private void initLocalData (  ) {        
         try{            
-            ArrayList<String> data = mDb.getNameAndIdForUsername ( username ) ;            
+            ArrayList<String> data = mDb.getNameAndIdForUsername(username);
             name = data.get ( 0 ) ;
             person_id = Integer.parseInt ( data.get(1 ) );            
-            ArrayList<HsInfo> arr = mDb.getHsInfo ( person_id ) ;
+            ArrayList<HsInfo> arr = mDb.getHsInfo(person_id);
             if ( arr.size( ) == 0){
                 healthSupp1 = "Not assigned yet!";
                 healthId1 = "None";

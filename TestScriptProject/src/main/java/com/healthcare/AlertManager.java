@@ -5,7 +5,6 @@
  */
 package com.healthcare;
 
-import com.oracle.util.Checksums;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -165,7 +164,7 @@ public class AlertManager {
         Recommendation recommendation = new Recommendation();
         recommendation.painLevelFrequency = (Integer) recommendations.get(0).get(1);
         recommendation.moodFrequency = (Integer) recommendations.get(0).get(3);
-        recommendation.tempertureFrequency = (Integer) recommendations.get(0).get(6);        
+        recommendation.temperatureFrequency = (Integer) recommendations.get(0).get(6);        
         recommendation.weightFrequency = (Integer) recommendations.get(0).get(9);
         recommendation.bpFrequency = (Integer) recommendations.get(0).get(14);
         recommendation.oxySatFrequency = (Integer) recommendations.get(0).get(17);
@@ -250,7 +249,7 @@ public class AlertManager {
             }
         }
         
-        if (recommendation.tempertureFrequency != null && isLowFrequency(tDays, recommendation.tempertureFrequency)) {
+        if (recommendation.temperatureFrequency != null && isLowFrequency(tDays, recommendation.temperatureFrequency)) {
             // create alert id 13
             String alertReason = "Patient's temperature has not been entered from " + tDays + " days.";
             try {

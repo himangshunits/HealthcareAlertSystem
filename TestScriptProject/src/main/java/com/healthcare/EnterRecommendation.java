@@ -6,6 +6,7 @@
 package com.healthcare;
 
 import java.awt.Component;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -23,10 +24,44 @@ public class EnterRecommendation extends javax.swing.JFrame {
      */
     ArrayList<String> mPatientInfo;
     String mPatienUsername;
+    Database db;
+    Recommendation reco = null;
+    void populateValues()
+    {
+        
+        db = Database.getInstance();
+        reco = db.getCustomRecommendation(mPatienUsername);
+        if(reco != null)
+        {
+            mood.setSelectedItem(reco.mood.toString());
+            oxySatFrequency.setText(reco.oxySatFrequency.toString());
+            oxySatHigh.setText(reco.oxySatHigh.toString());
+            oxySatLow.setText(reco.oxySatLow.toString());
+            painLevelFrequency.setText(reco.painLevelFrequency.toString());
+            temperatureHigh.setText(reco.temperatureHigh.toString());
+            temperatureLow.setText(reco.temperatureLow.toString());
+            temperatureFrequency.setText(reco.temperatureFrequency.toString());
+            weightFrequency.setText(reco.weightFrequency.toString());
+            weightHigh.setText(reco.weightHigh.toString());
+            weightLow.setText(reco.weightLow.toString());
+            moodFrequency.setText(reco.moodFrequency.toString());
+            mood.setSelectedItem(reco.mood.toString());
+            bpDiastolicHigh.setText(reco.bpDiastolicHigh.toString());
+            bpDiastolicLow.setText(reco.bpDiastolicLow.toString());
+            bpSystolicHigh.setText(reco.bpSystolicHigh.toString());
+            bpSystolicLow.setText(reco.bpSystolicLow.toString());
+            bpFrequency.setText(reco.bpFrequency.toString());
+        }
+    }
     public EnterRecommendation(String patientUsername) {
+        
         this.mPatienUsername = patientUsername;
+        
         initLocalData();
         initComponents();
+        populateValues();
+        
+        
     }
 
     public EnterRecommendation(){
@@ -78,14 +113,14 @@ public class EnterRecommendation extends javax.swing.JFrame {
         painLevelFrequency = new javax.swing.JTextField();
         moodFrequency = new javax.swing.JTextField();
         oxySatLow = new javax.swing.JTextField();
-        painLevel = new javax.swing.JSpinner();
-        mood = new javax.swing.JComboBox<>();
         bpNA = new javax.swing.JCheckBox();
         weightNA = new javax.swing.JCheckBox();
         oxyNA = new javax.swing.JCheckBox();
         painNA = new javax.swing.JCheckBox();
         tempNA = new javax.swing.JCheckBox();
         moodNA = new javax.swing.JCheckBox();
+        painLevel = new javax.swing.JComboBox<>();
+        mood = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -231,10 +266,6 @@ public class EnterRecommendation extends javax.swing.JFrame {
             }
         });
 
-        painLevel.setModel(new javax.swing.SpinnerNumberModel(1, 1, 10, 1));
-
-        mood.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Happy", "Sad", "Neutral" }));
-
         bpNA.setText("N/A");
         bpNA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -277,123 +308,112 @@ public class EnterRecommendation extends javax.swing.JFrame {
             }
         });
 
+        String[] numbers = {"0","1","2","3","4","5","6","7","8","9","10"};
+        painLevel.setModel(new javax.swing.DefaultComboBoxModel<>(numbers));
+
+        mood.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"","Happy", "Sad", "Neutral"}));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel14)
+                                    .addComponent(jLabel19)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(oxySatLow, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(bpDiastolicLow))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel1))
+                                        .addGap(20, 20, 20)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(bpSystolicLow)
+                                            .addComponent(weightLow))))
+                                .addGap(63, 63, 63))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addGap(87, 242, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel10)
-                                                .addGap(28, 28, 28)
-                                                .addComponent(oxySatLow, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jLabel14)
-                                            .addComponent(jLabel17)
-                                            .addComponent(jLabel19))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel8)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(bpDiastolicLow))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel6)
-                                                    .addComponent(jLabel1))
-                                                .addGap(20, 20, 20)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(bpSystolicLow)
-                                                    .addComponent(weightLow))))
-                                        .addGap(63, 63, 63)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel9))
+                                        .addGap(22, 22, 22)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(weightHigh, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                                            .addComponent(bpSystolicHigh)
+                                            .addComponent(bpDiastolicHigh)))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel4)
-                                                    .addComponent(jLabel5)
-                                                    .addComponent(jLabel9))
-                                                .addGap(22, 22, 22)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(weightHigh, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
-                                                    .addComponent(bpSystolicHigh)
-                                                    .addComponent(bpDiastolicHigh)))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel15)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(temperatureHigh, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel12)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(oxySatHigh, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(35, 35, 35))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel16)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(moodFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(36, 36, 36)
-                                        .addComponent(moodNA)
-                                        .addGap(17, 17, 17))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel18)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(painLevelFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel15)
                                         .addGap(18, 18, 18)
-                                        .addComponent(painNA)
-                                        .addGap(15, 15, 15)))))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel11)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel13))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(temperatureHigh, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(bpFrequency, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
-                                            .addComponent(weightFrequency, javax.swing.GroupLayout.Alignment.LEADING))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(bpNA))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(weightNA))))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(oxySatFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(oxyNA))))
+                                        .addComponent(jLabel12)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(oxySatHigh, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(35, 35, 35))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(temperatureFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel16)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tempNA)))
-                        .addGap(14, 14, 14))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(143, 143, 143)
+                                .addComponent(moodFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(111, 111, 111))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(painLevelFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(submitButton)
-                                .addComponent(painLevel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(temperatureLow, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(mood, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(153, 153, 153)))
-                .addContainerGap())
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel13))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bpFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(weightFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(oxySatFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(temperatureFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(84, 84, 84))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(285, 285, 285)
+                        .addComponent(submitButton)
+                        .addGap(53, 53, 53)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(159, 159, 159)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(painLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(temperatureLow, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(mood, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -407,8 +427,7 @@ public class EnterRecommendation extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(weightHigh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(weightLow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(weightFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(weightNA))
+                    .addComponent(weightFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -422,8 +441,7 @@ public class EnterRecommendation extends javax.swing.JFrame {
                     .addComponent(jLabel11)
                     .addComponent(bpDiastolicHigh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bpDiastolicLow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bpFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bpNA))
+                    .addComponent(bpFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
@@ -431,8 +449,7 @@ public class EnterRecommendation extends javax.swing.JFrame {
                     .addComponent(jLabel13)
                     .addComponent(oxySatFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(oxySatHigh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(oxySatLow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(oxyNA))
+                    .addComponent(oxySatLow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
@@ -440,22 +457,19 @@ public class EnterRecommendation extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(temperatureFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(temperatureHigh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(temperatureLow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tempNA))
+                    .addComponent(temperatureLow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
                     .addComponent(jLabel18)
                     .addComponent(painLevelFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(painLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(painNA))
-                .addGap(43, 43, 43)
+                    .addComponent(painLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
                     .addComponent(jLabel16)
                     .addComponent(moodFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(mood, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(moodNA))
+                    .addComponent(mood, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(submitButton)
@@ -532,102 +546,135 @@ public class EnterRecommendation extends javax.swing.JFrame {
     }//GEN-LAST:event_weightHighActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        Integer localBpSystolicHigh, localBpSystolicLow, localBpDiatolicHigh, localBpDiastolicLow, localBpFreq;
-        Float localOxySatLow, localOxySatHigh;
-        Integer localOxySatFrequency;
-        String localPain, localMood;
-        Integer localPainFreq, localMoodFreq;
-        Float localTempLow, localTempHigh, localWeightLow, localWeightHigh;
-        Integer localTempFreq, localWeightFreq;        
-        try{            
-            if(!bpNA.isSelected()){
-                localBpSystolicLow = Integer.parseInt(bpSystolicLow.getText().trim()); 
-                localBpSystolicHigh= Integer.parseInt(bpSystolicHigh.getText().trim());
-                localBpDiastolicLow = Integer.parseInt(bpDiastolicLow.getText().trim());
-                localBpDiatolicHigh = Integer.parseInt(bpDiastolicHigh.getText().trim()); 
-                localBpFreq = Integer.parseInt(bpFrequency.getText().trim());
-            } else {
-                localBpSystolicLow = 0; 
-                localBpSystolicHigh= 0;
-                localBpDiastolicLow = 0;
-                localBpDiatolicHigh = 0; 
-                localBpFreq = 0;
-            }
-             
-            if(!oxyNA.isSelected()){
-                localOxySatLow = Float.parseFloat(oxySatLow.getText().trim()); 
-                localOxySatHigh = Float.parseFloat(oxySatHigh.getText().trim());
-                localOxySatFrequency = Integer.parseInt(oxySatFrequency.getText().trim());
-            } else {
-                localOxySatLow = 0.0f; 
-                localOxySatHigh = 0.0f;
-                localOxySatFrequency = 0;
-            }      
-                            
-            if(!painNA.isSelected()){
-                localPain = painLevel.getValue().toString().trim(); 
+        Integer localBpSystolicHigh = 0, localBpSystolicLow = 0, localBpDiatolicHigh = 0, localBpDiastolicLow = 0, localBpFreq = 0;
+        Float localOxySatLow = 0.0f, localOxySatHigh = 0.0f;
+        Integer localOxySatFrequency = 0;
+        String localPain = "", localMood = "";
+        Integer localPainFreq = 0, localMoodFreq = 0;
+        Float localTempLow = 0.0f, localTempHigh = 0.0f, localWeightLow = 0.0f, localWeightHigh = 0.0f;
+        Integer localTempFreq = 0, localWeightFreq = 0;
+        
+        if(!bpSystolicLow.getText().trim().equals(""))
+        {
+            localBpSystolicLow  = Integer.parseInt(bpSystolicLow.getText().trim());
+            localBpSystolicHigh = Integer.parseInt(bpSystolicHigh.getText().trim());
+            localBpDiastolicLow = Integer.parseInt(bpDiastolicLow.getText().trim());
+            localBpDiatolicHigh = Integer.parseInt(bpDiastolicHigh.getText().trim()); 
+        }
+        if(!bpFrequency.getText().trim().equals(""))
+        {
+            localBpFreq = Integer.parseInt(bpFrequency.getText().trim());
+        }
+        
+        if(!oxySatLow.getText().trim().equals(""))
+        {
+            localOxySatLow = Float.parseFloat(oxySatLow.getText().trim()); 
+            localOxySatHigh = Float.parseFloat(oxySatHigh.getText().trim());    
+        }
+        if(!oxySatFrequency.getText().trim().equals(""))
+        {
+            localOxySatFrequency = Integer.parseInt(oxySatFrequency.getText().trim());
+        }
+        if(!mood.getSelectedItem().toString().trim().equals(""))
+        {
+                localPain = mood.getSelectedItem().toString().trim(); 
+        }
+        
+        if(!painLevelFrequency.getText().toString().trim().equals(""))
+        {
                 localPainFreq = Integer.parseInt(painLevelFrequency.getText().trim()); 
-            } else {
-                localPain = ""; 
-                localPainFreq = 0;            
-            }                
-            
-            if(!moodNA.isSelected()){
-                localMood = (String)mood.getSelectedItem();
-                localMoodFreq = Integer.parseInt(moodFrequency.getText().trim());
-            } else {
-                localMood = "";
-                localMoodFreq = 0;
-            }
+        }
+        if(!(((String)mood.getSelectedItem()).trim()).equals(""))
+        {    
+            localMood = (String)mood.getSelectedItem();
+        }
+        if(!moodFrequency.getText().trim().equals(""))
+        {    
+            localMoodFreq = Integer.parseInt(moodFrequency.getText().trim());
+        }
+        
+        if(!temperatureLow.getText().trim().equals(""))
+        {
+            localTempLow = Float.parseFloat(temperatureLow.getText().trim()); 
+            localTempHigh = Float.parseFloat(temperatureHigh.getText().trim()); 
+                
+        }
+        if(!temperatureFrequency.getText().trim().equals(""))
+        {
+            localTempFreq = Integer.parseInt(temperatureFrequency.getText().trim());
+        }
+        
+        
+        if(!weightLow.getText().trim().equals(""))
+        {
+            localWeightLow = Float.parseFloat(weightLow.getText().trim());
+            localWeightHigh = Float.parseFloat(weightHigh.getText().trim());   
+        } 
+        if(!weightFrequency.getText().trim().equals(""))
+        {
+            localWeightFreq = Integer.parseInt(weightFrequency.getText().trim());
+        }
+        try{         
 
-             
-            if(!tempNA.isSelected()){
-                localTempLow = Float.parseFloat(temperatureLow.getText().trim()); 
-                localTempHigh = Float.parseFloat(temperatureHigh.getText().trim()); 
-                localTempFreq = Integer.parseInt(temperatureFrequency.getText().trim());
-            } else {
-                localTempLow = 0.0f; 
-                localTempHigh = 0.0f; 
-                localTempFreq = 0;
-            }
-
-            if(!weightNA.isSelected()){
-                localWeightLow = Float.parseFloat(weightLow.getText().trim());
-                localWeightHigh = Float.parseFloat(weightHigh.getText().trim());
-                localWeightFreq = Integer.parseInt(weightFrequency.getText().trim());
-            } else {
-                localWeightLow = 0.0f;
-                localWeightHigh = 0.0f;
-                localWeightFreq = 0;
-            }
-            
-            Database.getInstance().addRecommendation(
+                if(reco == null)
+                {
+                    db.addRecommendation(
                     new Recommendation(localBpSystolicLow,
-                localBpSystolicHigh,
-                localBpDiastolicLow,
-                localBpDiatolicHigh,
-                localBpFreq,
+                            localBpSystolicHigh,
+                            localBpDiastolicLow,
+                            localBpDiatolicHigh,
+                            localBpFreq,
 
-                localOxySatLow,
-                localOxySatHigh,
-                localOxySatFrequency,
+                            localOxySatLow,
+                            localOxySatHigh,
+                            localOxySatFrequency,
 
+                            localPain,
+                            localPainFreq,
 
-                localPain,
-                localPainFreq,
+                            localMood,
+                            localMoodFreq,
 
-                localMood,
-                localMoodFreq,
+                            localTempLow,
+                            localTempHigh,
+                            localTempFreq,
 
-                localTempLow,
-                localTempHigh,
-                localTempFreq,
+                            localWeightLow,
+                            localWeightHigh,
+                            localWeightFreq), mPatienUsername);
+                        JOptionPane.showMessageDialog(null, "Recommendation Entered Sucessfully!");
+                        this.dispose();
+                }
+                else
+                {
+                    db.updateRecommendation(
+                    new Recommendation(localBpSystolicLow,
+                            localBpSystolicHigh,
+                            localBpDiastolicLow,
+                            localBpDiatolicHigh,
+                            localBpFreq,
 
-                localWeightLow,
-                localWeightHigh,
-                localWeightFreq), mPatienUsername);
-            JOptionPane.showMessageDialog(null, "Recommendation Entered Sucessfully!");
-            this.dispose();
+                            localOxySatLow,
+                            localOxySatHigh,
+                            localOxySatFrequency,
+
+                            localPain,
+                            localPainFreq,
+
+                            localMood,
+                            localMoodFreq,
+
+                            localTempLow,
+                            localTempHigh,
+                            localTempFreq,
+
+                            localWeightLow,
+                            localWeightHigh,
+                            localWeightFreq), mPatienUsername);
+                        JOptionPane.showMessageDialog(null, "Recommendation Update Sucessfully!");
+                        this.dispose();
+                }
+                
         } catch(Exception e){
             System.out.println("The Error in entering reco = " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Error in entry ! Please check. Error = " + e.getMessage());
@@ -637,21 +684,17 @@ public class EnterRecommendation extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_submitButtonActionPerformed
 
-    private void bpNAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bpNAActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bpNAActionPerformed
-
     private void weightNAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weightNAActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_weightNAActionPerformed
 
+    private void bpNAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bpNAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bpNAActionPerformed
+
     private void oxyNAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oxyNAActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_oxyNAActionPerformed
-
-    private void painNAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_painNAActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_painNAActionPerformed
 
     private void tempNAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempNAActionPerformed
         // TODO add your handling code here:
@@ -660,6 +703,10 @@ public class EnterRecommendation extends javax.swing.JFrame {
     private void moodNAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moodNAActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_moodNAActionPerformed
+
+    private void painNAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_painNAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_painNAActionPerformed
 
     /**
      * @param args the command line arguments
@@ -687,7 +734,7 @@ public class EnterRecommendation extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(EnterRecommendation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -730,7 +777,7 @@ public class EnterRecommendation extends javax.swing.JFrame {
     private javax.swing.JTextField oxySatFrequency;
     private javax.swing.JTextField oxySatHigh;
     private javax.swing.JTextField oxySatLow;
-    private javax.swing.JSpinner painLevel;
+    private javax.swing.JComboBox<String> painLevel;
     private javax.swing.JTextField painLevelFrequency;
     private javax.swing.JCheckBox painNA;
     private javax.swing.JButton submitButton;

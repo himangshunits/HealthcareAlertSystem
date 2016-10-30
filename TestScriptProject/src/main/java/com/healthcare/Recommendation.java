@@ -24,7 +24,7 @@ public class Recommendation {
     public Integer moodFrequency;
     public Float temperatureLow;
     public Float temperatureHigh;
-    public Integer tempertureFrequency;
+    public Integer temperatureFrequency;
     public Float weightLow;
     public Float weightHigh;
     public Integer weightFrequency;
@@ -44,7 +44,7 @@ public class Recommendation {
         this.moodFrequency = moodFrequency;
         this.temperatureLow = temperatureLow;
         this.temperatureHigh = temperatureHigh;
-        this.tempertureFrequency = tempertureFrequency;
+        this.temperatureFrequency = tempertureFrequency;
         this.weightLow = weightLow;
         this.weightHigh = weightHigh;
         this.weightFrequency = weightFrequency;
@@ -52,6 +52,11 @@ public class Recommendation {
 
     public Recommendation() {
         
+    }
+
+    @Override
+    public String toString() {
+        return "Recommendation{" + "bpSystolicLow=" + bpSystolicLow + ", bpSystolicHigh=" + bpSystolicHigh + ", bpDiastolicLow=" + bpDiastolicLow + ", bpDiastolicHigh=" + bpDiastolicHigh + ", bpFrequency=" + bpFrequency + ", oxySatLow=" + oxySatLow + ", oxySatHigh=" + oxySatHigh + ", oxySatFrequency=" + oxySatFrequency + ", painLevel=" + painLevel + ", painLevelFrequency=" + painLevelFrequency + ", mood=" + mood + ", moodFrequency=" + moodFrequency + ", temperatureLow=" + temperatureLow + ", temperatureHigh=" + temperatureHigh + ", temperatureFrequency=" + temperatureFrequency + ", weightLow=" + weightLow + ", weightHigh=" + weightHigh + ", weightFrequency=" + weightFrequency + '}';
     }
 
      

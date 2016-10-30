@@ -26,11 +26,16 @@ public class Main extends javax.swing.JFrame
     String user;
     public Main() 
     {
+        db = Database.getInstance();      
         initComponents();
     }
     public Main(Database db) 
     {
         this.db = db;
+        if(db == null)
+        {
+            db = Database.getInstance();
+        }
         initComponents();
     }
 
@@ -164,11 +169,23 @@ public class Main extends javax.swing.JFrame
                 ArrayList<String> out = Database.getInstance().inDatabase(username, password);
                 if(out.get(0).equals("SUCCESS"))
                 {
-                    this.user = user;
+                    this.user = username;
                     JOptionPane.showMessageDialog(null, out.get(1));                
                     // Check for Low Activity Alerts.
-                    AlertManager am = new AlertManager(username);
-                    am.checkForLowActivityAlerts();
+                    ArrayList<String> people = new ArrayList<String>();
+                    AlertManager am = new AlertManager(user);
+                    people.add(this.user);
+                    ArrayList<String> data = db.getNameAndIdForUsername(user);
+                    int person_id = Integer.parseInt(data.get(1));
+                    ArrayList<HsInfo> arr = db.getHsInfo(person_id);
+                    for(HsInfo supportee: arr)
+                    {
+                        people.add(supportee.username);
+                    }
+                    for(String person: people)
+                    {   
+                        am.checkForLowActivityAlerts();
+                    }
                     DashboardHs dash = new DashboardHs(username, out.get(2));
                     dash.setVisible(true);
                     this.dispose();
@@ -204,7 +221,7 @@ public class Main extends javax.swing.JFrame
     private void passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
             // Enter was pressed. Your code goes here.
-            String username = this.username.getText();
+        String username = this.username.getText();
         String password = this.password.getText();
         if(username == null || password == null || username.equals("") || password.equals(""))
         {
@@ -214,11 +231,26 @@ public class Main extends javax.swing.JFrame
         {
             try
             {
+                
                 ArrayList<String> out = Database.getInstance().inDatabase(username, password);
                 if(out.get(0).equals("SUCCESS"))
                 {
+                    this.user = username;
                     JOptionPane.showMessageDialog(null, out.get(1));                
-                    System.out.println("It's not my job!");
+                    ArrayList<String> people = new ArrayList<String>();
+                    people.add(user);
+                    ArrayList<String> data = db.getNameAndIdForUsername(user);
+                    int person_id = Integer.parseInt(data.get(1));
+                    ArrayList<HsInfo> arr = db.getHsInfo(person_id);
+                    for(HsInfo supportee: arr)
+                    {
+                        people.add(supportee.username);
+                    }
+                    for(String person: people)
+                    {   
+                        AlertManager am = new AlertManager(person);
+                        am.checkForLowActivityAlerts();
+                    }
                     DashboardHs dash = new DashboardHs(username, out.get(2));
                     dash.setVisible(true);
                     this.dispose();
@@ -243,8 +275,31 @@ public class Main extends javax.swing.JFrame
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        ArrayList<String> out = db.deleteSentAlerts(user);
-        System.out.println(out.get(1));
+        db = Database.getInstance();
+        try
+        {
+            ArrayList<String> people = new ArrayList<String>();
+            people.add(user);
+            ArrayList<String> data = db.getNameAndIdForUsername(user);
+            int person_id = Integer.parseInt(data.get(1));
+            ArrayList<HsInfo> arr = db.getHsInfo(person_id);
+            for(HsInfo supportee: arr)
+            {
+                people.add(supportee.username);
+            }
+            ArrayList<String> out = new ArrayList<String>();
+            for(String person: people)
+            {   
+                out =  db.deleteSentAlerts(user);
+            }
+            System.out.println(out.get(1));
+            System.exit(0);
+        }
+        catch(SQLException sql)
+        {
+            
+        }
+        
     }//GEN-LAST:event_formWindowClosing
 
     /**

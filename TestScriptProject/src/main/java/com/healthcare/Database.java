@@ -724,7 +724,7 @@ public class Database {
             callableStatement.setInt(13, newReco.moodFrequency);
             callableStatement.setFloat(14, newReco.temperatureLow);
             callableStatement.setFloat(15, newReco.temperatureHigh);
-            callableStatement.setInt(16, newReco.tempertureFrequency);
+            callableStatement.setInt(16, newReco.temperatureFrequency);
             callableStatement.setFloat(17, newReco.weightLow);
             callableStatement.setFloat(18, newReco.weightHigh);
             callableStatement.setInt(19, newReco.weightFrequency);
@@ -810,7 +810,9 @@ public class Database {
 
     ArrayList<ArrayList<Object>> getBestRecommendations(String username) {
         ArrayList<ArrayList<Object>> result = new ArrayList<ArrayList<Object>>();
-        
+        Integer weightFreq, bpFreq, osFreq, pFreq, mFreq, tFreq;
+        Integer bpDiastolic, bpSystolic, painLevel;
+        Float weight, oxySat, temperature;
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
         String message = "", status = "";
@@ -2005,5 +2007,124 @@ public class Database {
         return result;        
 
 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    Recommendation getCustomRecommendation(String username) {
+        Recommendation recom = null;
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String showAllRecommendationsCall = "{call SHOW_ALL_RECOMMENDATIONS(?, ?, ?, ?)}";
+        try 
+        {
+            recom = new Recommendation();
+            callableStatement = CONN.prepareCall(showAllRecommendationsCall);
+            callableStatement.setString(1, username);
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(4, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            ResultSet rset = (ResultSet)callableStatement.getObject(2);
+            if (rset.next()) 
+            {
+                ResultSetMetaData rsmd = rset.getMetaData();
+                int columnCount = rsmd.getColumnCount();
+                for(int i=1;i<=columnCount;i++)
+                {
+                    System.out.println(rsmd.getColumnName(i));
+                }
+                
+                recom.weightLow = rset.getFloat("weight_low");
+                recom.weightFrequency = rset.getInt("weight_freq");
+                recom.bpDiastolicLow = rset.getInt("bp_diastolic_low");
+                recom.bpSystolicLow = rset.getInt("bp_systolic_low");
+                recom.bpFrequency = rset.getInt("bp_freq");
+                recom.oxySatLow = rset.getFloat("oxygen_saturation_low");
+                recom.oxySatFrequency = rset.getInt("oxygen_saturation_freq");
+                recom.painLevel = rset.getString("pain_level");
+                recom.bpSystolicLow = rset.getInt("bp_systolic_low");
+                recom.painLevelFrequency = rset.getInt("pain_level_freq");
+                recom.mood = rset.getString("mood");
+                recom.moodFrequency = rset.getInt("mood_freq");
+                recom.temperatureLow = rset.getFloat("temperature_low");
+                recom.temperatureFrequency = rset.getInt("temperature_freq");
+                recom.temperatureHigh = rset.getFloat("temperature_high");
+                recom.weightHigh = rset.getFloat("weight_high");
+                recom.moodFrequency = rset.getInt("mood_freq");
+                recom.bpDiastolicHigh = rset.getInt("bp_diastolic_high");
+                recom.bpSystolicHigh = rset.getInt("bp_systolic_high");
+                recom.oxySatHigh = rset.getFloat("oxygen_saturation_high");
+            }
+            status = callableStatement.getString(3);
+            message = callableStatement.getString(4);
+            System.out.println(recom.toString());
+            System.out.println("Status : " + status + "\nMessage : " + message);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            if (dbConnection != null) {
+                try {
+                    CONN.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return recom;
+    }
+
+    void updateRecommendation(Recommendation newReco, String mPatienUsername) {
+        Connection dbConnection = null;
+        CallableStatement callableStatement = null;
+        String message = "", status = "";
+        String callUpdateObservation = "{call UPDATE_RECOMMENDATIONS(?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?)}";
+        
+        try {
+            callableStatement = CONN.prepareCall(callUpdateObservation);
+            callableStatement.setString(1, mPatienUsername);
+            callableStatement.setFloat(2, newReco.bpDiastolicLow);
+            callableStatement.setFloat(3, newReco.bpDiastolicHigh);
+            callableStatement.setFloat(4, newReco.bpSystolicLow);
+            callableStatement.setFloat(5, newReco.bpSystolicHigh);
+            callableStatement.setInt(6, newReco.bpFrequency);            
+            callableStatement.setFloat(7, newReco.oxySatLow);
+            callableStatement.setFloat(8, newReco.oxySatHigh);
+            callableStatement.setInt(9, newReco.oxySatFrequency);
+            callableStatement.setString(10, newReco.painLevel);
+            callableStatement.setInt(11, newReco.painLevelFrequency);
+            callableStatement.setString(12, newReco.mood);
+            callableStatement.setInt(13, newReco.moodFrequency);
+            callableStatement.setFloat(14, newReco.temperatureLow);
+            callableStatement.setFloat(15, newReco.temperatureHigh);
+            callableStatement.setInt(16, newReco.temperatureFrequency);
+            callableStatement.setFloat(17, newReco.weightLow);
+            callableStatement.setFloat(18, newReco.weightHigh);
+            callableStatement.setInt(19, newReco.weightFrequency);
+            callableStatement.registerOutParameter(20, java.sql.Types.VARCHAR);
+            callableStatement.registerOutParameter(21, java.sql.Types.VARCHAR);
+            callableStatement.execute();
+            status = callableStatement.getString(10);
+            message = callableStatement.getString(11);
+            System.out.println("Status : " + status + "\nMessage : " + message);            
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStatement != null) {
+                //callableStatement.close();
+            }
+
+            if (dbConnection != null) {
+                //CONN.close();
+            }
+        }
     }
 }
