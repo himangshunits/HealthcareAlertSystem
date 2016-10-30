@@ -33,19 +33,27 @@ public class EnterRecommendation extends javax.swing.JFrame {
         reco = db.getCustomRecommendation(mPatienUsername);
         if(reco != null)
         {
-            mood.setSelectedItem(reco.mood.toString());
+            String x = reco.mood == null ? "" : reco.mood; 
+            String x1 = reco.painLevel == null ? "" : reco.painLevel; 
+            
+            mood.setSelectedItem(x);
+            moodFrequency.setText(reco.moodFrequency.toString());
+            
             oxySatFrequency.setText(reco.oxySatFrequency.toString());
             oxySatHigh.setText(reco.oxySatHigh.toString());
             oxySatLow.setText(reco.oxySatLow.toString());
+            
+            painLevel.setSelectedItem(x1);
             painLevelFrequency.setText(reco.painLevelFrequency.toString());
+            
             temperatureHigh.setText(reco.temperatureHigh.toString());
             temperatureLow.setText(reco.temperatureLow.toString());
             temperatureFrequency.setText(reco.temperatureFrequency.toString());
+            
             weightFrequency.setText(reco.weightFrequency.toString());
             weightHigh.setText(reco.weightHigh.toString());
             weightLow.setText(reco.weightLow.toString());
-            moodFrequency.setText(reco.moodFrequency.toString());
-            mood.setSelectedItem(reco.mood.toString());
+            
             bpDiastolicHigh.setText(reco.bpDiastolicHigh.toString());
             bpDiastolicLow.setText(reco.bpDiastolicLow.toString());
             bpSystolicHigh.setText(reco.bpSystolicHigh.toString());
@@ -572,9 +580,9 @@ public class EnterRecommendation extends javax.swing.JFrame {
         {
             localOxySatFrequency = Integer.parseInt(oxySatFrequency.getText().trim());
         }
-        if(!mood.getSelectedItem().toString().trim().equals(""))
+        if(!painLevel.getSelectedItem().toString().trim().equals(""))
         {
-                localPain = mood.getSelectedItem().toString().trim(); 
+                localPain = painLevel.getSelectedItem().toString().trim(); 
         }
         
         if(!painLevelFrequency.getText().toString().trim().equals(""))

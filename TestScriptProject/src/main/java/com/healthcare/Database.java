@@ -731,8 +731,8 @@ public class Database {
             callableStatement.registerOutParameter(20, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(21, java.sql.Types.VARCHAR);
             callableStatement.execute();
-            status = callableStatement.getString(10);
-            message = callableStatement.getString(11);
+            status = callableStatement.getString(20);
+            message = callableStatement.getString(21);
             System.out.println("Status : " + status + "\nMessage : " + message);            
         } catch(SQLException e) {
             System.out.println(e.getMessage());
@@ -1799,7 +1799,7 @@ public class Database {
             message = callableStatement.getString(3);
             result.add(status);
             result.add(message);
-            System.out.println("Status : " + status + "\nMessage : " + message);            
+            System.out.println("Status : " + status + "\nMessage : " + message);        
             
         } catch(SQLException e) {
             System.out.println(e.getMessage());
@@ -2037,26 +2037,29 @@ public class Database {
                 }
                 
                 recom.weightLow = rset.getFloat("weight_low");
+                recom.weightHigh = rset.getFloat("weight_high");
                 recom.weightFrequency = rset.getInt("weight_freq");
+                
                 recom.bpDiastolicLow = rset.getInt("bp_diastolic_low");
                 recom.bpSystolicLow = rset.getInt("bp_systolic_low");
+                recom.bpDiastolicHigh = rset.getInt("bp_diastolic_high");
+                recom.bpSystolicHigh = rset.getInt("bp_systolic_high");
                 recom.bpFrequency = rset.getInt("bp_freq");
+                
                 recom.oxySatLow = rset.getFloat("oxygen_saturation_low");
                 recom.oxySatFrequency = rset.getInt("oxygen_saturation_freq");
+                recom.oxySatHigh = rset.getFloat("oxygen_saturation_high");
+                
                 recom.painLevel = rset.getString("pain_level");
-                recom.bpSystolicLow = rset.getInt("bp_systolic_low");
                 recom.painLevelFrequency = rset.getInt("pain_level_freq");
+                
                 recom.mood = rset.getString("mood");
                 recom.moodFrequency = rset.getInt("mood_freq");
+                
+                
                 recom.temperatureLow = rset.getFloat("temperature_low");
                 recom.temperatureFrequency = rset.getInt("temperature_freq");
                 recom.temperatureHigh = rset.getFloat("temperature_high");
-                recom.weightHigh = rset.getFloat("weight_high");
-                recom.moodFrequency = rset.getInt("mood_freq");
-                recom.bpDiastolicHigh = rset.getInt("bp_diastolic_high");
-                recom.bpSystolicHigh = rset.getInt("bp_systolic_high");
-                recom.oxySatHigh = rset.getFloat("oxygen_saturation_high");
-                
             }
             status = callableStatement.getString(3);
             message = callableStatement.getString(4);
@@ -2114,10 +2117,11 @@ public class Database {
             callableStatement.registerOutParameter(20, java.sql.Types.VARCHAR);
             callableStatement.registerOutParameter(21, java.sql.Types.VARCHAR);
             callableStatement.execute();
-            status = callableStatement.getString(10);
-            message = callableStatement.getString(11);
+            status = callableStatement.getString(20);
+            message = callableStatement.getString(21);
             System.out.println("Status : " + status + "\nMessage : " + message);            
         } catch(SQLException e) {
+            
             System.out.println(e.getMessage());
         } finally {
             if (callableStatement != null) {

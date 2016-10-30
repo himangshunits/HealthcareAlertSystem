@@ -4,6 +4,7 @@ package com.healthcare;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 /*
@@ -173,17 +174,17 @@ public class Main extends javax.swing.JFrame
                     JOptionPane.showMessageDialog(null, out.get(1));                
                     // Check for Low Activity Alerts.
                     ArrayList<String> people = new ArrayList<String>();
-                    AlertManager am = new AlertManager(user);
                     people.add(this.user);
                     ArrayList<String> data = db.getNameAndIdForUsername(user);
                     int person_id = Integer.parseInt(data.get(1));
-                    ArrayList<HsInfo> arr = db.getHsInfo(person_id);
+                    LinkedList<HsInfo> arr = db.getPatientsUnderYou(person_id);
                     for(HsInfo supportee: arr)
                     {
                         people.add(supportee.username);
                     }
                     for(String person: people)
                     {   
+                        AlertManager am = new AlertManager(person);
                         am.checkForLowActivityAlerts();
                     }
                     DashboardHs dash = new DashboardHs(username, out.get(2));
@@ -231,7 +232,6 @@ public class Main extends javax.swing.JFrame
         {
             try
             {
-                
                 ArrayList<String> out = Database.getInstance().inDatabase(username, password);
                 if(out.get(0).equals("SUCCESS"))
                 {
@@ -241,7 +241,8 @@ public class Main extends javax.swing.JFrame
                     people.add(user);
                     ArrayList<String> data = db.getNameAndIdForUsername(user);
                     int person_id = Integer.parseInt(data.get(1));
-                    ArrayList<HsInfo> arr = db.getHsInfo(person_id);
+                    LinkedList<HsInfo> arr = db.getPatientsUnderYou(person_id);
+                    
                     for(HsInfo supportee: arr)
                     {
                         people.add(supportee.username);
@@ -274,31 +275,6 @@ public class Main extends javax.swing.JFrame
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        db = Database.getInstance();
-        try
-        {
-            ArrayList<String> people = new ArrayList<String>();
-            people.add(user);
-            ArrayList<String> data = db.getNameAndIdForUsername(user);
-            int person_id = Integer.parseInt(data.get(1));
-            ArrayList<HsInfo> arr = db.getHsInfo(person_id);
-            for(HsInfo supportee: arr)
-            {
-                people.add(supportee.username);
-            }
-            ArrayList<String> out = new ArrayList<String>();
-            for(String person: people)
-            {   
-                out =  db.deleteSentAlerts(user);
-            }
-            System.out.println(out.get(1));
-            System.exit(0);
-        }
-        catch(SQLException sql)
-        {
-            
-        }
         
     }//GEN-LAST:event_formWindowClosing
 

@@ -5,6 +5,7 @@
  */
 package com.healthcare;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -40,7 +41,7 @@ public class DashboardHs extends javax.swing.JFrame {
         this.mDb = Database.getInstance (  ) ;
         initLocalData (  ) ;
         initComponents (  ) ;
-        if ( userType.equals("USER" ) ){
+        if ( userType.equals("USER") ){
             isOnlyUser = true;
             careTakerFrame.setVisible ( false ) ;
         }            
@@ -306,8 +307,30 @@ public class DashboardHs extends javax.swing.JFrame {
     private void jButton2ActionPerformed ( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        ArrayList<String> out = mDb.deleteSentAlerts(username);
-        System.out.println(out.get(1));
+        Database db = Database.getInstance();
+        try
+         {
+             ArrayList<String> people = new ArrayList<String>();
+             people.add(username);
+             ArrayList<String> data = db.getNameAndIdForUsername(username);
+             int person_id = Integer.parseInt(data.get(1));
+             LinkedList<HsInfo> arr = db.getPatientsUnderYou(person_id);
+             for(HsInfo supportee: arr)
+             {
+                 people.add(supportee.username);
+             }
+             ArrayList<String> out = new ArrayList<String>();
+             for(String person: people)
+             {   
+                 out =  db.deleteSentAlerts(person);
+             }
+             System.out.println(out.get(1));
+         }
+         catch(SQLException sql)
+         {   
+         }
+        
+        
         this.dispose() ;
         new Main().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -330,7 +353,28 @@ public class DashboardHs extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        //System.out.println("I did this");
+        Database db = Database.getInstance();
+        try
+        {
+            ArrayList<String> people = new ArrayList<String>();
+            ArrayList<String> data = db.getNameAndIdForUsername(username);
+            int person_id = Integer.parseInt(data.get(1));
+            LinkedList<HsInfo> arr = db.getPatientsUnderYou(person_id);
+            for(HsInfo supportee: arr)
+            {
+                people.add(supportee.username);
+            }
+            ArrayList<String> out = new ArrayList<String>();
+            for(String person: people)
+            {   
+                out =  db.deleteSentAlerts(person);
+            }
+            System.out.println(out.get(1));
+        }
+        catch(SQLException sql)
+        {   
+        }
+        System.exit(0);
         System.exit(0);
     }//GEN-LAST:event_formWindowClosing
 
