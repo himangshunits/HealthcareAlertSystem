@@ -834,9 +834,9 @@ public class Database {
             if(status.equals("DEFAULT")){
                 //Give him the normal person's reco
                 ArrayList<Object> y = new ArrayList<Object>();
-                y.add("NO PAIN"); // pain_level
+                y.add(0); // pain_level
                 y.add(7); // pain_level_freq
-                y.add("HAPPY"); // mood
+                y.add(""); // mood
                 y.add(7); // mood_freq
                 y.add(new Float(95.0f)); // temp_low
                 y.add(new Float(100.0f)); // temp_high
@@ -2017,7 +2017,7 @@ public class Database {
         String showAllRecommendationsCall = "{call SHOW_ALL_RECOMMENDATIONS(?, ?, ?, ?)}";
         try 
         {
-            recom = new Recommendation();
+            
             callableStatement = CONN.prepareCall(showAllRecommendationsCall);
             callableStatement.setString(1, username);
             callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
@@ -2027,6 +2027,8 @@ public class Database {
             ResultSet rset = (ResultSet)callableStatement.getObject(2);
             if (rset.next()) 
             {
+                
+                recom = new Recommendation();
                 ResultSetMetaData rsmd = rset.getMetaData();
                 int columnCount = rsmd.getColumnCount();
                 for(int i=1;i<=columnCount;i++)
@@ -2054,10 +2056,10 @@ public class Database {
                 recom.bpDiastolicHigh = rset.getInt("bp_diastolic_high");
                 recom.bpSystolicHigh = rset.getInt("bp_systolic_high");
                 recom.oxySatHigh = rset.getFloat("oxygen_saturation_high");
+                
             }
             status = callableStatement.getString(3);
             message = callableStatement.getString(4);
-            System.out.println(recom.toString());
             System.out.println("Status : " + status + "\nMessage : " + message);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
